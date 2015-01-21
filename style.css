@@ -27,12 +27,9 @@ html, body, .container {
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(50,50,50,0.8);
+	background-image: url('overlay.png');
 }
 
-main .overlay {
-	background-color: rgba(50,50,50,0.4);
-}
 
 header {
 /*	color: #a8ffff;
@@ -49,10 +46,10 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#005e5c', endC
 	background-size: 100% auto;
 	background-position: 50% 30%;*/
 
-		background-image: url("peakview.jpg");
-	background-size: 100% auto;
-	background-position: 50% 40%;
-}
+	background-image: url("peakview.jpg");
+	background-size: cover;
+/*	background-position: 0 0;
+*/}
 
 main {
 /*border: 1px solid #7aba7a;*/
@@ -77,4 +74,8 @@ background: -o-linear-gradient(top, #aa61ab 0%, #b76eb8 100%);
 background: -ms-linear-gradient(top, #aa61ab 0%, #b76eb8 100%);
 background: linear-gradient(to bottom, #aa61ab 0%, #b76eb8 100%);
 filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#aa61ab', endColorstr='#b76eb8', GradientType=0);
+
+/*	background-image: url("peakview.jpg");
+	background-size: cover;
+	background-position: 0 -300px;*/
 }
