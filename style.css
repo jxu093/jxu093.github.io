@@ -32,24 +32,22 @@ html, body, .container {
 
 
 header {
-/*	color: #a8ffff;
-background: #005e5c;
-background: -moz-linear-gradient(top, #005e5c 0%, #028482 100%);
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #005e5c), color-stop(100%, #028482));
-background: -webkit-linear-gradient(top, #005e5c 0%, #028482 100%);
-background: -o-linear-gradient(top, #005e5c 0%, #028482 100%);
-background: -ms-linear-gradient(top, #005e5c 0%, #028482 100%);
-background: linear-gradient(to bottom, #005e5c 0%, #028482 100%);
-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#005e5c', endColorstr='#028482', GradientType=0);
-*/
-/*	background-image: url("file:///C:/Users/Jerry/Pictures/10484604_10154496477045635_8207250722719159052_o.jpg");
-	background-size: 100% auto;
-	background-position: 50% 30%;*/
-
 	background-image: url("peakview.jpg");
-	background-size: cover;
-/*	background-position: 0 0;
-*/}
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+@media screen and (min-width: 769px) {
+	header {
+		background-size: 100%;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	header {
+		background-size: 150%;
+	}
+}
 
 main {
 /*border: 1px solid #7aba7a;*/
