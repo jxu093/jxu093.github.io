@@ -45,7 +45,7 @@ header {
 
 @media screen and (max-width: 768px) {
 	header {
-		background-size: 150%;
+		background-size: auto 100%;
 	}
 }
 
