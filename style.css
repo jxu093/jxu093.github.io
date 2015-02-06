@@ -168,6 +168,10 @@ body {
 	
 }
 
+.main-content h3 {
+	text-decoration: underline;
+}
+
 h2 {
 	font-size: 2em;
 }
@@ -178,9 +182,10 @@ a {
 	color: inherit;
 	text-decoration: none;
 }
-.header a, h1, h2, h3 {
+.header a, h1, h2 {
 	color: white;
 }
+
 
 .main a {
 	color: cyan;
@@ -192,6 +197,19 @@ a {
 
 .info {
 	font-family: "Trebuchet MS";
+}
+
+.info-label {
+	color: lightblue;
+}
+
+img.bullet {
+	margin-bottom: 0.1em;
+	margin-right: 0.1em;
+}
+
+img.screenshot {
+	width: 80%;
 }
 
 /*
@@ -231,6 +249,10 @@ a {
 	.info {
 		font-size: 0.8em;
 	}
+
+	img.screenshot {
+		width: 100%;
+	}
 }
 
 /*
@@ -253,3 +275,7 @@ a {
 /*.banner-content {
 	text-shadow: none;
 }*/
+
+.footer p{
+	font-size: 0.7em;
+}
