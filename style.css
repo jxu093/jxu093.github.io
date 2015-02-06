@@ -237,6 +237,10 @@ a {
 	width: 100%;
 }
 
+.hide {
+	visibility: hidden;
+}
+
 /*.banner-content {
 	text-shadow: none;
 }*/
