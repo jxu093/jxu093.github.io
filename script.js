@@ -1,4 +1,5 @@
 $(document).ready(function() {
+	$(".wrapper").customScrollbar();
 	$(window).scroll(function() {
 		var winheight = $("body").height();
 		var height = $(window).scrollTop();
