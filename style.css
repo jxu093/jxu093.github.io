@@ -253,6 +253,10 @@ img.screenshot {
 	img.screenshot {
 		width: 100%;
 	}
+
+	.filler-mobile {
+		display: none;
+	}
 }
 
 /*
@@ -269,7 +273,7 @@ img.screenshot {
 }
 
 .active {
-	text-shadow: 1px 1px 5px pink;
+	color: pink !important;
 }
 
 /*.banner-content {
