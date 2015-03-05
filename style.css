@@ -186,7 +186,31 @@ a {
 	color: white;
 }
 
+/*RESUME BLOCK*/
+#resume-block .resumeheading {
+	display: block;
+	text-transform: uppercase;
+	margin-top: 2em;
+	margin-bottom: 0.4em;
+	text-align: left;
+	font-size: 1.1em;
+	font-weight: bold;
+}
+#resume-block .resumecontent {
+	display: block;
+	text-align: left;
+	font-family: "Georgia", serif;
+}
+#resume-block h4 {
+	font-style: italic;
+	color: white;
+	font-family: "Trebuchet MS", sans-serif;
+}
+#resume-block .bullet {
+	color: cyan;
+}
 
+/*MAIN FONT SETTINGS*/
 .main a {
 	color: cyan;
 }
@@ -246,6 +270,30 @@ img.screenshot {
 		width: 50%;
 	}
 
+	/*RESUME ON LARGE SCREENS*/
+/*	#resume-block {
+		display: block;
+	}
+	#resume-block .resumeheading, #resume-block .resumecontent {
+		display: inline;
+		float: left;
+	}
+	#resume-block ul {
+		display: inline;
+	}
+
+	#resume-block .resumeheading {
+		width: 30%;
+	}
+	#resume-block .resumecontent {
+		width: 70%;
+	}
+	#education-block,#skills-block,#workhistory-block {
+		display: block;
+		padding-bottom: 5em;
+	}*/
+
+
 	.info {
 		font-size: 0.8em;
 	}
@@ -283,3 +331,4 @@ img.screenshot {
 .footer p{
 	font-size: 0.7em;
 }
+
