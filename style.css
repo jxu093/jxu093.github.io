@@ -236,6 +236,25 @@ img.screenshot {
 	width: 80%;
 }
 
+
+/*MOBILE LANDSCAPE
+*/
+@media screen and (orientation: landscape) {
+		.banner-wrapper {
+		height: 250px;
+	}
+	.banner {
+		background: url("img/peakview.jpg");
+		background-size: 100%;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+	.banner-content {
+		line-height: 250px;
+		text-shadow: none;
+	}
+}
+
 /*
 ** DESKTOP DESIGN
 */
