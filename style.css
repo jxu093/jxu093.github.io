@@ -127,6 +127,13 @@ body {
 	height: 250px;
 }
 .banner {
+	position: fixed;
+	width: 100%;
+	height: inherit;
+	z-index: -1;
+}
+/* GRADIENT BACKGROUND */
+/*.banner {
 	background: #549454;
 	background: -moz-linear-gradient(top, #549454 0%, #7aba7a 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #549454), color-stop(100%, #7aba7a));
@@ -135,17 +142,19 @@ body {
 	background: -ms-linear-gradient(top, #549454 0%, #7aba7a 100%);
 	background: linear-gradient(to bottom, #549454 0%, #7aba7a 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#549454', endColorstr='#7aba7a', GradientType=0);
-	
-	position: fixed;
-	width: 100%;
-	height: inherit;
-	z-index: -1;
+}*/
+/*WALLPAPER BACKGROUND*/
+.banner {
+	background-image: url("img/peakview.jpg");
+	background-size: 150%;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 .banner-content {
 	line-height: 250px;
 	font-family: open_sansregular, Arial, sans-serif;
 	font-size: 3em;
-	text-shadow: 3px 1px 10px #66ff66;
+	/*text-shadow: 3px 1px 10px #66ff66;*/
 }
 
 .main {
