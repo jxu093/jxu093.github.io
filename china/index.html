@@ -6,214 +6,808 @@
     <title>Asia 2025: Master Itinerary</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --primary: #1a2a6c; --accent: #f2a900; --bg: #f0f2f5; --text: #1c1e21; --secondary: #606770; }
-        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; line-height: 1.5; }
-        header { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1480796275267-60c998175ac3?auto=format&fit=crop&w=1000&q=80'); 
-                 background-size: cover; background-position: center; color: white; text-align: center; padding: 60px 20px; }
-        
-        .container { max-width: 600px; margin: 0 auto; padding: 20px 15px; }
-        .city-section { margin-bottom: 40px; }
-        .hero-card { position: relative; border-radius: 16px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .hero-card img { width: 100%; height: 220px; object-fit: cover; display: block; }
-        .hero-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: white; padding: 20px; }
-        
-        .day-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 5px solid var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .date { font-weight: bold; color: var(--accent); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; display: block; }
-        h2 { margin: 0 0 10px 0; font-size: 1.3rem; }
-        h3 { margin: 0 0 10px 0; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        
-        .flight-info { background: #f8f9fa; border: 1px dashed #ccd0d5; border-radius: 8px; padding: 12px; margin: 10px 0; font-size: 0.85rem; }
-        .food-item { display: flex; align-items: flex-start; margin-bottom: 8px; font-size: 0.95rem; }
-        .food-item i { color: #27ae60; margin-top: 4px; margin-right: 10px; font-size: 0.9rem; }
-        
-        .food-options { background: #fff9e6; border-radius: 10px; padding: 15px; margin-top: 10px; border: 1px solid #ffeeba; }
-        .food-options h4 { margin: 0 0 8px 0; font-size: 0.9rem; color: #856404; text-transform: uppercase; }
-        
-        .hotel { font-size: 0.9rem; color: var(--secondary); margin-top: 15px; display: flex; align-items: center; }
-        .hotel i { margin-right: 8px; color: #3498db; }
+        :root {
+            --primary: #1a2a6c;
+            --accent: #e63946;
+            --accent-light: #ffeaea;
+            --bg: #fafafa;
+            --text: #2d3436;
+            --card-bg: #ffffff;
+            --muted: #636e72;
+            --success: #00b894;
+            --flight: #0984e3;
+            --food: #e17055;
+            --activity: #6c5ce7;
+            --hotel: #fdcb6e;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
+            color: white;
+            text-align: center;
+            padding: 50px 20px 60px;
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .trip-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: -30px auto 0;
+            padding: 0 15px 40px;
+            position: relative;
+        }
+
+        .city-section {
+            margin-bottom: 35px;
+        }
+
+        .hero-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .hero-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            color: white;
+            padding: 40px 20px 20px;
+        }
+
+        .hero-overlay h2 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .hero-overlay p {
+            margin: 5px 0 0;
+            opacity: 0.85;
+            font-size: 0.95rem;
+        }
+
+        .city-dates {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.95);
+            color: var(--text);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .day-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .day-badge {
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .day-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 0;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 5px;
+            bottom: 5px;
+            width: 2px;
+            background: #e9ecef;
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 12px;
+            padding-left: 10px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -19px;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--muted);
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px #e9ecef;
+        }
+
+        .timeline-item.flight::before { background: var(--flight); box-shadow: 0 0 0 2px #bee5ff; }
+        .timeline-item.food::before { background: var(--food); box-shadow: 0 0 0 2px #ffe5de; }
+        .timeline-item.activity::before { background: var(--activity); box-shadow: 0 0 0 2px #e8e5ff; }
+        .timeline-item.hotel::before { background: var(--hotel); box-shadow: 0 0 0 2px #fff5dc; }
+
+        .timeline-time {
+            font-size: 0.75rem;
+            color: var(--muted);
+            font-weight: 500;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .timeline-content {
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+
+        .timeline-content strong {
+            font-weight: 600;
+        }
+
+        .timeline-note {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 3px;
+            font-style: italic;
+        }
+
+        .flight-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .flight-icon {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .flight-details {
+            flex: 1;
+        }
+
+        .flight-route {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 3px;
+        }
+
+        .flight-time {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .hotel-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border: 2px solid #ffeaa7;
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .hotel-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--hotel);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f6000;
+            font-size: 0.9rem;
+        }
+
+        .hotel-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .hotel-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .highlight-card {
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+            border: 2px solid var(--accent);
+        }
+
+        .highlight-badge {
+            background: var(--accent);
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .family-card {
+            background: linear-gradient(135deg, #e8f5e9 0%, #fff 100%);
+            border: 2px solid #81c784;
+        }
+
+        .family-badge {
+            background: #4caf50;
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.8rem; }
+            .trip-stats { gap: 20px; }
+            .stat-number { font-size: 1.5rem; }
+            .hero-card img { height: 160px; }
+            .day-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Our Asia Adventure</h1>
-    <p>2025 Grand Itinerary</p>
+    <h1>The Grand Asia Tour</h1>
+    <p>February 15 - March 3, 2025</p>
+    <div class="trip-stats">
+        <div class="stat">
+            <span class="stat-number">17</span>
+            <span class="stat-label">Days</span>
+        </div>
+        <div class="stat">
+            <span class="stat-number">6</span>
+            <span class="stat-label">Cities</span>
+        </div>
+        <div class="stat">
+            <span class="stat-number">3</span>
+            <span class="stat-label">Countries</span>
+        </div>
+    </div>
 </header>
 
 <div class="container">
 
+    <!-- TOKYO -->
     <div class="city-section">
         <div class="hero-card">
-            <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80">
+            <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80" alt="Tokyo skyline">
+            <span class="city-dates">Feb 15-17</span>
             <div class="hero-overlay">
                 <h2>Tokyo, Japan</h2>
-                <p>Arrival & Transition</p>
+                <p>Neon lights & world-class sushi</p>
             </div>
         </div>
 
         <div class="day-card">
-            <span class="date">Sunday, Feb 15 - 16</span>
-            <h3>The Long Haul</h3>
-            <div class="flight-info">
-                <i class="fas fa-plane"></i> <b>SEA → HND:</b> 3:45 PM Dep (10h 30m) <br>
-                <i class="fas fa-clock"></i> <b>Arrive:</b> 7:15 PM (Feb 16)
+            <div class="day-header">
+                <span class="day-badge">Feb 15-16</span>
+                <h3 class="day-title">Arrival Day</h3>
             </div>
-            <div class="food-item"><i class="fas fa-utensils"></i> Tachigui Sushi Uogashi (Andaz nearby)</div>
-            <div class="food-options">
-                <h4>Backups</h4>
-                Ichiran Ramen Shimbashi, Tokyo Sush Itamae
+            <div class="flight-card">
+                <i class="fas fa-plane flight-icon"></i>
+                <div class="flight-details">
+                    <div class="flight-route">Seattle (SEA) → Tokyo Haneda (HND)</div>
+                    <div class="flight-time">Depart 3:45 PM · 10h 30m · Arrive 7:15 PM +1</div>
+                </div>
             </div>
-            <div class="hotel"><i class="fas fa-bed"></i> Andaz Toranomon Hills</div>
+            <div class="timeline">
+                <div class="timeline-item food">
+                    <span class="timeline-time">Evening</span>
+                    <div class="timeline-content"><strong>Tachigui Sushi Uogashi</strong></div>
+                    <div class="timeline-note">High-quality standing sushi near hotel</div>
+                </div>
+            </div>
+            <div class="hotel-card">
+                <div class="hotel-icon"><i class="fas fa-bed"></i></div>
+                <div>
+                    <div class="hotel-label">Accommodation</div>
+                    <div class="hotel-name">Andaz Toranomon Hills</div>
+                </div>
+            </div>
         </div>
 
         <div class="day-card">
-            <span class="date">Tuesday, Feb 17</span>
-            <h3>Tokyo to Beijing</h3>
-            <div class="food-item"><i class="fas fa-walking"></i> Morning: Hamarikyu Gardens or Shibuya</div>
-            <div class="flight-info">
-                <i class="fas fa-plane"></i> <b>HND → PEK:</b> 6:00 PM (4h 20m) <br>
-                <i class="fas fa-clock"></i> <b>Arrive:</b> 9:20 PM
+            <div class="day-header">
+                <span class="day-badge">Feb 17</span>
+                <h3 class="day-title">Morning Exploration & Departure</h3>
             </div>
-            <div class="hotel"><i class="fas fa-bed"></i> Park Hyatt Beijing</div>
+            <div class="timeline">
+                <div class="timeline-item activity">
+                    <span class="timeline-time">Morning</span>
+                    <div class="timeline-content"><strong>Hamarikyu Gardens</strong> or <strong>Shibuya</strong></div>
+                    <div class="timeline-note">Gardens are right near the Andaz</div>
+                </div>
+            </div>
+            <div class="flight-card" style="margin-top: 15px;">
+                <i class="fas fa-plane flight-icon"></i>
+                <div class="flight-details">
+                    <div class="flight-route">Tokyo Haneda (HND) → Beijing (PEK)</div>
+                    <div class="flight-time">Depart 6:00 PM · Arrive 9:20 PM</div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- BEIJING -->
     <div class="city-section">
         <div class="hero-card">
-            <img src="https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=800&q=80">
+            <img src="https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=800&q=80" alt="Great Wall of China">
+            <span class="city-dates">Feb 17-19</span>
             <div class="hero-overlay">
                 <h2>Beijing, China</h2>
-                <p>History & Hutongs</p>
+                <p>Ancient wonders & hutong flavors</p>
+            </div>
+        </div>
+
+        <div class="day-card highlight-card">
+            <div class="day-header">
+                <span class="day-badge">Feb 18</span>
+                <h3 class="day-title">Cultural Immersion</h3>
+                <span class="highlight-badge">Must-See</span>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item activity">
+                    <span class="timeline-time">7:00 AM - 5:00 PM</span>
+                    <div class="timeline-content"><strong>Private 10-Hour Tour</strong></div>
+                    <div class="timeline-note">Tiananmen Square, Forbidden City, Mutianyu Great Wall</div>
+                </div>
+            </div>
+            <div class="hotel-card">
+                <div class="hotel-icon"><i class="fas fa-bed"></i></div>
+                <div>
+                    <div class="hotel-label">Accommodation</div>
+                    <div class="hotel-name">Park Hyatt Beijing</div>
+                </div>
             </div>
         </div>
 
         <div class="day-card">
-            <span class="date">Wednesday, Feb 18</span>
-            <h3>The Big Three</h3>
-            <div class="food-item"><i class="fas fa-map-marker-alt"></i> 7:00 AM: Forbidden City, Tiananmen, Great Wall (Mutianyu)</div>
-            <div class="food-options">
-                <h4>Dinner Options</h4>
-                Siji Minfu (Peking Duck), Haidilao Hot Pot
+            <div class="day-header">
+                <span class="day-badge">Feb 19</span>
+                <h3 class="day-title">Hutong Food Adventure</h3>
             </div>
-        </div>
-
-        <div class="day-card">
-            <span class="date">Thursday, Feb 19</span>
-            <h3>Old Beijing Soul</h3>
-            <div class="food-item"><i class="fas fa-utensils"></i> 12:30 PM: 4hr Hutong Food Tour</div>
-            <div class="hotel"><i class="fas fa-bed"></i> Park Hyatt Beijing</div>
+            <div class="timeline">
+                <div class="timeline-item food">
+                    <span class="timeline-time">12:30 PM - 4:30 PM</span>
+                    <div class="timeline-content"><strong>4-Hour Hutong Food Tour</strong></div>
+                    <div class="timeline-note">Explore hidden alleyways and local eateries</div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- YINGKOU & DALIAN -->
     <div class="city-section">
         <div class="hero-card">
-            <img src="https://images.unsplash.com/photo-1599423300746-b62533397364?auto=format&fit=crop&w=800&q=80">
+            <img src="https://images.unsplash.com/photo-1474181487882-5abf3f0ba6c2?auto=format&fit=crop&w=800&q=80" alt="Chinese family dinner">
+            <span class="city-dates">Feb 20-23</span>
+            <div class="hero-overlay">
+                <h2>Yingkou & Dalian</h2>
+                <p>Family time in Northeast China</p>
+            </div>
+        </div>
+
+        <div class="day-card family-card">
+            <div class="day-header">
+                <span class="day-badge">Feb 20-22</span>
+                <h3 class="day-title">Family Visit</h3>
+                <span class="family-badge">Family</span>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item activity">
+                    <span class="timeline-time">Friday, Feb 20</span>
+                    <div class="timeline-content"><strong>Train to Yingkou</strong></div>
+                    <div class="timeline-note">Dinner with family</div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">Saturday, Feb 21</span>
+                    <div class="timeline-content"><strong>Family Time</strong></div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">Sunday, Feb 22</span>
+                    <div class="timeline-content"><strong>Train to Dalian</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <span class="day-badge">Feb 23</span>
+                <h3 class="day-title">Departure to Chengdu</h3>
+            </div>
+            <div class="flight-card">
+                <i class="fas fa-plane flight-icon"></i>
+                <div class="flight-details">
+                    <div class="flight-route">Dalian (DLC) → Chengdu (CTU)</div>
+                    <div class="flight-time">Depart 4:20 PM · Arrive 7:45 PM</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHENGDU -->
+    <div class="city-section">
+        <div class="hero-card">
+            <img src="https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?auto=format&fit=crop&w=800&q=80" alt="Giant Panda">
+            <span class="city-dates">Feb 23-26</span>
             <div class="hero-overlay">
                 <h2>Chengdu, China</h2>
-                <p>Pandas & Sichuan Spice</p>
+                <p>Pandas & fiery Sichuan cuisine</p>
+            </div>
+        </div>
+
+        <div class="day-card highlight-card">
+            <div class="day-header">
+                <span class="day-badge">Feb 24</span>
+                <h3 class="day-title">Pandas & Street Food</h3>
+                <span class="highlight-badge">Must-See</span>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item activity">
+                    <span class="timeline-time">7:30 AM</span>
+                    <div class="timeline-content"><strong>Panda Breeding Research Base</strong></div>
+                    <div class="timeline-note">Go early - pandas are most active in the morning!</div>
+                </div>
+                <div class="timeline-item food">
+                    <span class="timeline-time">6:30 PM</span>
+                    <div class="timeline-content"><strong>Tuk Tuk Food Tour</strong></div>
+                    <div class="timeline-note">Street food adventure by motorized rickshaw</div>
+                </div>
+            </div>
+            <div class="hotel-card">
+                <div class="hotel-icon"><i class="fas fa-bed"></i></div>
+                <div>
+                    <div class="hotel-label">Accommodation</div>
+                    <div class="hotel-name">Grand Hyatt Chengdu</div>
+                </div>
             </div>
         </div>
 
         <div class="day-card">
-            <span class="date">Monday, Feb 23</span>
-            <h3>Dalian to Chengdu</h3>
-            <div class="flight-info">
-                <i class="fas fa-plane"></i> <b>DLC → CTU:</b> 4:20 PM (3h 25m) <br>
-                <i class="fas fa-clock"></i> <b>Arrive:</b> 7:45 PM
+            <div class="day-header">
+                <span class="day-badge">Feb 25</span>
+                <h3 class="day-title">Sichuan Cooking Class</h3>
             </div>
-            <div class="hotel"><i class="fas fa-bed"></i> Grand Hyatt Chengdu</div>
+            <div class="timeline">
+                <div class="timeline-item activity">
+                    <span class="timeline-time">9:00 AM - 1:00 PM</span>
+                    <div class="timeline-content"><strong>4-Hour Cooking Class</strong></div>
+                    <div class="timeline-note">Learn authentic Sichuan techniques</div>
+                </div>
+            </div>
         </div>
 
         <div class="day-card">
-            <span class="date">Tuesday, Feb 24</span>
-            <h3>Giant Pandas</h3>
-            <div class="food-item"><i class="fas fa-paw"></i> 7:30 AM: Panda Breeding Center (3hrs)</div>
-            <div class="food-item"><i class="fas fa-motorcycle"></i> 6:30 PM: Tuk Tuk Food Tour</div>
-        </div>
-
-        <div class="day-card">
-            <span class="date">Wednesday, Feb 25</span>
-            <h3>The Art of Spice</h3>
-            <div class="food-item"><i class="fas fa-blender"></i> 9:00 AM or 2:00 PM: 4hr Cooking Class</div>
-            <div class="food-options">
-                <h4>Backups</h4>
-                Chenmapo Tofu (Original), Xiaolongkan Hot Pot
+            <div class="day-header">
+                <span class="day-badge">Feb 26</span>
+                <h3 class="day-title">Departure to Shanghai</h3>
+            </div>
+            <div class="flight-card">
+                <i class="fas fa-plane flight-icon"></i>
+                <div class="flight-details">
+                    <div class="flight-route">Chengdu (CTU) → Shanghai (SHA/PVG)</div>
+                    <div class="flight-time">Depart 1:00 PM · Arrive 3:45 PM</div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- SHANGHAI -->
     <div class="city-section">
         <div class="hero-card">
-            <img src="https://images.unsplash.com/photo-1474181487882-5abf3f0ba6c2?auto=format&fit=crop&w=800&q=80">
+            <img src="https://images.unsplash.com/photo-1506354666786-959d6d497f1a?auto=format&fit=crop&w=800&q=80" alt="Shanghai Bund">
+            <span class="city-dates">Feb 26-28</span>
             <div class="hero-overlay">
                 <h2>Shanghai, China</h2>
-                <p>The Paris of the East</p>
+                <p>Where tradition meets modernity</p>
             </div>
         </div>
 
         <div class="day-card">
-            <span class="date">Thursday, Feb 26</span>
-            <h3>Shanghai Arrival</h3>
-            <div class="flight-info">
-                <i class="fas fa-plane"></i> <b>CTU → SHA:</b> 1:00 PM | <b>Arrive:</b> 3:45 PM
+            <div class="day-header">
+                <span class="day-badge">Feb 26</span>
+                <h3 class="day-title">Arrival & Xintiandi</h3>
             </div>
-            <div class="food-item"><i class="fas fa-utensils"></i> 6:30 PM: Food Tour (3hr)</div>
-            <div class="hotel"><i class="fas fa-bed"></i> Andaz Xintiandi</div>
+            <div class="timeline">
+                <div class="timeline-item food">
+                    <span class="timeline-time">6:30 PM</span>
+                    <div class="timeline-content"><strong>Xintiandi Food Tour</strong></div>
+                    <div class="timeline-note">Explore the trendy Xintiandi district</div>
+                </div>
+            </div>
+            <div class="hotel-card">
+                <div class="hotel-icon"><i class="fas fa-bed"></i></div>
+                <div>
+                    <div class="hotel-label">Accommodation</div>
+                    <div class="hotel-name">Andaz Xintiandi</div>
+                </div>
+            </div>
         </div>
 
         <div class="day-card">
-            <span class="date">Friday, Feb 27</span>
-            <h3>The Bund & Yu Garden</h3>
-            <div class="food-item"><i class="fas fa-coffee"></i> Morning: Cong You Bing (Scallion Pancake)</div>
-            <div class="food-item"><i class="fas fa-landmark"></i> 12-2 PM: Yu Garden | 3-5 PM: The Bund Walk</div>
-            <div class="food-item"><i class="fas fa-cocktail"></i> 6:00 PM: Flair Rooftop Bar</div>
-            <div class="food-options">
-                <h4>Dinner (8 PM)</h4>
-                Ren He Guan, Shanghai Grandmother, Di Shui Dong
+            <div class="day-header">
+                <span class="day-badge">Feb 27</span>
+                <h3 class="day-title">Shanghai Highlights</h3>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item food">
+                    <span class="timeline-time">Morning</span>
+                    <div class="timeline-content"><strong>Cong You Bing Breakfast</strong></div>
+                    <div class="timeline-note">Famous scallion pancakes</div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">12:00 PM</span>
+                    <div class="timeline-content"><strong>Yu Garden</strong></div>
+                    <div class="timeline-note">Classical Chinese garden in Old City</div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">3:00 PM</span>
+                    <div class="timeline-content"><strong>The Bund Walk</strong></div>
+                    <div class="timeline-note">Iconic waterfront promenade</div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">6:00 PM</span>
+                    <div class="timeline-content"><strong>Flair Rooftop Bar</strong></div>
+                    <div class="timeline-note">Drinks with skyline views</div>
+                </div>
+                <div class="timeline-item food">
+                    <span class="timeline-time">Dinner</span>
+                    <div class="timeline-content"><strong>Ren He Guan</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <span class="day-badge">Feb 28</span>
+                <h3 class="day-title">Departure to Hong Kong</h3>
+            </div>
+            <div class="flight-card">
+                <i class="fas fa-plane flight-icon"></i>
+                <div class="flight-details">
+                    <div class="flight-route">Shanghai (SHA) → Hong Kong (HKG)</div>
+                    <div class="flight-time">Depart 12:50 PM · Arrive 3:55 PM</div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- HONG KONG -->
     <div class="city-section">
         <div class="hero-card">
-            <img src="https://images.unsplash.com/photo-1506354666786-959d6d497f1a?auto=format&fit=crop&w=800&q=80">
+            <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80" alt="Hong Kong skyline">
+            <span class="city-dates">Feb 28 - Mar 3</span>
             <div class="hero-overlay">
                 <h2>Hong Kong</h2>
-                <p>The Grand Finale</p>
+                <p>The grand finale</p>
             </div>
         </div>
 
         <div class="day-card">
-            <span class="date">Saturday, Feb 28</span>
-            <h3>Harbor Life</h3>
-            <div class="flight-info">
-                <i class="fas fa-plane"></i> <b>SHA → HKG:</b> 12:50 PM | <b>Arrive:</b> 3:55 PM
+            <div class="day-header">
+                <span class="day-badge">Feb 28</span>
+                <h3 class="day-title">Arrival Evening</h3>
             </div>
-            <div class="food-options">
-                <h4>TST Street Eats</h4>
-                Mak’s Noodle, Cheung Hing Kee Dumplings, Bakehouse
+            <div class="timeline">
+                <div class="timeline-item food">
+                    <span class="timeline-time">Dinner</span>
+                    <div class="timeline-content"><strong>Mak's Noodle</strong> or <strong>Cheung Hing Kee</strong></div>
+                    <div class="timeline-note">Famous wonton noodles or pan-fried dumplings</div>
+                </div>
             </div>
-            <div class="hotel"><i class="fas fa-bed"></i> The Langham</div>
+            <div class="hotel-card">
+                <div class="hotel-icon"><i class="fas fa-bed"></i></div>
+                <div>
+                    <div class="hotel-label">Accommodation</div>
+                    <div class="hotel-name">The Langham Hong Kong</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-card highlight-card">
+            <div class="day-header">
+                <span class="day-badge">Mar 1</span>
+                <h3 class="day-title">The "Value" Day</h3>
+                <span class="highlight-badge">Highlight</span>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item food">
+                    <span class="timeline-time">7:30 AM</span>
+                    <div class="timeline-content"><strong>FHR Buffet Breakfast</strong></div>
+                    <div class="timeline-note">The Food Gallery (6:30-10:30 AM) - keep it light!</div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">Morning</span>
+                    <div class="timeline-content"><strong>K11 MUSEA</strong> or <strong>HK Museum of Art</strong></div>
+                    <div class="timeline-note">Build an appetite for lunch</div>
+                </div>
+                <div class="timeline-item food">
+                    <span class="timeline-time">1:00 PM</span>
+                    <div class="timeline-content"><strong>T'ang Court Lunch</strong></div>
+                    <div class="timeline-note">Set Menu $1,680 HKD pp - High value signature dishes!</div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">4:30 PM</span>
+                    <div class="timeline-content"><strong>Victoria Peak</strong></div>
+                    <div class="timeline-note">Star Ferry to Central → Peak for day, sunset & night views</div>
+                </div>
+                <div class="timeline-item food">
+                    <span class="timeline-time">Late Evening</span>
+                    <div class="timeline-content"><strong>Tsim Chai Kee Noodle</strong></div>
+                    <div class="timeline-note">King Prawn Wontons</div>
+                </div>
+            </div>
         </div>
 
         <div class="day-card">
-            <span class="date">Sunday, Mar 1</span>
-            <h3>The Peak & Michelin Star</h3>
-            <div class="food-item"><i class="fas fa-hiking"></i> Hike: Red Incense Burner Summit (Braemar Hill)</div>
-            <div class="food-item"><i class="fas fa-mountain"></i> 6:00 PM: Sunset at Victoria Peak</div>
-            <div class="food-item"><i class="fas fa-star"></i> 8:00 PM: T’ang Court (Langham)</div>
+            <div class="day-header">
+                <span class="day-badge">Mar 2</span>
+                <h3 class="day-title">Luxury Transition</h3>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item food">
+                    <span class="timeline-time">Breakfast</span>
+                    <div class="timeline-content"><strong>Australia Dairy Co</strong></div>
+                    <div class="timeline-note">Famous scrambled eggs</div>
+                </div>
+                <div class="timeline-item hotel">
+                    <span class="timeline-time">Afternoon</span>
+                    <div class="timeline-content"><strong>Transfer to Ritz-Carlton</strong></div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">Evening</span>
+                    <div class="timeline-content"><strong>Ozone Bar</strong></div>
+                    <div class="timeline-note">World's highest bar - drinks with a view</div>
+                </div>
+            </div>
+            <div class="hotel-card">
+                <div class="hotel-icon"><i class="fas fa-bed"></i></div>
+                <div>
+                    <div class="hotel-label">Accommodation</div>
+                    <div class="hotel-name">The Ritz-Carlton Hong Kong</div>
+                </div>
+            </div>
         </div>
 
         <div class="day-card">
-            <span class="date">Monday, Mar 2</span>
-            <h3>Highest Views</h3>
-            <div class="food-item"><i class="fas fa-utensils"></i> 9:00 AM: Australia Dairy Co. Breakfast</div>
-            <div class="food-item"><i class="fas fa-glass-cheers"></i> Evening: Ozone (Ritz-Carlton)</div>
-            <div class="hotel"><i class="fas fa-bed"></i> Ritz-Carlton Hong Kong</div>
+            <div class="day-header">
+                <span class="day-badge">Mar 3</span>
+                <h3 class="day-title">Departure</h3>
+            </div>
+            <div class="flight-card">
+                <i class="fas fa-plane flight-icon"></i>
+                <div class="flight-details">
+                    <div class="flight-route">Hong Kong (HKG) → Seattle (SEA)</div>
+                    <div class="flight-time">Depart 8:55 AM · via Tokyo</div>
+                </div>
+            </div>
         </div>
     </div>
 
 </div>
+
+<footer>
+    <p>Have an amazing trip!</p>
+</footer>
 
 </body>
 </html>
