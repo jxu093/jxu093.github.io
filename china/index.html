@@ -342,6 +342,43 @@
             font-weight: 600;
         }
 
+        /* Collapsible 'extras' panels for recommendations */
+        .extras {
+            margin: 12px 0 24px;
+        }
+
+        .extras-toggle {
+            background: transparent;
+            border: 1px solid #e9ecef;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .extras-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .28s ease, padding .28s ease;
+            padding: 0 0;
+        }
+
+        .extras-panel.open {
+            max-height: 400px;
+            padding: 12px 14px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+            border: 1px solid #f0f0f0;
+            margin-top: 8px;
+        }
+
+        .extras-panel ul { margin: 0; padding-left: 18px; color: var(--muted); }
+
         footer {
             text-align: center;
             padding: 30px 20px;
@@ -445,6 +482,16 @@
                 </div>
             </div>
         </div>
+
+        <div class="extras">
+            <button class="extras-toggle" aria-expanded="false" aria-controls="extras-tokyo">Show recommendations</button>
+            <div id="extras-tokyo" class="extras-panel" hidden>
+                <ul>
+                    <li><strong>Sightseeing:</strong> Meiji Shrine, Asakusa &amp; Senso-ji, Shinjuku Gyoen</li>
+                    <li><strong>Restaurants:</strong> Sushi Dai, Ichiran Ramen, Toriki Yakitori</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <!-- BEIJING -->
@@ -491,6 +538,16 @@
                     <div class="timeline-content"><strong>4-Hour Hutong Food Tour</strong></div>
                     <div class="timeline-note">Explore hidden alleyways and local eateries</div>
                 </div>
+            </div>
+        </div>
+
+        <div class="extras">
+            <button class="extras-toggle" aria-expanded="false" aria-controls="extras-beijing">Show recommendations</button>
+            <div id="extras-beijing" class="extras-panel" hidden>
+                <ul>
+                    <li><strong>Sightseeing:</strong> Temple of Heaven, Jingshan Park (sunset), Nanluoguxiang hutongs</li>
+                    <li><strong>Restaurants:</strong> Da Dong Roast Duck, Wangfujing street snacks, TRB Hutong</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -540,6 +597,16 @@
                     <div class="flight-route">Dalian (DLC) → Chengdu (CTU)</div>
                     <div class="flight-time">Depart 4:20 PM · Arrive 7:45 PM</div>
                 </div>
+            </div>
+        </div>
+
+        <div class="extras">
+            <button class="extras-toggle" aria-expanded="false" aria-controls="extras-yingkou">Show recommendations</button>
+            <div id="extras-yingkou" class="extras-panel" hidden>
+                <ul>
+                    <li><strong>Sightseeing:</strong> Dalian Tiger Beach, Xinghai Square, local seaside promenades</li>
+                    <li><strong>Restaurants:</strong> Fresh seafood at Xinghai markets, family-recommended eateries</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -607,6 +674,16 @@
                     <div class="flight-route">Chengdu (CTU) → Shanghai (SHA/PVG)</div>
                     <div class="flight-time">Depart 1:00 PM · Arrive 3:45 PM</div>
                 </div>
+            </div>
+        </div>
+
+        <div class="extras">
+            <button class="extras-toggle" aria-expanded="false" aria-controls="extras-chengdu">Show recommendations</button>
+            <div id="extras-chengdu" class="extras-panel" hidden>
+                <ul>
+                    <li><strong>Sightseeing:</strong> Wide &amp; Narrow Alleys, Jinli Street, Wuhou Shrine</li>
+                    <li><strong>Restaurants:</strong> Chen Mapo Tofu, local hotpot spots, Kuanzhai street vendors</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -687,6 +764,16 @@
                     <div class="flight-route">Shanghai (SHA) → Hong Kong (HKG)</div>
                     <div class="flight-time">Depart 12:50 PM · Arrive 3:55 PM</div>
                 </div>
+            </div>
+        </div>
+
+        <div class="extras">
+            <button class="extras-toggle" aria-expanded="false" aria-controls="extras-shanghai">Show recommendations</button>
+            <div id="extras-shanghai" class="extras-panel" hidden>
+                <ul>
+                    <li><strong>Sightseeing:</strong> Shanghai Museum, French Concession walk, Longhua Temple</li>
+                    <li><strong>Restaurants:</strong> Din Tai Fung, YongFoo Elite, street food at Wujiang Road</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -801,6 +888,16 @@
                 </div>
             </div>
         </div>
+
+        <div class="extras">
+            <button class="extras-toggle" aria-expanded="false" aria-controls="extras-hongkong">Show recommendations</button>
+            <div id="extras-hongkong" class="extras-panel" hidden>
+                <ul>
+                    <li><strong>Sightseeing:</strong> Tai O fishing village, Lantau Big Buddha, Star Ferry at night</li>
+                    <li><strong>Restaurants:</strong> Tim Ho Wan, Yung Kee, Kau Kee (beef brisket)</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -808,6 +905,28 @@
 <footer>
     <p>Have an amazing trip!</p>
 </footer>
+
+<script>
+  (function(){
+    document.querySelectorAll('.extras-toggle').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = btn.getAttribute('aria-controls');
+        var panel = document.getElementById(id);
+        var expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        if (expanded) {
+          panel.classList.remove('open');
+          panel.hidden = true;
+          btn.textContent = 'Show recommendations';
+        } else {
+          panel.hidden = false;
+          panel.classList.add('open');
+          btn.textContent = 'Hide recommendations';
+        }
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
