@@ -244,6 +244,31 @@
             font-style: italic;
         }
 
+        /* Weather summary line for each city */
+        .weather-line {
+            margin-top: 8px;
+            font-size: 0.95rem;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.35);
+            padding: 6px 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+        }
+
+        .weather-icon {
+            font-size: 1.05rem;
+        }
+
+        .weather-note {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.9);
+            margin-top: 6px;
+            font-style: italic;
+        }
+
         .flight-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -431,6 +456,7 @@
             <div class="hero-overlay">
                 <h2>Tokyo, Japan</h2>
                 <p>Neon lights & world-class sushi</p>
+                <div class="weather-line"><span class="weather-icon">🌤️</span> <strong>Typical Feb:</strong> 5–10°C · Cool & crisp</div>
             </div>
         </div>
 
@@ -502,20 +528,31 @@
             <div class="hero-overlay">
                 <h2>Beijing, China</h2>
                 <p>Ancient wonders & hutong flavors</p>
+                <div class="weather-line"><span class="weather-icon">❄️</span> <strong>Typical Feb:</strong> 2–8°C · Cold & dry</div>
             </div>
         </div>
 
         <div class="day-card highlight-card">
             <div class="day-header">
                 <span class="day-badge">Feb 18</span>
-                <h3 class="day-title">Cultural Immersion</h3>
+                <h3 class="day-title">Temple Fair & Hutongs</h3>
                 <span class="highlight-badge">Must-See</span>
             </div>
             <div class="timeline">
                 <div class="timeline-item activity">
-                    <span class="timeline-time">7:00 AM - 5:00 PM</span>
-                    <div class="timeline-content"><strong>Private 10-Hour Tour</strong></div>
-                    <div class="timeline-note">Tiananmen Square, Forbidden City, Mutianyu Great Wall</div>
+                    <span class="timeline-time">Morning</span>
+                    <div class="timeline-content"><strong>Temple Fair at Ditan Park</strong></div>
+                    <div class="timeline-note">Local performances, snacks and New Year traditions</div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">Afternoon</span>
+                    <div class="timeline-content"><strong>Jingshan Park</strong></div>
+                    <div class="timeline-note">Panoramic view of the Forbidden City</div>
+                </div>
+                <div class="timeline-item food">
+                    <span class="timeline-time">Evening</span>
+                    <div class="timeline-content"><strong>Duck Dinner (Sheng Yong Xing)</strong></div>
+                    <div class="timeline-note">Signature Peking duck dinner</div>
                 </div>
             </div>
             <div class="hotel-card">
@@ -530,13 +567,41 @@
         <div class="day-card">
             <div class="day-header">
                 <span class="day-badge">Feb 19</span>
-                <h3 class="day-title">Hutong Food Adventure</h3>
+                <h3 class="day-title">Great Wall & Imperial Sights</h3>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item activity">
+                    <span class="timeline-time">Morning</span>
+                    <div class="timeline-content"><strong>Great Wall (Mutianyu)</strong></div>
+                    <div class="timeline-note">Cable car option for panoramic views. Expect colder conditions at Mutianyu (often several degrees colder than Beijing city; near or below freezing possible) — bring warm layers.</div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">Afternoon</span>
+                    <div class="timeline-content"><strong>Forbidden City &amp; Tiananmen</strong></div>
+                    <div class="timeline-note">History and grand imperial architecture</div>
+                </div>
+                <div class="timeline-item food">
+                    <span class="timeline-time">Evening</span>
+                    <div class="timeline-content"><strong>Hutong Food Tour (Klook / Private)</strong></div>
+                    <div class="timeline-note">Explore local snacks and alleyway eateries</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header">
+                <span class="day-badge">Feb 20</span>
+                <h3 class="day-title">Breakfast & Departure</h3>
             </div>
             <div class="timeline">
                 <div class="timeline-item food">
-                    <span class="timeline-time">12:30 PM - 4:30 PM</span>
-                    <div class="timeline-content"><strong>4-Hour Hutong Food Tour</strong></div>
-                    <div class="timeline-note">Explore hidden alleyways and local eateries</div>
+                    <span class="timeline-time">Morning</span>
+                    <div class="timeline-content"><strong>Xiao Ya Tou Breakfast</strong></div>
+                </div>
+                <div class="timeline-item flight">
+                    <span class="timeline-time">Afternoon</span>
+                    <div class="timeline-content"><strong>Train to Yingkou</strong></div>
+                    <div class="timeline-note">Travel to Northeast China</div>
                 </div>
             </div>
         </div>
@@ -545,8 +610,8 @@
             <button class="extras-toggle" aria-expanded="false" aria-controls="extras-beijing">Show recommendations</button>
             <div id="extras-beijing" class="extras-panel" hidden>
                 <ul>
-                    <li><strong>Sightseeing:</strong> Temple of Heaven, Jingshan Park (sunset), Nanluoguxiang hutongs</li>
-                    <li><strong>Restaurants:</strong> Da Dong Roast Duck, Wangfujing street snacks, TRB Hutong</li>
+                    <li><strong>Sightseeing:</strong> Temple Fair at Ditan Park, Jingshan Park (panoramic view), Nanluoguxiang hutongs</li>
+                    <li><strong>Restaurants:</strong> Sheng Yong Xing (Peking Duck), Da Dong Roast Duck, Wangfujing street snacks</li>
                 </ul>
             </div>
         </div>
@@ -560,6 +625,7 @@
             <div class="hero-overlay">
                 <h2>Yingkou & Dalian</h2>
                 <p>Family time in Northeast China</p>
+                <div class="weather-line"><span class="weather-icon">❄️</span> <strong>Typical Feb:</strong> -2–4°C · Cold & windy (coastal)</div>
             </div>
         </div>
 
@@ -619,25 +685,45 @@
             <div class="hero-overlay">
                 <h2>Chengdu, China</h2>
                 <p>Pandas & fiery Sichuan cuisine</p>
+                <div class="weather-line"><span class="weather-icon">🌧️</span> <strong>Typical Feb:</strong> 10–15°C · Cool & humid</div>
             </div>
         </div>
 
         <div class="day-card highlight-card">
             <div class="day-header">
                 <span class="day-badge">Feb 24</span>
-                <h3 class="day-title">Pandas & Street Food</h3>
+                <h3 class="day-title">Lost Plate Full-Day Tour</h3>
                 <span class="highlight-badge">Must-See</span>
             </div>
             <div class="timeline">
                 <div class="timeline-item activity">
-                    <span class="timeline-time">7:30 AM</span>
-                    <div class="timeline-content"><strong>Panda Breeding Research Base</strong></div>
-                    <div class="timeline-note">Go early - pandas are most active in the morning!</div>
+                    <span class="timeline-time">7:30 AM - ~8:30 PM</span>
+                    <div class="timeline-content"><strong>Lost Plate: Giant Pandas, Teahouse &amp; Evening Tuktuk Food Tour</strong></div>
+                    <div class="timeline-note">Hotel pick-up &amp; transportation included; entrance to Chengdu Panda Base included</div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">Morning</span>
+                    <div class="timeline-content"><strong>Chengdu Giant Panda Research Base</strong></div>
+                    <div class="timeline-note">Guided visit (~2.5 hours) — best to go early when pandas are most active</div>
                 </div>
                 <div class="timeline-item food">
-                    <span class="timeline-time">6:30 PM</span>
-                    <div class="timeline-content"><strong>Tuk Tuk Food Tour</strong></div>
-                    <div class="timeline-note">Street food adventure by motorized rickshaw</div>
+                    <span class="timeline-time">Midday</span>
+                    <div class="timeline-content"><strong>Lunch at a Chengdu "Fly Restaurant"</strong></div>
+                    <div class="timeline-note">Authentic local dishes — try tea-smoked duck or chilled bean jelly noodles</div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">Afternoon</span>
+                    <div class="timeline-content"><strong>Traditional Local Teahouse</strong></div>
+                    <div class="timeline-note">Sip tea, watch/learn Mahjong culture (approx 2 hours)</div>
+                </div>
+                <div class="timeline-item food">
+                    <span class="timeline-time">Evening</span>
+                    <div class="timeline-content"><strong>Evening Food Tour by Tuktuk</strong></div>
+                    <div class="timeline-note">~3.5-hour tuk-tuk tour tasting dandan noodles, chaoshou, mapo tofu; ends near Dongmen Bridge (plum wine stop)</div>
+                </div>
+                <div class="timeline-item note">
+                    <span class="timeline-time">Booking</span>
+                    <div class="timeline-content">Book at <a href="https://lostplate.com/chengdu-full-day-tour/" target="_blank" rel="noopener">Lost Plate — Full-Day Tour</a> (start 7:30am)</div>
                 </div>
             </div>
             <div class="hotel-card">
@@ -659,6 +745,16 @@
                     <span class="timeline-time">9:00 AM - 1:00 PM</span>
                     <div class="timeline-content"><strong>4-Hour Cooking Class</strong></div>
                     <div class="timeline-note">Learn authentic Sichuan techniques</div>
+                </div>
+                <div class="timeline-item food">
+                    <span class="timeline-time">Evening</span>
+                    <div class="timeline-content"><strong>#8 Hot Pot Restaurant (Dinner)</strong></div>
+                    <div class="timeline-note">Sichuan-style hot pot — spicy and numbing favorites</div>
+                </div>
+                <div class="timeline-item activity">
+                    <span class="timeline-time">Evening</span>
+                    <div class="timeline-content"><strong>Opera House Show</strong></div>
+                    <div class="timeline-note">Evening performance at the Sichuan Opera House</div>
                 </div>
             </div>
         </div>
@@ -696,6 +792,7 @@
             <div class="hero-overlay">
                 <h2>Shanghai, China</h2>
                 <p>Where tradition meets modernity</p>
+                <div class="weather-line"><span class="weather-icon">🌥️</span> <strong>Typical Feb:</strong> 7–12°C · Cool & damp</div>
             </div>
         </div>
 
@@ -705,10 +802,17 @@
                 <h3 class="day-title">Arrival & Xintiandi</h3>
             </div>
             <div class="timeline">
+                <div class="timeline-item flight">
+                    <span class="timeline-time">3:45 PM</span>
+                    <div class="timeline-content"><strong>Arrive from Chengdu</strong></div>
+                </div>
+                <div class="timeline-item hotel">
+                    <span class="timeline-time">Afternoon</span>
+                    <div class="timeline-content"><strong>Check into Andaz Xintiandi</strong></div>
+                </div>
                 <div class="timeline-item food">
-                    <span class="timeline-time">6:30 PM</span>
-                    <div class="timeline-content"><strong>Xintiandi Food Tour</strong></div>
-                    <div class="timeline-note">Explore the trendy Xintiandi district</div>
+                    <span class="timeline-time">Evening</span>
+                    <div class="timeline-content"><strong>Lai Lai Dumpling (Crab Roe XLB)</strong></div>
                 </div>
             </div>
             <div class="hotel-card">
@@ -728,8 +832,8 @@
             <div class="timeline">
                 <div class="timeline-item food">
                     <span class="timeline-time">Morning</span>
-                    <div class="timeline-content"><strong>Cong You Bing Breakfast</strong></div>
-                    <div class="timeline-note">Famous scallion pancakes</div>
+                    <div class="timeline-content"><strong>Lost Plate Breakfast Tour</strong></div>
+                    <div class="timeline-note">Guided morning tasting of local breakfast specialties</div>
                 </div>
                 <div class="timeline-item activity">
                     <span class="timeline-time">12:00 PM</span>
@@ -757,6 +861,16 @@
             <div class="day-header">
                 <span class="day-badge">Feb 28</span>
                 <h3 class="day-title">Departure to Hong Kong</h3>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item food">
+                    <span class="timeline-time">Morning</span>
+                    <div class="timeline-content"><strong>Yang's Dumpling (Quick)</strong></div>
+                </div>
+                <div class="timeline-item flight">
+                    <span class="timeline-time">Morning</span>
+                    <div class="timeline-content"><strong>Airport Transfer</strong></div>
+                </div>
             </div>
             <div class="flight-card">
                 <i class="fas fa-plane flight-icon"></i>
@@ -786,6 +900,7 @@
             <div class="hero-overlay">
                 <h2>Hong Kong</h2>
                 <p>The grand finale</p>
+                <div class="weather-line"><span class="weather-icon">🌤️</span> <strong>Typical Feb:</strong> 15–20°C · Mild & humid</div>
             </div>
         </div>
 
