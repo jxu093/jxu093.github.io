@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWE Flashcards</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; color: #1a1a1a; height: 100vh; display: flex; overflow: hidden; }
+
+  /* Sidebar */
+  #sidebar {
+    width: 260px; min-width: 260px; background: #1e1e2e; color: #cdd6f4;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  #sidebar-header {
+    padding: 12px 14px 10px; font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: #6c7086; border-bottom: 1px solid #313244;
+    flex-shrink: 0; display: flex; align-items: center; gap: 8px;
+  }
+  #sidebar-header-label { flex: 1; }
+  #btn-flagged-filter {
+    display: flex; align-items: center; gap: 5px; background: none; border: 1px solid #313244;
+    border-radius: 20px; padding: 3px 9px; cursor: pointer; color: #6c7086;
+    font-size: 11px; font-weight: 700; letter-spacing: 0; text-transform: none;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  #btn-flagged-filter:hover { border-color: #e05050; color: #e07070; }
+  #btn-flagged-filter.active { background: #3a1e1e; border-color: #e05050; color: #f38ba8; }
+  #flag-total { font-weight: 800; }
+  #sidebar-list { overflow-y: auto; flex: 1; padding: 6px 0; }
+
+  /* Deck header row */
+  .deck-header {
+    display: flex; align-items: center; width: 100%; padding: 8px 14px 8px 12px;
+    background: none; border: none; color: #bac2de; font-size: 13px; cursor: pointer;
+    line-height: 1.4; transition: background 0.15s, color 0.15s; text-align: left;
+    gap: 0;
+  }
+  .deck-header:hover { background: #2a2a3e; color: #cdd6f4; }
+  .deck-header.active-deck { color: #89b4fa; }
+  .deck-chevron {
+    font-style: normal; font-size: 9px; color: #45475a; margin-right: 7px;
+    flex-shrink: 0; transition: transform 0.18s; display: inline-block;
+    line-height: 1;
+  }
+  .deck-header.open .deck-chevron { transform: rotate(90deg); color: #6c7086; }
+  .deck-num { color: #45475a; margin-right: 5px; font-size: 11px; flex-shrink: 0; }
+  .deck-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .deck-count {
+    font-size: 11px; color: #45475a; flex-shrink: 0; margin-left: 6px;
+    background: #2a2a3e; border-radius: 10px; padding: 1px 7px;
+  }
+  .deck-header.active-deck .deck-count { background: #313244; color: #6c7086; }
+
+  /* Card list */
+  .card-list { display: none; border-bottom: 1px solid #25253a; }
+  .card-list.open { display: block; }
+  .card-item {
+    display: flex; align-items: baseline; width: 100%; padding: 5px 14px 5px 30px;
+    background: none; border: none; color: #585b70; font-size: 12px; cursor: pointer;
+    line-height: 1.4; transition: background 0.12s, color 0.12s; text-align: left;
+    gap: 6px; white-space: nowrap; overflow: hidden;
+  }
+  .card-item:hover { background: #25253a; color: #a6adc8; }
+  .card-item.active-card { background: #1e2a40; color: #89b4fa; }
+  .card-item-id {
+    font-size: 10px; font-weight: 700; color: #45475a; flex-shrink: 0;
+    letter-spacing: 0.3px; min-width: 26px;
+  }
+  .card-item.active-card .card-item-id { color: #6699dd; }
+  .card-item-text { overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
+  .card-flag-dot {
+    flex-shrink: 0; font-size: 10px; opacity: 0.85; margin-left: 2px;
+  }
+
+  /* Main area */
+  #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  /* Top bar */
+  #topbar {
+    background: #fff; border-bottom: 1px solid #e5e5e0; padding: 12px 28px;
+    display: flex; align-items: center; gap: 16px; flex-shrink: 0;
+  }
+  #deck-title { font-size: 13px; color: #888; font-weight: 500; flex: 1; }
+  #card-counter { font-size: 13px; color: #555; font-weight: 600; }
+  #btn-flag {
+    background: none; border: 1px solid #ddd; border-radius: 8px;
+    padding: 5px 13px; font-size: 13px; font-weight: 600; cursor: pointer;
+    color: #aaa; transition: all 0.15s; white-space: nowrap;
+  }
+  #btn-flag:hover { border-color: #e05050; color: #c03030; background: #fff5f5; }
+  #btn-flag.flagged { border-color: #e05050; color: #c03030; background: #fff0f0; }
+  #stopwatch {
+    font-variant-numeric: tabular-nums; font-size: 14px; font-weight: 700;
+    background: #f0f0eb; border-radius: 8px; padding: 5px 12px; color: #333;
+    min-width: 72px; text-align: center;
+  }
+  #stopwatch.running { background: #ecfdf5; color: #059669; }
+  #stopwatch.slow { background: #fff7ed; color: #d97706; }
+  #stopwatch.very-slow { background: #fef2f2; color: #dc2626; }
+
+  /* Card area */
+  #card-area { flex: 1; overflow-y: auto; padding: 32px 36px; display: flex; gap: 28px; }
+
+  /* Question panel */
+  #question-panel { flex: 1; min-width: 0; }
+  #question-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+  #card-id-badge {
+    display: inline-block; background: #e8e8ff; color: #5555bb; font-size: 11px;
+    font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 10px; letter-spacing: 0.5px;
+  }
+  #question-text {
+    background: #fff; border: 1px solid #e5e5e0; border-radius: 12px;
+    padding: 22px 24px; font-size: 15px; line-height: 1.7; color: #1a1a1a;
+    min-height: 120px;
+  }
+  #card-topic { font-size: 12px; color: #999; margin-top: 8px; font-style: italic; }
+  #lc-link-area { margin-top: 8px; }
+  #lc-link {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12px; font-weight: 600; color: #e8a02a;
+    text-decoration: none; padding: 3px 10px;
+    background: rgba(232,160,42,0.10); border: 1px solid rgba(232,160,42,0.30);
+    border-radius: 20px; transition: background 0.15s, border-color 0.15s;
+  }
+  #lc-link:hover { background: rgba(232,160,42,0.20); border-color: rgba(232,160,42,0.55); }
+
+  /* Example */
+  #example-area { margin-top: 14px; }
+  #example-box {
+    background: #1e1e2e; border: 1px solid #313244; border-left: 3px solid #89b4fa;
+    border-radius: 8px; padding: 13px 16px; line-height: 1.6;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  }
+  #example-box .example-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: #89b4fa; margin-bottom: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  #example-text { white-space: pre-wrap; word-break: break-word; font-size: 12.5px; color: #cdd6f4; }
+
+  /* Hint */
+  #hint-area { margin-top: 14px; }
+  #btn-hint {
+    background: none; border: 1px solid #d4a843; color: #b8872a; border-radius: 8px;
+    padding: 5px 14px; font-size: 12px; font-weight: 600; cursor: pointer;
+    transition: background 0.15s, color 0.15s; letter-spacing: 0.2px;
+  }
+  #btn-hint:hover { background: #fef9ec; color: #a07020; }
+  #hint-box {
+    display: none; margin-top: 10px; background: #fffbec; border: 1px solid #f0d070;
+    border-left: 3px solid #d4a843; border-radius: 8px; padding: 11px 16px;
+    font-size: 13px; color: #7a5c10; line-height: 1.6;
+  }
+  #hint-box.visible { display: block; }
+  #hint-box .hint-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: #b8872a; margin-bottom: 5px;
+  }
+
+  /* Answer input area */
+  #answer-input-area { margin-top: 20px; }
+  #answer-label-text { font-size: 11px; font-weight: 600; color: #888; margin-bottom: 6px; display: block; letter-spacing: 0.5px; }
+  #user-answer {
+    width: 100%; border: 1px solid #d5d5d0; border-radius: 10px; padding: 14px 16px;
+    font-size: 14px; font-family: inherit; resize: vertical; min-height: 90px;
+    background: #fff; color: #1a1a1a; transition: border-color 0.2s;
+    outline: none;
+  }
+  #user-answer:focus { border-color: #89b4fa; box-shadow: 0 0 0 3px rgba(137,180,250,0.15); }
+  #user-answer::placeholder { color: #bbb; }
+
+  #btn-row { margin-top: 12px; display: flex; gap: 10px; align-items: center; }
+  .btn {
+    padding: 10px 20px; border-radius: 9px; font-size: 14px; font-weight: 600;
+    cursor: pointer; border: none; transition: background 0.15s, transform 0.1s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: #89b4fa; color: #1e1e2e; }
+  .btn-primary:hover { background: #74a7f5; }
+  .btn-next { background: #a6e3a1; color: #1e2e1e; }
+  .btn-next:hover { background: #92d68d; }
+  .btn-skip { background: #f0f0eb; color: #555; }
+  .btn-skip:hover { background: #e5e5e0; }
+
+  /* Answer panel */
+  #answer-panel {
+    flex: 1; min-width: 0; display: none; flex-direction: column;
+  }
+  #answer-panel.visible { display: flex; }
+  #answer-panel-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+  #answer-text {
+    background: #fff; border: 1px solid #a6e3a1; border-radius: 12px;
+    padding: 22px 24px; font-size: 14px; line-height: 1.7; color: #1a1a1a;
+    flex: 1;
+  }
+  #self-grade { margin-top: 14px; display: flex; gap: 8px; align-items: center; }
+  .grade-label { font-size: 12px; color: #888; font-weight: 600; margin-right: 4px; }
+  .grade-btn {
+    padding: 5px 13px; border-radius: 6px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 2px solid transparent; transition: all 0.15s;
+  }
+  .grade-btn.got-it { border-color: #a6e3a1; color: #3d8b40; background: #f0fdf0; }
+  .grade-btn.got-it:hover, .grade-btn.got-it.selected { background: #a6e3a1; color: #1e2e1e; }
+  .grade-btn.missed { border-color: #f38ba8; color: #c0384f; background: #fff5f5; }
+  .grade-btn.missed:hover, .grade-btn.missed.selected { background: #f38ba8; color: #2e1e1e; }
+
+  /* Markdown styling inside rendered areas */
+  .md-render code {
+    background: #f0f0eb; border-radius: 4px; padding: 1px 5px;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 13px; color: #c01c72;
+  }
+  .md-render pre {
+    background: #1e1e2e; border-radius: 8px; padding: 14px 16px;
+    overflow-x: auto; margin: 10px 0;
+  }
+  .md-render pre code {
+    background: none; color: #cdd6f4; padding: 0; font-size: 13px; line-height: 1.6;
+  }
+  .md-render p { margin-bottom: 10px; }
+  .md-render p:last-child { margin-bottom: 0; }
+  .md-render strong { color: #1a1a1a; }
+  .md-render ul, .md-render ol { padding-left: 20px; margin: 8px 0; }
+  .md-render li { margin-bottom: 4px; }
+  .md-render h3, .md-render h4 { margin: 12px 0 6px; }
+
+  /* Keyboard shortcuts hint */
+  #shortcuts-hint {
+    padding: 8px 28px; background: #f5f5f0; border-top: 1px solid #e5e5e0;
+    font-size: 11px; color: #aaa; flex-shrink: 0;
+  }
+  #shortcuts-hint kbd {
+    background: #e5e5e0; border-radius: 3px; padding: 1px 5px; font-size: 11px;
+    border: 1px solid #ccc; font-family: inherit;
+  }
+
+  /* Completed message */
+  #deck-complete {
+    display: none; flex: 1; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px; color: #555;
+  }
+  #deck-complete.visible { display: flex; }
+  #deck-complete h2 { font-size: 24px; color: #1a1a1a; }
+  #deck-complete p { font-size: 15px; color: #888; }
+
+  /* Hamburger button — visible only on mobile */
+  #btn-menu {
+    display: none;
+    background: none; border: 1px solid #ddd; border-radius: 8px;
+    width: 36px; height: 36px; cursor: pointer;
+    align-items: center; justify-content: center;
+    padding: 0; flex-shrink: 0; color: #555;
+    font-size: 20px; line-height: 1;
+  }
+  #btn-menu:active { background: #f0f0eb; }
+
+  /* Sidebar backdrop — shown only when sidebar is open on mobile */
+  #sidebar-backdrop {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 99;
+  }
+  #sidebar-backdrop.visible { display: block; }
+
+  /* ────── Mobile (Galaxy S24 ≈ 384px portrait) ────── */
+  @media (max-width: 768px) {
+    body { height: 100vh; overflow: hidden; }
+
+    /* Sidebar becomes slide-in drawer */
+    #sidebar {
+      position: fixed; top: 0; left: 0; bottom: 0;
+      width: 82vw; max-width: 320px; min-width: 0;
+      transform: translateX(-100%);
+      transition: transform 0.22s ease;
+      z-index: 100;
+      box-shadow: 2px 0 20px rgba(0,0,0,0.25);
+    }
+    #sidebar.open { transform: translateX(0); }
+
+    /* Show hamburger, reduce topbar padding */
+    #btn-menu { display: inline-flex; }
+    #topbar {
+      padding: 10px 12px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    #deck-title {
+      font-size: 12px;
+      flex: 1 1 100%;
+      order: 3;
+      margin-top: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    #card-counter { font-size: 12px; }
+    #btn-flag { padding: 5px 10px; font-size: 12px; }
+    #stopwatch { padding: 5px 10px; font-size: 13px; min-width: 60px; }
+
+    /* Stack question and answer panels vertically */
+    #card-area {
+      flex-direction: column;
+      padding: 16px 14px 20px;
+      gap: 18px;
+    }
+
+    /* Tighter content */
+    #question-text {
+      padding: 16px 16px;
+      font-size: 14.5px;
+      min-height: 0;
+    }
+    #answer-text {
+      padding: 16px 16px;
+      font-size: 13.5px;
+    }
+    #example-box { padding: 11px 12px; }
+    #example-text { font-size: 12px; }
+    #hint-box { padding: 10px 12px; font-size: 12.5px; }
+    #user-answer {
+      padding: 12px 13px;
+      font-size: 14px;
+      min-height: 72px;
+    }
+
+    /* Larger, touch-friendly buttons */
+    .btn { padding: 11px 18px; font-size: 14px; }
+    #btn-row { flex-wrap: wrap; gap: 8px; }
+
+    /* Grade row wraps nicely on narrow screens */
+    #self-grade {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    #self-grade .grade-label { flex: 1 1 100%; margin-bottom: 2px; }
+    .grade-btn { padding: 7px 14px; font-size: 13px; }
+    #btn-next-card-2 { margin-left: auto; }
+
+    /* Hide keyboard shortcuts hint — no keyboard on phone */
+    #shortcuts-hint { display: none; }
+
+    /* Card area scrolls; avoid horizontal overflow on code blocks */
+    .md-render pre { padding: 11px 12px; font-size: 12px; }
+    .md-render code { font-size: 12px; }
+
+    /* LC link / badges slightly tighter */
+    #card-id-badge { font-size: 10px; }
+  }
+
+  /* Very narrow phones (<=400px, Galaxy S24 portrait is 384px) */
+  @media (max-width: 400px) {
+    #topbar { padding: 9px 10px; }
+    #card-area { padding: 14px 12px 18px; }
+    #question-text { padding: 14px 14px; font-size: 14px; }
+    #answer-text { padding: 14px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+  <div id="sidebar-header">
+    <span id="sidebar-header-label">Decks</span>
+    <button id="btn-flagged-filter" title="Show flagged cards only">
+      🚩 <span id="flag-total">0</span>
+    </button>
+  </div>
+  <div id="sidebar-list"></div>
+</div>
+
+<div id="sidebar-backdrop"></div>
+
+<div id="main">
+  <div id="topbar">
+    <button id="btn-menu" aria-label="Open deck menu">☰</button>
+    <div id="deck-title">–</div>
+    <div id="card-counter">–</div>
+    <button id="btn-flag" title="Flag this card for review (F)">🚩 Flag</button>
+    <div id="stopwatch">0:00</div>
+  </div>
+
+  <div id="card-area">
+    <div id="question-panel">
+      <div id="question-label">Question</div>
+      <div id="card-id-badge"></div>
+      <div id="question-text" class="md-render"></div>
+      <div id="card-topic"></div>
+      <div id="lc-link-area" style="display:none;">
+        <a id="lc-link" href="#" target="_blank" rel="noopener">⬡ Open on LeetCode ↗</a>
+      </div>
+
+      <div id="example-area">
+        <div id="example-box">
+          <div class="example-label">Example</div>
+          <div id="example-text"></div>
+        </div>
+      </div>
+
+      <div id="hint-area">
+        <button id="btn-hint">💡 Show Hint</button>
+        <div id="hint-box">
+          <div class="hint-label">Your Note</div>
+          <div id="hint-text"></div>
+        </div>
+      </div>
+
+      <div id="answer-input-area">
+        <label id="answer-label-text" for="user-answer">YOUR ANSWER <span style="font-weight:400;color:#bbb;">(optional)</span></label>
+        <textarea id="user-answer" placeholder="Type your answer here, or leave blank to just reveal…"></textarea>
+        <div id="btn-row">
+          <button class="btn btn-primary" id="btn-show">Show Answer</button>
+          <button class="btn btn-skip" id="btn-next-card" style="display:none;">Next Card →</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="answer-panel">
+      <div id="answer-panel-label">Answer</div>
+      <div id="answer-text" class="md-render"></div>
+      <div id="self-grade">
+        <span class="grade-label">Did you get it?</span>
+        <button class="grade-btn got-it" id="btn-got-it">✓ Got it</button>
+        <button class="grade-btn missed" id="btn-missed">✗ Missed it</button>
+        <button class="btn btn-next" id="btn-next-card-2" style="margin-left:auto;">Next Card →</button>
+      </div>
+    </div>
+
+    <div id="deck-complete">
+      <h2>🎉 Deck Complete!</h2>
+      <p id="deck-complete-msg"></p>
+      <button class="btn btn-next" id="btn-restart-deck">Restart This Deck</button>
+    </div>
+  </div>
+
+  <div id="shortcuts-hint">
+    <kbd>Enter</kbd> show answer &nbsp;·&nbsp; <kbd>→</kbd> next card &nbsp;·&nbsp; <kbd>1</kbd> got it &nbsp;·&nbsp; <kbd>2</kbd> missed it &nbsp;·&nbsp; <kbd>f</kbd> flag
+  </div>
+</div>
+
+<script src="cards.js"></script>
+<script>
+// DECKS loaded from cards.js
+
+// State
+let state = {
+  deckIdx: 0,
+  cardIdx: 0,
+  answerShown: false,
+  timerStart: null,
+  timerInterval: null,
+  expandedDecks: new Set(),
+  flaggedOnly: false,
+};
+
+// Flags — stored separately so they survive clearing position state
+let flags = new Set(); // Set of "deckIdx:cardIdx" strings
+
+function cardKey(dIdx, cIdx) { return `${dIdx}:${cIdx}`; }
+function isFlagged(dIdx, cIdx) { return flags.has(cardKey(dIdx, cIdx)); }
+
+function toggleFlag(dIdx, cIdx) {
+  const key = cardKey(dIdx, cIdx);
+  if (flags.has(key)) flags.delete(key);
+  else flags.add(key);
+  saveFlags();
+  updateFlagButton();
+  updateFlagCount();
+  buildSidebar();
+}
+
+function saveFlags() {
+  try { localStorage.setItem('swe-fc-flags', JSON.stringify([...flags])); } catch(e) {}
+}
+function loadFlags() {
+  try {
+    const f = JSON.parse(localStorage.getItem('swe-fc-flags') || '[]');
+    flags = new Set(f);
+  } catch(e) { flags = new Set(); }
+}
+
+function updateFlagButton() {
+  const btn = document.getElementById('btn-flag');
+  const flagged = isFlagged(state.deckIdx, state.cardIdx);
+  btn.classList.toggle('flagged', flagged);
+  btn.textContent = flagged ? '🚩 Flagged' : '🚩 Flag';
+}
+
+function updateFlagCount() {
+  document.getElementById('flag-total').textContent = flags.size;
+  const filterBtn = document.getElementById('btn-flagged-filter');
+  filterBtn.classList.toggle('active', state.flaggedOnly);
+  // Dim the filter button if there are no flags
+  filterBtn.style.opacity = flags.size === 0 ? '0.4' : '1';
+  filterBtn.style.pointerEvents = flags.size === 0 ? 'none' : '';
+}
+
+// Persist / restore position
+function saveState() {
+  try {
+    localStorage.setItem('swe-fc-state', JSON.stringify({
+      deckIdx: state.deckIdx,
+      cardIdx: state.cardIdx,
+      expandedDecks: [...state.expandedDecks],
+    }));
+  } catch(e) {}
+}
+function loadState() {
+  try {
+    const s = JSON.parse(localStorage.getItem('swe-fc-state') || '{}');
+    if (typeof s.deckIdx === 'number' && s.deckIdx < DECKS.length) {
+      state.deckIdx = s.deckIdx;
+      const deck = DECKS[state.deckIdx];
+      if (typeof s.cardIdx === 'number' && s.cardIdx < deck.cards.length) {
+        state.cardIdx = s.cardIdx;
+      }
+    }
+    if (Array.isArray(s.expandedDecks)) {
+      state.expandedDecks = new Set(s.expandedDecks);
+    }
+    // Always expand the active deck on load
+    state.expandedDecks.add(state.deckIdx);
+  } catch(e) {
+    state.expandedDecks.add(state.deckIdx);
+  }
+}
+
+// Stopwatch
+function startTimer() {
+  stopTimer();
+  state.timerStart = Date.now();
+  state.timerInterval = setInterval(updateTimer, 500);
+  updateTimer();
+}
+function stopTimer() {
+  if (state.timerInterval) clearInterval(state.timerInterval);
+  state.timerInterval = null;
+}
+function updateTimer() {
+  if (!state.timerStart) return;
+  const elapsed = Math.floor((Date.now() - state.timerStart) / 1000);
+  const mins = Math.floor(elapsed / 60);
+  const secs = elapsed % 60;
+  const sw = document.getElementById('stopwatch');
+  sw.textContent = `${mins}:${secs.toString().padStart(2,'0')}`;
+  sw.className = elapsed < 60 ? 'running' : elapsed < 180 ? 'slow' : 'very-slow';
+}
+
+// Strip markdown to plain text for sidebar preview
+function cardPreview(question) {
+  return question
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .split('\n').find(l => l.trim()) || '';
+}
+
+// Build sidebar
+function buildSidebar() {
+  const list = document.getElementById('sidebar-list');
+  list.innerHTML = '';
+
+  DECKS.forEach((deck, dIdx) => {
+    // In flagged-only mode, skip decks with no flagged cards
+    const deckFlaggedCards = deck.cards
+      .map((c, cIdx) => ({ c, cIdx }))
+      .filter(({ cIdx }) => isFlagged(dIdx, cIdx));
+    if (state.flaggedOnly && deckFlaggedCards.length === 0) return;
+
+    const isActiveDeck = dIdx === state.deckIdx;
+    const isOpen = state.expandedDecks.has(dIdx);
+    const deckFlagCount = deckFlaggedCards.length;
+
+    // Deck header
+    const header = document.createElement('button');
+    header.className = 'deck-header' +
+      (isActiveDeck ? ' active-deck' : '') +
+      (isOpen ? ' open' : '');
+    const flagBadge = deckFlagCount > 0
+      ? `<span style="font-size:10px;margin-left:5px;opacity:0.7">🚩${deckFlagCount}</span>`
+      : '';
+    const countLabel = state.flaggedOnly ? deckFlagCount : deck.cards.length;
+    header.innerHTML =
+      `<i class="deck-chevron">&#9654;</i>` +
+      `<span class="deck-num">${deck.id}.</span>` +
+      `<span class="deck-name">${deck.title}</span>` +
+      flagBadge +
+      `<span class="deck-count">${countLabel}</span>`;
+
+    header.onclick = () => toggleDeck(dIdx);
+    list.appendChild(header);
+
+    // Card list
+    const cardList = document.createElement('div');
+    cardList.className = 'card-list' + (isOpen ? ' open' : '');
+
+    const cardsToShow = state.flaggedOnly
+      ? deckFlaggedCards
+      : deck.cards.map((c, cIdx) => ({ c, cIdx }));
+
+    cardsToShow.forEach(({ c: card, cIdx }) => {
+      const isActiveCard = isActiveDeck && cIdx === state.cardIdx;
+      const flagged = isFlagged(dIdx, cIdx);
+      const item = document.createElement('button');
+      item.className = 'card-item' + (isActiveCard ? ' active-card' : '');
+      item.id = isActiveCard ? 'active-card-item' : '';
+      const preview = cardPreview(card.question);
+      item.innerHTML =
+        `<span class="card-item-id">${card.id || (cIdx + 1)}</span>` +
+        `<span class="card-item-text">${preview.slice(0, 44)}${preview.length > 44 ? '…' : ''}</span>` +
+        (flagged ? `<span class="card-flag-dot">🚩</span>` : '');
+      item.onclick = () => goToCard(dIdx, cIdx);
+      cardList.appendChild(item);
+    });
+
+    list.appendChild(cardList);
+  });
+
+  // Scroll active card into view
+  requestAnimationFrame(() => {
+    const el = document.getElementById('active-card-item');
+    if (el) el.scrollIntoView({ block: 'nearest' });
+  });
+}
+
+function toggleDeck(dIdx) {
+  if (state.expandedDecks.has(dIdx)) {
+    state.expandedDecks.delete(dIdx);
+  } else {
+    state.expandedDecks.add(dIdx);
+  }
+  saveState();
+  buildSidebar();
+}
+
+function goToDeck(idx) {
+  state.deckIdx = idx;
+  state.cardIdx = 0;
+  state.expandedDecks.add(idx);
+  saveState();
+  renderCard();
+  buildSidebar();
+}
+
+function goToCard(dIdx, cIdx) {
+  state.deckIdx = dIdx;
+  state.cardIdx = cIdx;
+  state.expandedDecks.add(dIdx);
+  saveState();
+  renderCard();
+  buildSidebar();
+}
+
+// Render card
+function renderCard() {
+  const deck = DECKS[state.deckIdx];
+  const deckComplete = document.getElementById('deck-complete');
+  const cardArea = document.getElementById('question-panel');
+  const ansPanel = document.getElementById('answer-panel');
+
+  if (state.cardIdx >= deck.cards.length) {
+    // Deck complete
+    stopTimer();
+    deckComplete.classList.add('visible');
+    cardArea.style.display = 'none';
+    ansPanel.style.display = 'none';
+    document.getElementById('deck-complete-msg').textContent =
+      `You finished all ${deck.cards.length} cards in "${deck.title}".`;
+    document.getElementById('deck-title').textContent = deck.title;
+    document.getElementById('card-counter').textContent = `${deck.cards.length} / ${deck.cards.length}`;
+    document.getElementById('stopwatch').textContent = '–';
+    document.getElementById('stopwatch').className = '';
+    return;
+  }
+
+  deckComplete.classList.remove('visible');
+  cardArea.style.display = '';
+  ansPanel.style.display = '';
+
+  const card = deck.cards[state.cardIdx];
+  state.answerShown = false;
+
+  // Top bar
+  document.getElementById('deck-title').textContent = deck.title;
+  document.getElementById('card-counter').textContent = `${state.cardIdx + 1} / ${deck.cards.length}`;
+
+  // Card ID badge
+  const badge = document.getElementById('card-id-badge');
+  badge.textContent = card.id || '';
+  badge.style.display = card.id ? '' : 'none';
+
+  // Question (render markdown)
+  document.getElementById('question-text').innerHTML = marked.parse(card.question || '');
+
+  // Topic (for flagged cards)
+  const topicEl = document.getElementById('card-topic');
+  if (card.topic) {
+    topicEl.textContent = card.topic;
+    topicEl.style.display = '';
+  } else {
+    topicEl.style.display = 'none';
+  }
+
+  // LeetCode link (Deck 0 only)
+  const lcLinkArea = document.getElementById('lc-link-area');
+  const lcLink     = document.getElementById('lc-link');
+  const lcUrl = CARD_LC_URLS[card.id];
+  if (lcUrl) {
+    lcLink.href = lcUrl;
+    lcLinkArea.style.display = '';
+  } else {
+    lcLinkArea.style.display = 'none';
+  }
+
+  // Example
+  const exampleArea = document.getElementById('example-area');
+  const exampleText = document.getElementById('example-text');
+  if (card.example) {
+    // Strip wrapping code fences if present, then display as preformatted text
+    const raw = card.example.trim().replace(/^```[^\n]*\n?/, '').replace(/\n?```$/, '');
+    exampleText.textContent = raw;
+    exampleArea.style.display = '';
+  } else {
+    exampleArea.style.display = 'none';
+  }
+
+  // Reset hint
+  const hintArea = document.getElementById('hint-area');
+  const hintBox = document.getElementById('hint-box');
+  const hintText = document.getElementById('hint-text');
+  if (card.hint) {
+    hintText.textContent = card.hint;
+    hintArea.style.display = '';
+    hintBox.classList.remove('visible');
+    document.getElementById('btn-hint').style.display = '';
+    document.getElementById('btn-hint').textContent = '💡 Show Hint';
+  } else {
+    hintArea.style.display = 'none';
+  }
+
+  // Reset answer area
+  document.getElementById('user-answer').value = '';
+  document.getElementById('btn-show').style.display = '';
+  document.getElementById('btn-next-card').style.display = 'none';
+  document.getElementById('answer-panel').classList.remove('visible');
+
+  // Clear grade selection
+  document.getElementById('btn-got-it').classList.remove('selected');
+  document.getElementById('btn-missed').classList.remove('selected');
+
+  // Flag button state
+  updateFlagButton();
+
+  // Start stopwatch
+  startTimer();
+
+  // Save position and refresh sidebar highlight
+  saveState();
+  buildSidebar();
+}
+
+function showAnswer() {
+  if (state.answerShown) return;
+  state.answerShown = true;
+  stopTimer();
+
+  const deck = DECKS[state.deckIdx];
+  const card = deck.cards[state.cardIdx];
+
+  // Always reveal the hint when showing the answer
+  if (card.hint) {
+    document.getElementById('hint-box').classList.add('visible');
+    document.getElementById('btn-hint').style.display = 'none';
+  }
+
+  document.getElementById('answer-text').innerHTML = marked.parse(card.answer || '');
+  document.getElementById('answer-panel').classList.add('visible');
+  document.getElementById('btn-show').style.display = 'none';
+  document.getElementById('btn-next-card').style.display = '';
+}
+
+function nextCard() {
+  state.cardIdx++;
+  saveState();
+  renderCard();
+}
+
+// Grade buttons
+document.getElementById('btn-got-it').onclick = function() {
+  this.classList.add('selected');
+  document.getElementById('btn-missed').classList.remove('selected');
+};
+document.getElementById('btn-missed').onclick = function() {
+  this.classList.add('selected');
+  document.getElementById('btn-got-it').classList.remove('selected');
+};
+
+document.getElementById('btn-flag').onclick = function() {
+  toggleFlag(state.deckIdx, state.cardIdx);
+};
+
+document.getElementById('btn-flagged-filter').onclick = function() {
+  state.flaggedOnly = !state.flaggedOnly;
+  updateFlagCount();
+  buildSidebar();
+};
+
+document.getElementById('btn-hint').onclick = function() {
+  document.getElementById('hint-box').classList.add('visible');
+  this.style.display = 'none';
+};
+
+document.getElementById('btn-show').onclick = showAnswer;
+document.getElementById('btn-next-card').onclick = nextCard;
+document.getElementById('btn-next-card-2').onclick = nextCard;
+
+// ── Mobile sidebar drawer toggle ──
+(function setupSidebarToggle() {
+  const sidebar  = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  const btn      = document.getElementById('btn-menu');
+
+  function openSidebar()  { sidebar.classList.add('open');    backdrop.classList.add('visible'); }
+  function closeSidebar() { sidebar.classList.remove('open'); backdrop.classList.remove('visible'); }
+  function isMobile()     { return window.matchMedia('(max-width: 768px)').matches; }
+
+  btn.onclick      = () => sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+  backdrop.onclick = closeSidebar;
+
+  // Auto-close the drawer after selecting a deck or card on mobile
+  document.getElementById('sidebar-list').addEventListener('click', (e) => {
+    if (!isMobile()) return;
+    const target = e.target.closest('.card-item, .deck-header');
+    // Only close on card selection; leave deck headers alone (user may want to browse)
+    if (target && target.classList.contains('card-item')) {
+      // Defer so the click handler runs first
+      setTimeout(closeSidebar, 50);
+    }
+  });
+
+  // Close on resize up to desktop so the drawer state doesn't leak
+  window.addEventListener('resize', () => { if (!isMobile()) closeSidebar(); });
+})();
+document.getElementById('btn-restart-deck').onclick = function() {
+  state.cardIdx = 0;
+  saveState();
+  renderCard();
+};
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+  // Don't fire when typing in textarea
+  if (document.activeElement === document.getElementById('user-answer')) {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      if (!state.answerShown) showAnswer();
+    }
+    return;
+  }
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    if (!state.answerShown) showAnswer();
+  } else if (e.key === 'ArrowRight' || e.key === 'n') {
+    if (state.answerShown) nextCard();
+  } else if (e.key === '1') {
+    if (state.answerShown) {
+      document.getElementById('btn-got-it').classList.add('selected');
+      document.getElementById('btn-missed').classList.remove('selected');
+    }
+  } else if (e.key === '2') {
+    if (state.answerShown) {
+      document.getElementById('btn-missed').classList.add('selected');
+      document.getElementById('btn-got-it').classList.remove('selected');
+    }
+  } else if (e.key === 'f' || e.key === 'F') {
+    toggleFlag(state.deckIdx, state.cardIdx);
+  }
+});
+
+// ── LeetCode URLs for Deck 0 cards ──
+const CARD_LC_URLS = {
+  'F1':  'https://leetcode.com/problems/top-k-frequent-elements/',
+  'F2':  'https://leetcode.com/problems/encode-and-decode-strings/',
+  'F3':  'https://leetcode.com/problems/longest-consecutive-sequence/',
+  'F4':  'https://leetcode.com/problems/3sum/',
+  'F5':  'https://leetcode.com/problems/trapping-rain-water/',
+  'F6':  'https://leetcode.com/problems/daily-temperatures/',
+  'F7':  'https://leetcode.com/problems/largest-rectangle-in-histogram/',
+  'F8':  'https://leetcode.com/problems/koko-eating-bananas/',
+  'F9':  'https://leetcode.com/problems/median-of-two-sorted-arrays/',
+  'F10': 'https://leetcode.com/problems/longest-repeating-character-replacement/',
+  'F11': 'https://leetcode.com/problems/sliding-window-maximum/',
+  'F12': 'https://leetcode.com/problems/remove-nth-node-from-end-of-list/',
+  'F13': 'https://leetcode.com/problems/find-the-duplicate-number/',
+  'F14': 'https://leetcode.com/problems/merge-k-sorted-lists/',
+  'F15': 'https://leetcode.com/problems/task-scheduler/',
+  'F16': 'https://leetcode.com/problems/kth-smallest-element-in-a-bst/',
+  'F17': 'https://leetcode.com/problems/serialize-and-deserialize-binary-tree/',
+  'F18': 'https://leetcode.com/problems/n-queens/',
+  'F19': 'https://leetcode.com/problems/course-schedule/',
+  'F20': 'https://leetcode.com/problems/graph-valid-tree/',
+  'F21': 'https://leetcode.com/problems/maximum-product-subarray/',
+  'F22': 'https://leetcode.com/problems/reorder-list/',
+};
+
+// Init
+loadState();
+loadFlags();
+updateFlagCount();
+
+// Deep-link: SWE-Flashcards.html#F14 → jump straight to that card
+(function applyDeepLink() {
+  const hash = window.location.hash.replace('#', '').trim();
+  if (hash && /^F\d+$/.test(hash)) {
+    const idx = DECKS[0].cards.findIndex(c => c.id === hash);
+    if (idx >= 0) {
+      state.deckIdx = 0;
+      state.cardIdx = idx;
+      state.expandedDecks.add(0);
+    }
+  }
+})();
+
+buildSidebar();
+renderCard();
+</script>
+</body>
+</html>

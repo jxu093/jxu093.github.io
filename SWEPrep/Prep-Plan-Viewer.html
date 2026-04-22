@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWE Interview Prep Plan</title>
+<style>
+  :root {
+    --bg:       #1e1e2e;
+    --surface:  #181825;
+    --overlay:  #313244;
+    --overlay2: #45475a;
+    --text:     #cdd6f4;
+    --subtext:  #a6adc8;
+    --muted:    #6c7086;
+    --dsa:      #89b4fa;
+    --dsa-bg:   rgba(137,180,250,0.10);
+    --sd:       #cba6f7;
+    --sd-bg:    rgba(203,166,247,0.10);
+    --flag:     #fab387;
+    --flag-bg:  rgba(250,179,135,0.12);
+    --mock:     #a6e3a1;
+    --mock-bg:  rgba(166,227,161,0.10);
+    --today:    #f38ba8;
+    --today-bg: rgba(243,139,168,0.10);
+    --border:   rgba(205,214,244,0.08);
+    --radius:   10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ── */
+  #sidebar {
+    width: 220px;
+    min-width: 220px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  #sidebar-header {
+    padding: 20px 16px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  #sidebar-header h1 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--subtext);
+    margin-bottom: 6px;
+  }
+  #sidebar-header .dates {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  #week-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 8px;
+  }
+  .week-btn {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: var(--radius);
+    padding: 9px 12px;
+    cursor: pointer;
+    color: var(--subtext);
+    font-size: 13px;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    transition: background 0.15s, color 0.15s;
+    margin-bottom: 2px;
+  }
+  .week-btn:hover { background: var(--overlay); color: var(--text); }
+  .week-btn.active { background: var(--overlay); color: var(--text); }
+  .week-btn .week-label { font-weight: 600; font-size: 13px; }
+  .week-btn .week-dates { font-size: 11px; color: var(--muted); }
+  .week-btn.has-today .week-label::after {
+    content: ' ←';
+    color: var(--today);
+    font-weight: 700;
+  }
+  #sidebar-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── Main area ── */
+  #main {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Tab bar ── */
+  #tab-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    padding: 0 24px;
+    gap: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .tab {
+    padding: 12px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--text); border-bottom-color: var(--dsa); }
+
+  /* ── Content panels ── */
+  .panel { display: none; padding: 28px 32px; }
+  .panel.active { display: block; }
+
+  /* ── Week header ── */
+  .week-header {
+    margin-bottom: 24px;
+  }
+  .week-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .week-focus {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .focus-tag {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .focus-tag.dsa { background: var(--dsa-bg); color: var(--dsa); border: 1px solid rgba(137,180,250,0.25); }
+  .focus-tag.sd  { background: var(--sd-bg);  color: var(--sd);  border: 1px solid rgba(203,166,247,0.25); }
+  .week-check-goal {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--overlay);
+    border-radius: 8px;
+    font-size: 12.5px;
+    color: var(--subtext);
+    border-left: 3px solid var(--overlay2);
+    line-height: 1.5;
+  }
+  .week-check-goal strong { color: var(--text); }
+
+  /* ── Day cards ── */
+  .days-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .day-card.today-card {
+    border-color: rgba(243,139,168,0.4);
+  }
+  .day-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  .day-date-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .day-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .day-name {
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .today-badge {
+    background: rgba(243,139,168,0.15);
+    color: var(--today);
+    border: 1px solid rgba(243,139,168,0.3);
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .day-time {
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: auto;
+  }
+  .day-done-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .day-done-check input[type="checkbox"] {
+    accent-color: var(--mock);
+    width: 14px; height: 14px;
+    cursor: pointer;
+  }
+  .day-done-check.done { color: var(--mock); }
+  .day-card-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+
+  /* ── Session blocks ── */
+  .session-block {
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .session-block.warmup {
+    background: var(--overlay);
+  }
+  .session-block.dsa-block { background: var(--dsa-bg); }
+  .session-block.sd-block  { background: var(--sd-bg); }
+  .session-block.mock-block { background: var(--mock-bg); }
+  .session-block.mixed-block { background: var(--overlay); }
+
+  .block-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 5px;
+  }
+  .block-label.warmup { color: var(--muted); }
+  .block-label.dsa { color: var(--dsa); }
+  .block-label.sd { color: var(--sd); }
+  .block-label.mock { color: var(--mock); }
+  .block-label.mixed { color: var(--subtext); }
+
+  .block-text { color: var(--text); }
+  .block-text code {
+    background: var(--overlay2);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: var(--dsa);
+  }
+
+  /* ── Flagged re-solve alerts ── */
+  .flagged-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: var(--flag-bg);
+    border: 1px solid rgba(250,179,135,0.2);
+    border-radius: 8px;
+    padding: 9px 13px;
+    font-size: 12.5px;
+    color: var(--flag);
+    line-height: 1.5;
+  }
+  .flag-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .flag-problems { color: var(--text); }
+  .flag-problems strong { color: var(--flag); }
+
+  /* ── Mock badge ── */
+  .mock-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--mock-bg);
+    color: var(--mock);
+    border: 1px solid rgba(166,227,161,0.25);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 9px;
+  }
+
+  /* ── Overview panel ── */
+  #overview-panel { padding: 28px 32px; }
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+  }
+  .info-card h3 {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .principle-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--subtext);
+  }
+  .principle-item:last-child { margin-bottom: 0; }
+  .principle-num {
+    color: var(--dsa);
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: 12px;
+    margin-top: 1px;
+  }
+  .principle-item strong { color: var(--text); }
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { color: var(--subtext); }
+  .stat-value { color: var(--text); font-weight: 600; }
+  .stat-value.green { color: var(--mock); }
+  .stat-value.blue { color: var(--dsa); }
+  .stat-value.orange { color: var(--flag); }
+
+  /* ── Flagged problems table ── */
+  #flagged-panel { padding: 28px 32px; }
+  .flagged-table-wrap { overflow-x: auto; }
+  table.flagged-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.flagged-table th {
+    text-align: left;
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  table.flagged-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--subtext);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  table.flagged-table tr:last-child td { border-bottom: none; }
+  table.flagged-table tr:hover td { background: var(--overlay); }
+  table.flagged-table td:first-child { color: var(--text); font-weight: 500; }
+  .topic-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .topic-badge.arrays { background: rgba(137,180,250,0.12); color: var(--dsa); }
+  .topic-badge.pointers { background: rgba(166,227,161,0.10); color: var(--mock); }
+  .topic-badge.stack { background: rgba(249,226,175,0.10); color: #f9e2af; }
+  .topic-badge.bsearch { background: rgba(137,220,235,0.10); color: #89dceb; }
+  .topic-badge.window { background: rgba(116,199,236,0.10); color: #74c7ec; }
+  .topic-badge.linked { background: rgba(243,139,168,0.12); color: var(--today); }
+  .topic-badge.heap { background: rgba(250,179,135,0.12); color: var(--flag); }
+  .topic-badge.trees { background: rgba(166,227,161,0.10); color: var(--mock); }
+  .topic-badge.backtrack { background: rgba(203,166,247,0.12); color: var(--sd); }
+  .topic-badge.graphs { background: rgba(180,190,254,0.12); color: #b4befe; }
+  .topic-badge.dp { background: rgba(245,194,231,0.10); color: #f5c2e7; }
+  .card-id {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'SF Mono', monospace;
+  }
+  .week-ref {
+    font-size: 11.5px;
+    color: var(--subtext);
+  }
+  .week-ref strong { color: var(--flag); }
+  .insight-text {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  /* ── Section headings ── */
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+  .section-title span {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-left: 8px;
+  }
+
+  /* ── Rhythm table ── */
+  .rhythm-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 24px; }
+  .rhythm-table th { padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .rhythm-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--subtext); }
+  .rhythm-table tr:last-child td { border-bottom: none; }
+  .rhythm-table td:first-child { color: var(--text); font-weight: 600; }
+
+  /* ── Criteria checklist ── */
+  .criteria-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .criteria-list li {
+    display: flex; gap: 10px; font-size: 13px; color: var(--subtext); line-height: 1.5;
+    padding: 10px 14px; background: var(--overlay); border-radius: 8px;
+  }
+  .criteria-list li::before { content: '✦'; color: var(--dsa); flex-shrink: 0; margin-top: 1px; }
+
+  /* ── Progress bar ── */
+  .progress-section { margin-bottom: 24px; }
+  .progress-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+  .progress-bar-track { background: var(--overlay); border-radius: 20px; height: 6px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--dsa), var(--sd)); transition: width 0.5s ease; }
+
+  /* ── Flagged card links ── */
+  a.flag-card-link {
+    color: var(--flag);
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(250,179,135,0.5);
+    transition: border-color 0.15s, color 0.15s;
+  }
+  a.flag-card-link:hover { color: #fdd0b3; border-bottom-color: rgba(250,179,135,0.9); }
+  .flag-card-id {
+    font-size: 10px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    background: rgba(250,179,135,0.15);
+    padding: 1px 5px;
+    border-radius: 4px;
+    margin-left: 2px;
+  }
+
+  /* ── LeetCode links ── */
+  a.lc-link {
+    color: var(--dsa);
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(137,180,250,0.4);
+    transition: border-color 0.15s, color 0.15s;
+  }
+  a.lc-link:hover {
+    color: #b3d4fd;
+    border-bottom-color: rgba(137,180,250,0.9);
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--overlay2); border-radius: 3px; }
+
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    #sidebar { display: none; }
+
+    /* Tab bar: scroll horizontally on narrow screens */
+    #tab-bar {
+      padding: 0 8px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    #tab-bar::-webkit-scrollbar { display: none; }
+    .tab {
+      padding: 11px 12px;
+      font-size: 12.5px;
+      flex-shrink: 0;
+    }
+
+    /* Panel padding reduced */
+    .panel,
+    #overview-panel,
+    #flagged-panel,
+    #panel-7 {
+      padding: 18px 14px !important;
+    }
+
+    /* Overview: headline block */
+    #overview-panel > div:first-child div:first-child {
+      font-size: 20px !important;
+    }
+    #overview-panel > div:first-child div:nth-child(2) {
+      font-size: 12.5px !important;
+    }
+
+    /* Overview grid becomes single column */
+    .overview-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .info-card { padding: 14px 16px; }
+    .info-card h3 { font-size: 10.5px; margin-bottom: 10px; }
+    .principle-item { font-size: 12.5px; }
+    .stat-row { font-size: 12.5px; padding: 6px 0; }
+    .rhythm-table { font-size: 12px; }
+    .rhythm-table th, .rhythm-table td { padding: 7px 8px; }
+    .criteria-list li { font-size: 12.5px; padding: 9px 11px; }
+
+    /* Week header */
+    .week-header h2 { font-size: 18px; }
+    .week-check-goal { font-size: 12px; padding: 9px 12px; }
+    .focus-tag { font-size: 11px; padding: 3px 10px; }
+
+    /* Day cards */
+    .day-card-header {
+      padding: 10px 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+      row-gap: 6px;
+    }
+    .day-date-block { gap: 8px; min-width: 0; flex: 1 1 auto; }
+    .day-name { font-size: 13px; }
+    .day-time {
+      font-size: 11px;
+      margin-left: 0;
+      flex: 0 0 auto;
+    }
+    .day-done-check {
+      font-size: 11px;
+      flex: 1 1 100%;
+      justify-content: flex-end;
+      margin-top: 2px;
+    }
+    .day-card-body { padding: 12px 12px; gap: 9px; }
+    .session-block { padding: 9px 12px; font-size: 12.5px; line-height: 1.55; }
+    .block-label { font-size: 9.5px; }
+    .flagged-alert { font-size: 12px; padding: 8px 11px; }
+
+    /* Flagged table: allow side-scroll, shrink internal padding */
+    .flagged-table-wrap {
+      -webkit-overflow-scrolling: touch;
+      margin: 0 -14px;
+      padding: 0 14px;
+    }
+    table.flagged-table { font-size: 12px; min-width: 640px; }
+    table.flagged-table th { padding: 7px 10px; font-size: 10px; }
+    table.flagged-table td { padding: 8px 10px; line-height: 1.45; }
+
+    /* Section titles */
+    .section-title { font-size: 14px; margin-bottom: 12px; }
+    .section-title span { font-size: 11px; }
+
+    /* Progress */
+    .progress-label { font-size: 11px; }
+  }
+
+  /* Very narrow phones (Galaxy S24 portrait ≈ 384px) */
+  @media (max-width: 400px) {
+    .panel,
+    #overview-panel,
+    #flagged-panel,
+    #panel-7 {
+      padding: 16px 12px !important;
+    }
+    .tab { padding: 10px 10px; font-size: 12px; }
+    .day-card-body { padding: 11px 10px; }
+    .session-block { padding: 9px 10px; }
+    .week-header h2 { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════ SIDEBAR ════════════════ -->
+<nav id="sidebar">
+  <div id="sidebar-header">
+    <h1>Prep Plan</h1>
+    <div class="dates">Apr 14 – May 24, 2026</div>
+  </div>
+  <div id="week-nav">
+    <button class="week-btn" onclick="showWeek(0)" id="wb-0">
+      <span class="week-label">Overview</span>
+    </button>
+    <button class="week-btn" onclick="showWeek(1)" id="wb-1">
+      <span class="week-label">Week 1</span>
+      <span class="week-dates">Apr 14 – 19</span>
+    </button>
+    <button class="week-btn" onclick="showWeek(2)" id="wb-2">
+      <span class="week-label">Week 2</span>
+      <span class="week-dates">Apr 20 – 26</span>
+    </button>
+    <button class="week-btn" onclick="showWeek(3)" id="wb-3">
+      <span class="week-label">Week 3</span>
+      <span class="week-dates">Apr 27 – May 3</span>
+    </button>
+    <button class="week-btn" onclick="showWeek(4)" id="wb-4">
+      <span class="week-label">Week 4</span>
+      <span class="week-dates">May 4 – 10</span>
+    </button>
+    <button class="week-btn" onclick="showWeek(5)" id="wb-5">
+      <span class="week-label">Week 5</span>
+      <span class="week-dates">May 11 – 17</span>
+    </button>
+    <button class="week-btn" onclick="showWeek(6)" id="wb-6">
+      <span class="week-label">Week 6</span>
+      <span class="week-dates">May 18 – 24</span>
+    </button>
+    <button class="week-btn" onclick="showWeek(7)" id="wb-7">
+      <span class="week-label">Flagged Problems</span>
+    </button>
+  </div>
+  <div id="sidebar-footer">
+    ~13.5 hrs/week<br>
+    50% DSA · 50% System Design<br>
+    Apply: May 25, 2026
+  </div>
+</nav>
+
+<!-- ════════════════ MAIN ════════════════ -->
+<div id="main">
+
+  <!-- Tab bar for mobile / secondary nav -->
+  <div id="tab-bar">
+    <div class="tab active" onclick="showWeek(0)" id="tab-0">Overview</div>
+    <div class="tab" onclick="showWeek(1)" id="tab-1">Wk 1</div>
+    <div class="tab" onclick="showWeek(2)" id="tab-2">Wk 2</div>
+    <div class="tab" onclick="showWeek(3)" id="tab-3">Wk 3</div>
+    <div class="tab" onclick="showWeek(4)" id="tab-4">Wk 4</div>
+    <div class="tab" onclick="showWeek(5)" id="tab-5">Wk 5</div>
+    <div class="tab" onclick="showWeek(6)" id="tab-6">Wk 6</div>
+    <div class="tab" onclick="showWeek(7)" id="tab-7">Flagged</div>
+  </div>
+
+  <!-- ── Panel 0: Overview ── -->
+  <div id="panel-0" class="panel active" style="padding:28px 32px;">
+
+    <div style="margin-bottom:24px;">
+      <div style="font-size:24px;font-weight:800;margin-bottom:6px;">Senior SWE Interview Prep</div>
+      <div style="font-size:14px;color:var(--muted);">6-week plan · Apr 14 – May 24, 2026 · Start applying May 25</div>
+    </div>
+
+    <div class="progress-section">
+      <div class="progress-label">
+        <span>Overall timeline</span>
+        <span id="progress-pct">—</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+
+      <div class="info-card">
+        <h3>Guiding Principles</h3>
+        <div class="principle-item"><span class="principle-num">1</span><span><strong>Retrieval over re-reading.</strong> Every session starts with a flashcard warm-up.</span></div>
+        <div class="principle-item"><span class="principle-num">2</span><span><strong>One deep thing per day.</strong> One LC problem OR one SD deep-dive on weekdays.</span></div>
+        <div class="principle-item"><span class="principle-num">3</span><span><strong>Spaced repetition.</strong> Review at Day +1, +3, +7, +14, +21, +30.</span></div>
+        <div class="principle-item"><span class="principle-num">4</span><span><strong>Mocks are non-negotiable.</strong> Book real SD mocks weekly.</span></div>
+        <div class="principle-item"><span class="principle-num">5</span><span><strong>Behavioral is cheap.</strong> 30 min/week on STAR stories is enough.</span></div>
+      </div>
+
+      <div class="info-card">
+        <h3>Baseline (Apr 14)</h3>
+        <div class="stat-row"><span class="stat-label">Completed DSA topics</span><span class="stat-value green">12 / 18</span></div>
+        <div class="stat-row"><span class="stat-label">Arrays & Hashing</span><span class="stat-value green">✓ Done</span></div>
+        <div class="stat-row"><span class="stat-label">Two Pointers / Stack / Trees</span><span class="stat-value green">✓ Done</span></div>
+        <div class="stat-row"><span class="stat-label">Linked List / Heap / Graphs</span><span class="stat-value green">✓ Done</span></div>
+        <div class="stat-row"><span class="stat-label">Binary Search / Sliding Window</span><span class="stat-value green">✓ Done</span></div>
+        <div class="stat-row"><span class="stat-label">Tries / Backtracking / 1-D DP</span><span class="stat-value green">✓ Done</span></div>
+        <div class="stat-row"><span class="stat-label">Intervals / Greedy / Adv Graphs</span><span class="stat-value orange">Not started</span></div>
+        <div class="stat-row"><span class="stat-label">2-D DP / Bit Manip / Math & Geo</span><span class="stat-value orange">Not started</span></div>
+        <div class="stat-row"><span class="stat-label">Flagged problems</span><span class="stat-value orange">22 to re-solve</span></div>
+      </div>
+
+      <div class="info-card">
+        <h3>Weekly Rhythm</h3>
+        <table class="rhythm-table">
+          <tr><th>Day</th><th>Time</th><th>Focus</th></tr>
+          <tr><td>Mon</td><td>1.5 h</td><td>Flashcards + 1 medium LC</td></tr>
+          <tr><td>Tue</td><td>1.5 h</td><td>Flashcards + SD reading/1-pager</td></tr>
+          <tr><td>Wed</td><td>1.5 h</td><td>Flashcards + 1 medium LC</td></tr>
+          <tr><td>Thu</td><td>1.5 h</td><td>Flashcards + SD solo timed mock</td></tr>
+          <tr><td>Fri</td><td>1.5 h</td><td>Flashcards (mixed) + LC review</td></tr>
+          <tr><td>Sat</td><td>3 h</td><td>Flashcards + SD mock + hard LC</td></tr>
+          <tr><td>Sun</td><td>3 h</td><td>Flashcards + 2 timed LCs + SD/DDIA</td></tr>
+        </table>
+        <div style="font-size:12px;color:var(--muted);">Drop weekday blocks before dropping Saturday mock.</div>
+      </div>
+
+      <div class="info-card">
+        <h3>Apply Criteria (Gate for Week 7)</h3>
+        <ul class="criteria-list">
+          <li>Solve any NeetCode 150 medium in ≤ 25 min with ≥ 60% first-pass success</li>
+          <li>SD mock peer-rated "hire" on ≥ 2 of last 3 mocks (45-min full format)</li>
+          <li>6 STAR stories recited under 2 min each, without notes</li>
+          <li>Explain CAP, replication lag, LSM vs B-tree, consistent hashing, and Raft without DDIA</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h3>If You Fall Behind</h3>
+        <div class="principle-item"><span class="principle-num">1</span><span>Keep the <strong>Saturday mock</strong>. Always.</span></div>
+        <div class="principle-item"><span class="principle-num">2</span><span>Keep the <strong>daily 15-min flashcard warm-up</strong>. It's the compounding asset.</span></div>
+        <div class="principle-item"><span class="principle-num">3</span><span>Drop a weekday main block over dropping review.</span></div>
+        <div class="principle-item"><span class="principle-num">4</span><span>Skip Sunday before skipping Saturday.</span></div>
+      </div>
+
+      <div class="info-card">
+        <h3>Week-by-Week Arc</h3>
+        <div class="stat-row"><span class="stat-label">Weeks 1–2</span><span class="stat-value blue">Flagged re-solves + Intervals/Greedy</span></div>
+        <div class="stat-row"><span class="stat-label">Weeks 3–4</span><span class="stat-value blue">Greedy + 2-D DP + common SD designs</span></div>
+        <div class="stat-row"><span class="stat-label">Weeks 5–6</span><span class="stat-value blue">Bit Manip + Adv Graphs + SD mocks</span></div>
+        <div class="stat-row"><span class="stat-label">SD Thread</span><span class="stat-value" style="color:var(--sd);">DDIA Ch 1–9 + 7 SD mocks</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Panels 1–6: Weeks ── -->
+  <div id="panel-1" class="panel"></div>
+  <div id="panel-2" class="panel"></div>
+  <div id="panel-3" class="panel"></div>
+  <div id="panel-4" class="panel"></div>
+  <div id="panel-5" class="panel"></div>
+  <div id="panel-6" class="panel"></div>
+
+  <!-- ── Panel 7: Flagged Problems ── -->
+  <div id="panel-7" class="panel" style="padding:28px 32px;">
+    <div class="section-title">Flagged Problems — Deck 0 <span>22 cards to re-solve</span></div>
+    <div class="flagged-table-wrap">
+    <table class="flagged-table">
+      <thead>
+        <tr>
+          <th>Card</th>
+          <th>Problem</th>
+          <th>Topic</th>
+          <th>Key Insight</th>
+          <th>First Re-solve</th>
+          <th>Second Re-solve</th>
+        </tr>
+      </thead>
+      <tbody id="flagged-tbody"></tbody>
+    </table>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ════════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════════
+
+const TODAY_STR = new Date().toISOString().slice(0, 10); // dynamic — always today's date
+
+const WEEKS = [
+  null, // index 0 = overview
+  {
+    label: 'Week 1',
+    dates: 'Apr 14 – Apr 19, 2026',
+    dsaFocus: 'Flagged re-solves (Linked List, Heap, Stack) + start Intervals',
+    sdFocus: 'Reliability, Scalability, Maintainability (DDIA Ch 1); back-of-envelope estimation',
+    checkpoint: '<strong>End of Week 1:</strong> Linked List and Heap fully green. 1 SD mock on record. 5 DSA flashcard decks cycled once.',
+    days: [
+      {
+        id: 'w1-tue',
+        date: '2026-04-14',
+        label: 'Tue Apr 14',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Deck 0 (flagged) + Arrays & Hashing (first pass of each)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: LC — <strong>Reorder List</strong> (linked list): find midpoint → reverse second half → merge. Also re-implement <strong>Remove Nth Node from End</strong> from scratch — pay attention to the n+1 gap.' },
+        ],
+        flagged: ['Remove Nth Node from End (F12)']
+      },
+      {
+        id: 'w1-wed',
+        date: '2026-04-15',
+        label: 'Wed Apr 15',
+        time: '1.5 h',
+        dotColor: '#cba6f7',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Two Pointers deck' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: DDIA Ch 1 re-read + write a 1-page summary in your own words on <em>"What makes a system reliable vs. available vs. maintainable?"</em> Do not copy sentences.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w1-thu',
+        date: '2026-04-16',
+        label: 'Thu Apr 16',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Stack deck (Deck 0 cards F6+F7 specifically)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: LC — <strong>Merge K Sorted Lists</strong>: implement both the heap solution AND the divide-and-conquer solution. Write one sentence on when you\'d use each in a real system. Then re-implement <strong>Daily Temperatures</strong> from scratch using the monotonic stack.' },
+        ],
+        flagged: ['Merge K Sorted Lists (F14)', 'Daily Temperatures (F6)']
+      },
+      {
+        id: 'w1-fri',
+        date: '2026-04-17',
+        label: 'Fri Apr 17',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'dsa-block', label: 'LC / DSA', text: '45 min: Finish remaining Deck 0 cards — resume from where you left off, no time pressure per card.' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '45 min: <strong>Reorder List</strong> (F22) clean solve on LeetCode, then <strong>Remove Nth Node from End</strong> (F12). No hints. Both should be fluent by end of session.' },
+        ],
+        flagged: ['Reorder List (F22)', 'Remove Nth Node from End (F12)']
+      },
+      {
+        id: 'w1-sat',
+        date: '2026-04-18',
+        label: 'Sat Apr 18',
+        time: '3 h',
+        dotColor: '#a6e3a1',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — Binary Search deck (F8+F9) <em>(moved from Fri)</em> + Sliding Window deck (F10+F11) + System Design (DDIA Ch 1) deck' },
+          { type: 'mock-block', label: 'SD Mock #1 ★', text: '90 min: Design a URL shortener (solo, timed, record yourself or write it all up). Score yourself against the Hello Interview rubric after.' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '60 min: Re-implement <strong>Task Scheduler</strong> both ways: heap simulation AND the math formula (F15). Then <strong>Sliding Window Maximum</strong> with a deque from scratch — no peeking.' },
+        ],
+        flagged: ['Task Scheduler — both approaches (F15)', 'Sliding Window Maximum (F11)']
+      },
+      {
+        id: 'w1-sun',
+        date: '2026-04-19',
+        label: 'Sun Apr 19',
+        time: '3 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — Trees deck (F15+F16) + Tries deck' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '90 min: Timed — re-implement <strong>Serialize/Deserialize Binary Tree</strong> (BFS then DFS) + <strong>Kth Smallest in BST</strong> iterative. Both are flagged.' },
+          { type: 'sd-block', label: 'System Design', text: '60 min: DDIA Ch 2 (Data Models) start — read + note-take, no more than 40 pages.' },
+        ],
+        flagged: ['Serialize/Deserialize Binary Tree (F17)', 'Kth Smallest in BST (F16)']
+      },
+    ]
+  },
+  {
+    label: 'Week 2',
+    dates: 'Apr 20 – Apr 26, 2026',
+    dsaFocus: 'Intervals (complete), start Greedy; flagged re-solves for Graphs/DP group',
+    sdFocus: 'Data models, storage engines, indexes (DDIA Ch 2–3)',
+    checkpoint: '<strong>End of Week 2:</strong> Graphs green, Intervals ~70% done, 2 SD mocks recorded, DDIA Ch 1–4 summarized.',
+    days: [
+      {
+        id: 'w2-mon',
+        date: '2026-04-20',
+        label: 'Mon Apr 20',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Backtracking deck (F17) + Arrays & Hashing (+7d review — F1+F2+F3)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Intervals kickoff: Insert Interval + Merge Intervals. Then re-solve <strong>N-Queens</strong> — without peeking, write the three tracking sets from memory.' },
+        ],
+        flagged: ['N-Queens (F18)']
+      },
+      {
+        id: 'w2-tue',
+        date: '2026-04-21',
+        label: 'Tue Apr 21',
+        time: '1.5 h',
+        dotColor: '#cba6f7',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — System Design (DDIA Ch 1) deck' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: DDIA Ch 3 — storage engines (LSM vs B-tree). Afterward, without notes, explain write/read amplification for each. Write 1 paragraph per engine.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w2-wed',
+        date: '2026-04-22',
+        label: 'Wed Apr 22',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Two Pointers (+7d review — F4+F5)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Non-overlapping Intervals + <strong>Course Schedule</strong> re-solve (both Kahn\'s and DFS 3-color — write both). State the termination condition for each without hesitation.' },
+        ],
+        flagged: ['Course Schedule — both approaches (F19)']
+      },
+      {
+        id: 'w2-thu',
+        date: '2026-04-23',
+        label: 'Thu Apr 23',
+        time: '1.5 h',
+        dotColor: '#cba6f7',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — new System Design deck (DDIA Ch 2–3)' },
+          { type: 'sd-block', label: 'System Design', text: '20 min: Back-of-envelope estimation drill <em>(moved from Fri Apr 17)</em> — QPS for Twitter reads, storage for YouTube uploads/year, bandwidth for Netflix peak. Write all assumptions.' },
+          { type: 'sd-block', label: 'System Design', text: '55 min: SD problem — Design a key-value store (timed, then compare to a reference).' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w2-fri',
+        date: '2026-04-24',
+        label: 'Fri Apr 24',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Stack (+7d review — F6+F7) + Heap deck (new, first pass)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Re-solve <strong>Graph Valid Tree</strong> (prescreen first, then connectivity check) + <strong>Find the Duplicate Number</strong> using Floyd\'s cycle detection. Both flagged.' },
+        ],
+        flagged: ['Graph Valid Tree (F20)', 'Find the Duplicate Number (F13)']
+      },
+      {
+        id: 'w2-sat',
+        date: '2026-04-25',
+        label: 'Sat Apr 25',
+        time: '3 h',
+        dotColor: '#a6e3a1',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — mixed (Intervals deck new + SD)' },
+          { type: 'mock-block', label: 'SD Mock #2 ★', text: '90 min: Design Twitter/X feed (solo or peer). Focus specifically on write vs. read fan-out tradeoffs.' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '60 min: Meeting Rooms II (finish Intervals) + Greedy kickoff: Jump Game + Gas Station.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w2-sun',
+        date: '2026-04-26',
+        label: 'Sun Apr 26',
+        time: '3 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — Binary Search + Sliding Window (+7d review)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '90 min: 2 mediums timed (pick one graph, one interval).' },
+          { type: 'sd-block', label: 'System Design', text: '60 min: DDIA Ch 4 (Encoding & Evolution) — read + 5 bullet takeaways.' },
+        ],
+        flagged: []
+      },
+    ]
+  },
+  {
+    label: 'Week 3',
+    dates: 'Apr 27 – May 3, 2026',
+    dsaFocus: 'Finish Intervals, start Greedy, continue 1-D DP',
+    sdFocus: 'Replication, Partitioning (DDIA Ch 5–6)',
+    checkpoint: '<strong>End of Week 3:</strong> Intervals green, Greedy ~80%, 1-D DP ~70%, Replication + Partitioning internalized.',
+    days: [
+      {
+        id: 'w3-mon',
+        date: '2026-04-27',
+        label: 'Mon Apr 27',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Trees (+14d) + Tries (+14d)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Meeting Rooms II + Min Interval to Include Each Query.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w3-tue',
+        date: '2026-04-28',
+        label: 'Tue Apr 28',
+        time: '1.5 h',
+        dotColor: '#cba6f7',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — DDIA Ch 2–3 deck' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: DDIA Ch 5 (Replication). Draw single-leader vs. multi-leader vs. leaderless from memory at the end.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w3-wed',
+        date: '2026-04-29',
+        label: 'Wed Apr 29',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Backtracking (+14d)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Jump Game + Gas Station + Hand of Straights (greedy). State the greedy invariant in plain English for each.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w3-thu',
+        date: '2026-04-30',
+        label: 'Thu Apr 30',
+        time: '1.5 h',
+        dotColor: '#cba6f7',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — new SD deck (Replication)' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: Design WhatsApp/chat (timed 45 min). Focus on message ordering, delivery semantics, presence.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w3-fri',
+        date: '2026-05-01',
+        label: 'Fri May 1',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Arrays & Hashing (+14d — F1+F2+F3)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: 1-D DP push: Climbing Stairs, House Robber I & II, <strong>Maximum Product Subarray</strong> (flagged — implement tracking both curMax and curMin, update simultaneously). Then Longest Palindromic Substring.' },
+        ],
+        flagged: ['Maximum Product Subarray (F21)']
+      },
+      {
+        id: 'w3-sat',
+        date: '2026-05-02',
+        label: 'Sat May 2',
+        time: '3 h',
+        dotColor: '#a6e3a1',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — mixed' },
+          { type: 'mock-block', label: 'SD Mock #3 ★', text: '90 min: Design a rate limiter (prefer a real peer mock this week if possible).' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '60 min: Longest Common Subsequence + Word Break (1-D DP).' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w3-sun',
+        date: '2026-05-03',
+        label: 'Sun May 3',
+        time: '3 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — review everything ≥14d old' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '90 min: 2 mediums timed, mixed.' },
+          { type: 'sd-block', label: 'System Design', text: '60 min: DDIA Ch 6 (Partitioning) — read + write the consistent hashing argument in your own words.' },
+        ],
+        flagged: []
+      },
+    ]
+  },
+  {
+    label: 'Week 4',
+    dates: 'May 4 – May 10, 2026',
+    dsaFocus: 'Finish Greedy + 1-D DP, start 2-D DP',
+    sdFocus: 'Transactions, Consistency, CAP, Consensus (DDIA Ch 7–9)',
+    checkpoint: '<strong>End of Week 4:</strong> Greedy green, 1-D DP green, 2-D DP ~60%. CAP/transactions internalized.',
+    days: [
+      {
+        id: 'w4-mon',
+        date: '2026-05-04',
+        label: 'Mon May 4',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Two Pointers (+21d) + Stack (+21d)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Coin Change + Partition Equal Subset Sum.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w4-tue',
+        date: '2026-05-05',
+        label: 'Tue May 5',
+        time: '1.5 h',
+        dotColor: '#cba6f7',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Replication deck' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: DDIA Ch 7 (Transactions). Must be able to draw the isolation level matrix (read committed, snapshot, serializable) from memory.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w4-wed',
+        date: '2026-05-06',
+        label: 'Wed May 6',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Binary Search (+21d)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Unique Paths + Longest Increasing Subsequence (2-D DP intro).' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w4-thu',
+        date: '2026-05-07',
+        label: 'Thu May 7',
+        time: '1.5 h',
+        dotColor: '#cba6f7',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — new Consistency/CAP deck' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: SD problem — Design Instagram/photo upload+feed (timed 45 min).' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w4-fri',
+        date: '2026-05-08',
+        label: 'Fri May 8',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Sliding Window (+21d)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: LC review — re-solve this week\'s 2-D DPs from scratch. Explain the state + transition out loud.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w4-sat',
+        date: '2026-05-09',
+        label: 'Sat May 9',
+        time: '3 h',
+        dotColor: '#a6e3a1',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — mixed' },
+          { type: 'mock-block', label: 'SD Mock #4 ★', text: '90 min: Design a distributed job scheduler. Peer mock if possible.' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '60 min: Edit Distance + Interleaving String (2-D DP).' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w4-sun',
+        date: '2026-05-10',
+        label: 'Sun May 10',
+        time: '3 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — review everything ≥14d old' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '90 min: 2 mediums timed, mixed.' },
+          { type: 'sd-block', label: 'System Design', text: '60 min: DDIA Ch 8–9 (Distributed troubles, Consistency) — skim + flashcard add.' },
+        ],
+        flagged: []
+      },
+    ]
+  },
+  {
+    label: 'Week 5',
+    dates: 'May 11 – May 17, 2026',
+    dsaFocus: 'Finish 2-D DP, Bit Manipulation, Math & Geometry, dip into Advanced Graphs',
+    sdFocus: 'Intensive mocks + weak-spot drilling',
+    checkpoint: '<strong>End of Week 5:</strong> All NeetCode 150 topics touched. 5 SD mocks done. STAR bank started.',
+    days: [
+      {
+        id: 'w5-mon',
+        date: '2026-05-11',
+        label: 'Mon May 11',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Trees (+30d) + Tries (+30d)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Single Number + Counting Bits + Reverse Bits (bit manipulation speed drill).' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w5-tue',
+        date: '2026-05-12',
+        label: 'Tue May 12',
+        time: '1.5 h',
+        dotColor: '#cba6f7',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Consistency/CAP deck' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: Pick your weakest topic from mocks 1–4 and re-attempt it fully. Compare to v1.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w5-wed',
+        date: '2026-05-13',
+        label: 'Wed May 13',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Backtracking (+30d)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Rotate Image + Spiral Matrix + Happy Number (math & geometry).' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w5-thu',
+        date: '2026-05-14',
+        label: 'Thu May 14',
+        time: '1.5 h',
+        dotColor: '#cba6f7',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — all SD decks, fast pass' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: Design a search autocomplete / typeahead (timed 45 min).' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w5-fri',
+        date: '2026-05-15',
+        label: 'Fri May 15',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Arrays & Hashing (+30d, final)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Advanced Graphs sampler: Network Delay Time (Dijkstra) + Reconstruct Itinerary (Hierholzer). Know Dijkstra cold.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w5-sat',
+        date: '2026-05-16',
+        label: 'Sat May 16',
+        time: '3 h',
+        dotColor: '#a6e3a1',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — mixed' },
+          { type: 'mock-block', label: 'SD Mock #5 ★', text: '120 min: Full 60-min peer mock (book by Tue May 12). 60 min of self-review afterward.' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '30 min: 1 hard problem from a topic you\'re confident in (confidence build).' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w5-sun',
+        date: '2026-05-17',
+        label: 'Sun May 17',
+        time: '3 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '90 min: 2 mediums timed, mixed topics, pick at random.' },
+          { type: 'mixed-block', label: 'Behavioral', text: '60 min: Write 4–6 STAR stories from your Azure SDN work. Cover: conflict, ambiguity, driving change, scope creep, failure, mentoring.' },
+        ],
+        flagged: []
+      },
+    ]
+  },
+  {
+    label: 'Week 6',
+    dates: 'May 18 – May 24, 2026',
+    dsaFocus: 'Mixed-topic interview simulations, weak-spot drilling',
+    sdFocus: '2 more mocks + polish + behavioral rehearsal',
+    checkpoint: '<strong>End of Week 6:</strong> Ready to apply starting Mon May 25.',
+    days: [
+      {
+        id: 'w6-mon',
+        date: '2026-05-18',
+        label: 'Mon May 18',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Intervals deck (from your own notes) + Greedy deck' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Full LC interview sim — 1 medium in 20 min + 1 hard in 40 min. Strict timing. No hints.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w6-tue',
+        date: '2026-05-19',
+        label: 'Tue May 19',
+        time: '1.5 h',
+        dotColor: '#cba6f7',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — all SD decks fast pass' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: Design YouTube/video streaming (timed 45 min).' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w6-wed',
+        date: '2026-05-20',
+        label: 'Wed May 20',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Heap (+30d) + DP decks (new)' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Pick 2 weakest topics from the last 5 weeks. Do one medium from each.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w6-thu',
+        date: '2026-05-21',
+        label: 'Thu May 21',
+        time: '1.5 h',
+        dotColor: '#cba6f7',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Behavioral STAR recall (speak each story out loud in < 2 min)' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: Design a notification system (timed 45 min).' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w6-fri',
+        date: '2026-05-22',
+        label: 'Fri May 22',
+        time: '1.5 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: 1 hard from a weak topic. Full write-up.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w6-sat',
+        date: '2026-05-23',
+        label: 'Sat May 23',
+        time: '3 h',
+        dotColor: '#a6e3a1',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards' },
+          { type: 'mock-block', label: 'SD Mock #6 ★', text: '90 min: Peer mock — pretend it\'s on-site.' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '60 min: 1 medium + 1 hard, timed.' },
+        ],
+        flagged: []
+      },
+      {
+        id: 'w6-sun',
+        date: '2026-05-24',
+        label: 'Sun May 24',
+        time: '3 h',
+        dotColor: '#89b4fa',
+        sessions: [
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — final sweep' },
+          { type: 'mock-block', label: 'SD Mock #7 ★', text: '90 min: Solo timed — pick a design you haven\'t done yet (e.g., Dropbox, Uber).' },
+          { type: 'mixed-block', label: 'Behavioral + Admin', text: '60 min: Final behavioral rehearsal + resume/LinkedIn polish.' },
+        ],
+        flagged: []
+      },
+    ]
+  }
+];
+
+const FLAGGED = [
+  { id:'F1',  name:'Top K Frequent Elements',         topic:'Arrays & Hashing', tc:'arrays',    insight:'Bucket sort O(n) — not just heap',                            first:'Week 1 Sun (timed)',           second:'Week 3 Fri' },
+  { id:'F2',  name:'Encode and Decode Strings',       topic:'Arrays & Hashing', tc:'arrays',    insight:'Length-prefixed chunks, not delimiter',                       first:'Week 1 Sun (timed)',           second:'Week 3 Fri' },
+  { id:'F3',  name:'Longest Consecutive Sequence',    topic:'Arrays & Hashing', tc:'arrays',    insight:'Hashset, only start count when n-1 absent',                   first:'Week 1 Sun (timed)',           second:'Week 3 Fri' },
+  { id:'F4',  name:'3Sum',                            topic:'Two Pointers',     tc:'pointers',  insight:'Sort first; duplicate-skip logic at both outer and inner',    first:'Week 2 Wed (timed)',           second:'Week 4 Fri' },
+  { id:'F5',  name:'Trapping Rain Water',             topic:'Two Pointers',     tc:'pointers',  insight:'leftMax/rightMax; l < r not l ≤ r',                           first:'Week 2 Wed (timed)',           second:'Week 4 Fri' },
+  { id:'F6',  name:'Daily Temperatures',              topic:'Stack',            tc:'stack',     insight:'Monotonic stack of indices; larger element clears smaller',    first:'Week 1 Thu',                   second:'Week 3 Fri' },
+  { id:'F7',  name:'Largest Rectangle in Histogram',  topic:'Stack',            tc:'stack',     insight:'Store (height, start_index) in stack for width tracking',     first:'Week 1 Sun (timed)',           second:'Week 3 Mon' },
+  { id:'F8',  name:'Koko Eating Bananas',             topic:'Binary Search',    tc:'bsearch',   insight:"Don't return early on equality; ceiling division",            first:'Week 2 Mon (timed)',           second:'Week 4 Wed' },
+  { id:'F9',  name:'Median of Two Sorted Arrays',     topic:'Binary Search',    tc:'bsearch',   insight:'Partition j = (m+n+1)//2 - i; ±inf guards',                  first:'Week 2 Mon (timed)',           second:'Week 5 Mon' },
+  { id:'F10', name:'Longest Repeating Char Replacement', topic:'Sliding Window',tc:'window',   insight:'maxCount stays stale-high intentionally',                     first:'Week 2 Sun (timed)',           second:'Week 4 Fri' },
+  { id:'F11', name:'Sliding Window Maximum',          topic:'Sliding Window',   tc:'window',    insight:'Monotonic deque; pop back when smaller; pop front when stale', first:'Week 1 Sat',                  second:'Week 4 Sun' },
+  { id:'F12', name:'Remove Nth Node from End',        topic:'Linked List',      tc:'linked',    insight:'n+1 gap so slow lands before target',                         first:'Week 1 Tue',                   second:'Week 3 Wed' },
+  { id:'F13', name:'Find the Duplicate Number',       topic:'Linked List',      tc:'linked',    insight:"Floyd's: start=index 0, not value 0; return entrance not meeting point", first:'Week 2 Fri', second:'Week 4 Wed' },
+  { id:'F14', name:'Merge K Sorted Lists',            topic:'Heap',             tc:'heap',      insight:'Heap=streaming; D&C=space; both O(N log k)',                  first:'Week 1 Thu',                   second:'Week 3 Sat' },
+  { id:'F15', name:'Task Scheduler',                  topic:'Heap / Priority Queue', tc:'heap', insight:'Math formula: max(len(tasks), (max_count-1)*(n+1) + count_of_max)',  first:'Week 1 Sat (both approaches)', second:'Week 3 Thu' },
+  { id:'F16', name:'Kth Smallest in BST',             topic:'Trees',            tc:'trees',     insight:'Iterative inorder: push only when node non-null, don\'t pre-push', first:'Week 1 Sun',              second:'Week 3 Mon' },
+  { id:'F17', name:'Serialize/Deserialize Binary Tree',topic:'Trees',           tc:'trees',     insight:'BFS with null markers OR DFS with length prefix',             first:'Week 1 Sun',                   second:'Week 4 Mon' },
+  { id:'F18', name:'N-Queens',                        topic:'Backtracking',     tc:'backtrack', insight:'Track cols, diag (r-c), anti_diag (r+c)',                     first:'Week 2 Mon',                   second:'Week 4 Mon' },
+  { id:'F19', name:'Course Schedule',                 topic:'Graphs',           tc:'graphs',    insight:"Kahn's: count processed==n; DFS: 3-color",                   first:'Week 2 Wed',                   second:'Week 4 Mon' },
+  { id:'F20', name:'Graph Valid Tree',                topic:'Graphs',           tc:'graphs',    insight:'Prescreen edges==n-1 THEN check connectivity',                first:'Week 2 Fri',                   second:'Week 4 Thu' },
+  { id:'F21', name:'Maximum Product Subarray',        topic:'1-D DP',           tc:'dp',        insight:'Track curMax and curMin; update both simultaneously',         first:'Week 3 Fri',                   second:'Week 5 Wed' },
+  { id:'F22', name:'Reorder List',                    topic:'Linked List',      tc:'linked',    insight:'Find midpoint (slow/fast), reverse second half, merge two halves', first:'Week 1 Tue',              second:'Week 3 Wed' },
+];
+
+// ════════════════════════════════════════════════════════
+// LEETCODE LINKS
+// ════════════════════════════════════════════════════════
+
+const LC_LINKS = {
+  // Arrays & Hashing
+  'Top K Frequent Elements':           'https://leetcode.com/problems/top-k-frequent-elements/',
+  'Encode and Decode Strings':         'https://leetcode.com/problems/encode-and-decode-strings/',
+  'Longest Consecutive Sequence':      'https://leetcode.com/problems/longest-consecutive-sequence/',
+  // Two Pointers
+  '3Sum':                              'https://leetcode.com/problems/3sum/',
+  'Trapping Rain Water':               'https://leetcode.com/problems/trapping-rain-water/',
+  // Stack
+  'Daily Temperatures':                'https://leetcode.com/problems/daily-temperatures/',
+  'Largest Rectangle in Histogram':    'https://leetcode.com/problems/largest-rectangle-in-histogram/',
+  // Binary Search
+  'Koko Eating Bananas':               'https://leetcode.com/problems/koko-eating-bananas/',
+  'Median of Two Sorted Arrays':       'https://leetcode.com/problems/median-of-two-sorted-arrays/',
+  // Sliding Window
+  'Longest Repeating Char Replacement':'https://leetcode.com/problems/longest-repeating-character-replacement/',
+  'Sliding Window Maximum':            'https://leetcode.com/problems/sliding-window-maximum/',
+  // Linked List
+  'Reorder List':                      'https://leetcode.com/problems/reorder-list/',
+  'Remove Nth Node from End':          'https://leetcode.com/problems/remove-nth-node-from-end-of-list/',
+  'Find the Duplicate Number':         'https://leetcode.com/problems/find-the-duplicate-number/',
+  // Heap
+  'Merge K Sorted Lists':              'https://leetcode.com/problems/merge-k-sorted-lists/',
+  'Task Scheduler':                    'https://leetcode.com/problems/task-scheduler/',
+  // Trees
+  'Kth Smallest in BST':               'https://leetcode.com/problems/kth-smallest-element-in-a-bst/',
+  'Serialize/Deserialize Binary Tree': 'https://leetcode.com/problems/serialize-and-deserialize-binary-tree/',
+  // Backtracking
+  'N-Queens':                          'https://leetcode.com/problems/n-queens/',
+  // Graphs
+  'Course Schedule':                   'https://leetcode.com/problems/course-schedule/',
+  'Graph Valid Tree':                  'https://leetcode.com/problems/graph-valid-tree/',
+  'Network Delay Time':                'https://leetcode.com/problems/network-delay-time/',
+  'Reconstruct Itinerary':             'https://leetcode.com/problems/reconstruct-itinerary/',
+  // 1-D DP
+  'Maximum Product Subarray':          'https://leetcode.com/problems/maximum-product-subarray/',
+  'Climbing Stairs':                   'https://leetcode.com/problems/climbing-stairs/',
+  'House Robber':                      'https://leetcode.com/problems/house-robber/',
+  'House Robber II':                   'https://leetcode.com/problems/house-robber-ii/',
+  'Longest Palindromic Substring':     'https://leetcode.com/problems/longest-palindromic-substring/',
+  'Longest Common Subsequence':        'https://leetcode.com/problems/longest-common-subsequence/',
+  'Word Break':                        'https://leetcode.com/problems/word-break/',
+  // 2-D DP
+  'Coin Change':                       'https://leetcode.com/problems/coin-change/',
+  'Partition Equal Subset Sum':        'https://leetcode.com/problems/partition-equal-subset-sum/',
+  'Unique Paths':                      'https://leetcode.com/problems/unique-paths/',
+  'Longest Increasing Subsequence':    'https://leetcode.com/problems/longest-increasing-subsequence/',
+  'Edit Distance':                     'https://leetcode.com/problems/edit-distance/',
+  'Interleaving String':               'https://leetcode.com/problems/interleaving-string/',
+  // Intervals
+  'Insert Interval':                   'https://leetcode.com/problems/insert-interval/',
+  'Merge Intervals':                   'https://leetcode.com/problems/merge-intervals/',
+  'Non-overlapping Intervals':         'https://leetcode.com/problems/non-overlapping-intervals/',
+  'Meeting Rooms II':                  'https://leetcode.com/problems/meeting-rooms-ii/',
+  'Min Interval to Include Each Query':'https://leetcode.com/problems/minimum-interval-to-include-each-query/',
+  // Greedy
+  'Jump Game':                         'https://leetcode.com/problems/jump-game/',
+  'Gas Station':                       'https://leetcode.com/problems/gas-station/',
+  'Hand of Straights':                 'https://leetcode.com/problems/hand-of-straights/',
+  // Bit Manipulation
+  'Single Number':                     'https://leetcode.com/problems/single-number/',
+  'Counting Bits':                     'https://leetcode.com/problems/counting-bits/',
+  'Reverse Bits':                      'https://leetcode.com/problems/reverse-bits/',
+  // Math & Geometry
+  'Rotate Image':                      'https://leetcode.com/problems/rotate-image/',
+  'Spiral Matrix':                     'https://leetcode.com/problems/spiral-matrix/',
+  'Happy Number':                      'https://leetcode.com/problems/happy-number/',
+};
+
+// Sort by length descending so longer names match before shorter substrings
+const LC_NAMES_SORTED = Object.keys(LC_LINKS).sort((a, b) => b.length - a.length);
+
+function linkifyText(html) {
+  // Two-pass approach: first protect existing tags, then linkify text runs only.
+  // Split on HTML tags, process only text nodes, reassemble.
+  const parts = html.split(/(<[^>]+>)/);
+  return parts.map((part, i) => {
+    // Even indices are text nodes, odd are tags — skip tags
+    if (i % 2 === 1) return part;
+    let text = part;
+    for (const name of LC_NAMES_SORTED) {
+      if (!text.includes(name)) continue;
+      const url = LC_LINKS[name];
+      const link = `<a href="${url}" target="_blank" rel="noopener" class="lc-link">${name}</a>`;
+      text = text.split(name).join(link);
+    }
+    return text;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════
+
+const STORAGE_KEY = 'swe-prep-done';
+function loadDone() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+}
+function saveDone(obj) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+}
+
+let currentWeek = 0;
+
+// ════════════════════════════════════════════════════════
+// RENDER
+// ════════════════════════════════════════════════════════
+
+function renderWeek(wIdx) {
+  const panel = document.getElementById('panel-' + wIdx);
+  if (panel.dataset.rendered) return;
+  panel.dataset.rendered = '1';
+
+  const week = WEEKS[wIdx];
+  const done = loadDone();
+  let html = '';
+
+  html += `<div class="week-header">
+    <h2>${week.label}: ${week.dates}</h2>
+    <div class="week-focus">
+      <span class="focus-tag dsa">DSA · ${week.dsaFocus}</span>
+      <span class="focus-tag sd">SD · ${week.sdFocus}</span>
+    </div>
+    <div class="week-check-goal">${week.checkpoint}</div>
+  </div>
+  <div class="days-grid">`;
+
+  for (const day of week.days) {
+    const isToday = day.date === TODAY_STR;
+    const isDone  = !!done[day.id];
+
+    html += `<div class="day-card${isToday ? ' today-card' : ''}">
+      <div class="day-card-header">
+        <div class="day-date-block">
+          <div class="day-dot" style="background:${day.dotColor}"></div>
+          <span class="day-name">${day.label}</span>
+          ${isToday ? '<span class="today-badge">Today</span>' : ''}
+        </div>
+        <span class="day-time">${day.time}</span>
+        <label class="day-done-check${isDone ? ' done' : ''}">
+          <input type="checkbox" onchange="toggleDone('${day.id}', this)"${isDone ? ' checked' : ''}> Done
+        </label>
+      </div>
+      <div class="day-card-body">`;
+
+    for (const s of day.sessions) {
+      const labelClass = s.type === 'warmup' ? 'warmup' : s.type === 'dsa-block' ? 'dsa' : s.type === 'sd-block' ? 'sd' : s.type === 'mock-block' ? 'mock' : 'mixed';
+      html += `<div class="session-block ${s.type}">
+        <div class="block-label ${labelClass}">${s.label}</div>
+        <div class="block-text">${linkifyText(s.text)}</div>
+      </div>`;
+    }
+
+    if (day.flagged && day.flagged.length > 0) {
+      const linkedFlags = day.flagged.map(f => {
+        const m = f.match(/\((F\d+)\)/);
+        if (m) {
+          const cardId = m[1];
+          const label = f.replace(/\s*\(F\d+\)/, '');
+          return `<a href="Flashcards/SWE-Flashcards.html#${cardId}" target="_blank" rel="noopener" class="flag-card-link">${label} <span class="flag-card-id">${cardId}</span></a>`;
+        }
+        return f;
+      });
+      html += `<div class="flagged-alert">
+        <span class="flag-icon">⚠️</span>
+        <span><strong>Flagged re-solve${day.flagged.length > 1 ? 's' : ''}:</strong>&nbsp;<span class="flag-problems">${linkedFlags.join(' · ')}</span></span>
+      </div>`;
+    }
+
+    html += `</div></div>`;
+  }
+
+  html += '</div>';
+  panel.innerHTML = html;
+}
+
+function renderFlagged() {
+  const tbody = document.getElementById('flagged-tbody');
+  if (!tbody || tbody.dataset.rendered) return;
+  tbody.dataset.rendered = '1';
+  let html = '';
+  for (const f of FLAGGED) {
+    const nameLinked = LC_LINKS[f.name]
+      ? `<a href="${LC_LINKS[f.name]}" target="_blank" rel="noopener" class="lc-link">${f.name}</a>`
+      : f.name;
+    html += `<tr>
+      <td><span class="card-id">${f.id}</span></td>
+      <td>${nameLinked}</td>
+      <td><span class="topic-badge ${f.tc}">${f.topic}</span></td>
+      <td class="insight-text">${f.insight}</td>
+      <td class="week-ref"><strong>${f.first}</strong></td>
+      <td class="week-ref">${f.second}</td>
+    </tr>`;
+  }
+  tbody.innerHTML = html;
+}
+
+function toggleDone(id, cb) {
+  const done = loadDone();
+  done[id] = cb.checked;
+  saveDone(done);
+  // update label style
+  const label = cb.parentElement;
+  label.classList.toggle('done', cb.checked);
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = loadDone();
+  // Count total days
+  let total = 0, completed = 0;
+  for (let w = 1; w <= 6; w++) {
+    for (const day of WEEKS[w].days) {
+      total++;
+      if (done[day.id]) completed++;
+    }
+  }
+  const pct = total > 0 ? Math.round(completed / total * 100) : 0;
+  const fill = document.getElementById('progress-fill');
+  const pctEl = document.getElementById('progress-pct');
+  if (fill) fill.style.width = pct + '%';
+  if (pctEl) pctEl.textContent = `${completed} / ${total} days (${pct}%)`;
+}
+
+function showWeek(idx) {
+  currentWeek = idx;
+
+  // Panels
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById('panel-' + idx);
+  if (panel) panel.classList.add('active');
+
+  // Sidebar buttons
+  document.querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('wb-' + idx);
+  if (btn) btn.classList.add('active');
+
+  // Tab bar
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const tab = document.getElementById('tab-' + idx);
+  if (tab) tab.classList.add('active');
+
+  // Lazy render
+  if (idx >= 1 && idx <= 6) renderWeek(idx);
+  if (idx === 7) renderFlagged();
+}
+
+// ════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════
+
+function init() {
+  // Determine which week today falls in
+  const today = new Date(TODAY_STR);
+  let todayWeek = 0;
+  const ranges = [
+    null,
+    ['2026-04-14','2026-04-19'],
+    ['2026-04-20','2026-04-26'],
+    ['2026-04-27','2026-05-03'],
+    ['2026-05-04','2026-05-10'],
+    ['2026-05-11','2026-05-17'],
+    ['2026-05-18','2026-05-24'],
+  ];
+  for (let i = 1; i <= 6; i++) {
+    const [s, e] = ranges[i];
+    if (today >= new Date(s) && today <= new Date(e)) { todayWeek = i; break; }
+  }
+
+  // Mark the sidebar button that contains today
+  if (todayWeek > 0) {
+    document.getElementById('wb-' + todayWeek)?.classList.add('has-today');
+  }
+
+  updateProgress();
+
+  // Open today's week by default, or overview if before/after plan
+  if (todayWeek > 0) {
+    showWeek(todayWeek);
+  } else {
+    showWeek(0);
+  }
+
+  // Scroll today's card into view after a tick
+  setTimeout(() => {
+    const todayCard = document.querySelector('.today-card');
+    if (todayCard) todayCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
+init();
+</script>
+</body>
+</html>
