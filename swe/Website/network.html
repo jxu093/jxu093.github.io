@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>J · Senior Software Engineer — Topology</title>
+<meta name="description" content="Explore my experience as a live network topology — Senior SWE, Seattle." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0f12'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23a5f3fc'/%3E%3Ccircle cx='12' cy='12' r='4' fill='%2334d399'/%3E%3Ccircle cx='52' cy='12' r='4' fill='%2334d399'/%3E%3Ccircle cx='12' cy='52' r='4' fill='%2334d399'/%3E%3Ccircle cx='52' cy='52' r='4' fill='%2334d399'/%3E%3Cg stroke='%234b5563' stroke-width='1'%3E%3Cline x1='32' y1='32' x2='12' y2='12'/%3E%3Cline x1='32' y1='32' x2='52' y2='12'/%3E%3Cline x1='32' y1='32' x2='12' y2='52'/%3E%3Cline x1='32' y1='32' x2='52' y2='52'/%3E%3C/g%3E%3C/svg%3E" />
+<style>
+  :root {
+    --bg: #06090d;
+    --panel: #0b1219;
+    --panel-2: #0f1822;
+    --fg: #e6edf5;
+    --dim: #8a97ab;
+    --muted: #5c6a7f;
+    --line: #1a2331;
+    --accent: #a5f3fc;
+    --node: #34d399;
+    --node-2: #a78bfa;
+    --node-3: #fbbf24;
+    --node-4: #fb7185;
+    --edge: rgba(165, 243, 252, 0.25);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--fg); overflow: hidden; }
+  body {
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  canvas#graph {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    background:
+      radial-gradient(ellipse at center, rgba(165,243,252,0.06), transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(167,139,250,0.05), transparent 50%),
+      var(--bg);
+    cursor: grab;
+  }
+  canvas#graph:active { cursor: grabbing; }
+
+  .ui-top {
+    position: fixed; top: 16px; left: 16px; right: 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .brand {
+    pointer-events: auto;
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    background: rgba(11,18,25,0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .brand .led { width: 8px; height: 8px; border-radius: 50%; background: var(--node); box-shadow: 0 0 8px var(--node); animation: pulse 2s infinite; }
+  .brand b { font-weight: 600; }
+  .brand span.sub { color: var(--dim); font-size: 12px; margin-left: 6px; }
+
+  @keyframes pulse {
+    0%,100% { opacity: 1; } 50% { opacity: 0.4; }
+  }
+
+  .legend {
+    pointer-events: auto;
+    display: flex; gap: 14px;
+    padding: 10px 14px;
+    background: rgba(11,18,25,0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-size: 12px; color: var(--dim);
+  }
+  .legend i {
+    display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    margin-right: 6px; vertical-align: middle;
+  }
+
+  .ui-bottom {
+    position: fixed; left: 16px; bottom: 16px;
+    display: flex; gap: 8px;
+    z-index: 10;
+  }
+  .btn {
+    padding: 8px 12px; font-size: 12px;
+    background: rgba(11,18,25,0.7);
+    color: var(--dim);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+  }
+  .btn:hover { color: var(--fg); border-color: #2a3756; }
+
+  .hint {
+    position: fixed; right: 16px; bottom: 16px;
+    color: var(--muted); font-size: 12px;
+    pointer-events: none;
+  }
+
+  /* Detail panel */
+  .panel {
+    position: fixed; top: 16px; right: 16px; bottom: 16px;
+    width: min(420px, 92vw);
+    background: rgba(11,18,25,0.92);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 22px 18px;
+    transform: translateX(calc(100% + 24px));
+    transition: transform .35s cubic-bezier(.2,.8,.2,1);
+    overflow-y: auto;
+    z-index: 11;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+  .panel.open { transform: translateX(0); }
+
+  .panel .close {
+    position: absolute; top: 12px; right: 12px;
+    background: none; border: none; color: var(--dim);
+    font-size: 20px; cursor: pointer; line-height: 1;
+  }
+  .panel .close:hover { color: var(--fg); }
+
+  .panel .kind {
+    color: var(--accent);
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .panel h2 {
+    margin: 0 0 4px; font-size: 22px; letter-spacing: -0.01em;
+  }
+  .panel .where { color: var(--dim); font-size: 14px; margin-bottom: 14px; }
+  .panel ul { margin: 6px 0 14px; padding-left: 18px; }
+  .panel li { margin: 4px 0; color: #cfd7e3; }
+  .panel li::marker { color: var(--accent); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .chip {
+    font-size: 12px; padding: 2px 10px;
+    border-radius: 999px;
+    background: rgba(165,243,252,0.08);
+    color: #c9f0f7; border: 1px solid rgba(165,243,252,0.18);
+  }
+  .panel a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--muted); }
+  .panel a:hover { border-color: var(--accent); }
+
+  @media (max-width: 560px) {
+    .ui-top { flex-direction: column; gap: 8px; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="graph"></canvas>
+
+<div class="ui-top">
+  <div class="brand">
+    <span class="led"></span>
+    <b>j@seattle</b>
+    <span class="sub">· network topology view</span>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--accent)"></i>me</span>
+    <span><i style="background:var(--node)"></i>work</span>
+    <span><i style="background:var(--node-2)"></i>skills</span>
+    <span><i style="background:var(--node-3)"></i>edu</span>
+    <span><i style="background:var(--node-4)"></i>contact</span>
+  </div>
+</div>
+
+<div class="ui-bottom">
+  <button class="btn" id="reset">Reset view</button>
+  <button class="btn" id="shuffle">Shuffle</button>
+  <button class="btn" id="pause">Pause</button>
+</div>
+<div class="hint">drag to pan · scroll to zoom · click a node</div>
+
+<aside class="panel" id="panel" aria-hidden="true">
+  <button class="close" id="close" aria-label="Close">×</button>
+  <div class="kind" id="p-kind">node</div>
+  <h2 id="p-title">—</h2>
+  <div class="where" id="p-where"></div>
+  <div id="p-body"></div>
+</aside>
+
+<script>
+// ---------- Data ----------
+const DATA = {
+  me: {
+    title: "J",
+    kind: "me",
+    where: "Senior Software Engineer · Seattle",
+    body: `<p>9 yrs experience · last 7 at Microsoft on Azure's SDN control plane. Drag the graph, click any node to drill in. This topology is the resume.</p>`
+  },
+  work: [
+    {
+      id: "ms-senior",
+      title: "Senior Software Engineer",
+      where: "Microsoft · Azure Networking — SDN Control Plane",
+      when: "2023 — Present",
+      kind: "work",
+      bullets: [
+        "TODO: flagship system/service you own (scale, tech, impact).",
+        "TODO: a cross-team initiative you led end-to-end.",
+        "TODO: a thorny distributed-systems bug story or reliability win.",
+      ],
+      chips: ["C#", "Service Fabric", "Kusto", "gRPC", "BGP"],
+    },
+    {
+      id: "ms-ii",
+      title: "SWE II → Senior",
+      where: "Microsoft · Azure Networking",
+      when: "2019 — 2023",
+      kind: "work",
+      bullets: [
+        "TODO: component you shipped (what + who it served).",
+        "TODO: perf / reliability / cost improvement with numbers.",
+        "TODO: migration, rewrite, or framework you built.",
+      ],
+      chips: ["C#", "Azure", "Distributed systems"],
+    },
+    {
+      id: "first",
+      title: "Software Engineer",
+      where: "TODO: First company",
+      when: "2017 — 2019",
+      kind: "work",
+      bullets: ["TODO: first industry role — what you learned and shipped."],
+      chips: ["TODO stack"],
+    },
+  ],
+  skills: [
+    { id: "lang", title: "Languages",    kind: "skills", chips: ["C#", "C++", "Python", "Go", "TypeScript", "SQL"] },
+    { id: "dist", title: "Distributed",  kind: "skills", chips: ["Service Fabric", "Kubernetes", "gRPC", "Kafka", "Consensus"] },
+    { id: "net",  title: "Networking",   kind: "skills", chips: ["SDN", "BGP", "VXLAN", "L4/L7 LBs", "Telemetry"] },
+    { id: "cloud",title: "Cloud / Infra",kind: "skills", chips: ["Azure", "ARM / Bicep", "Terraform", "CI/CD"] },
+    { id: "data", title: "Data",         kind: "skills", chips: ["Cosmos DB", "Kusto", "Redis", "Postgres"] },
+  ],
+  edu: [
+    {
+      id: "bs",
+      title: "B.S. Computer Science",
+      where: "TODO: University · 20XX — 20XX",
+      kind: "edu",
+      bullets: ["TODO: honors / relevant coursework / thesis / activities."],
+      chips: ["CS fundamentals"],
+    },
+  ],
+  contact: [
+    { id: "email", title: "email",    kind: "contact", link: "mailto:you@example.com", sub: "you@example.com" },
+    { id: "gh",    title: "github",   kind: "contact", link: "https://github.com/",    sub: "github.com/..." },
+    { id: "li",    title: "linkedin", kind: "contact", link: "https://linkedin.com/in/", sub: "linkedin.com/in/..." },
+  ],
+};
+
+// Build nodes and edges
+const nodes = [];
+const edges = [];
+const add = (n) => { nodes.push(n); return n; };
+
+const me = add({ id: "me", ...DATA.me, r: 22, color: "var(--accent)", _fill: "#a5f3fc" });
+const workHub  = add({ id: "hub-work",   title: "Work",     kind: "hub", r: 14, _fill: "#34d399" });
+const skillsHub= add({ id: "hub-skills", title: "Skills",   kind: "hub", r: 14, _fill: "#a78bfa" });
+const eduHub   = add({ id: "hub-edu",    title: "Edu",      kind: "hub", r: 14, _fill: "#fbbf24" });
+const contactHub=add({ id: "hub-contact",title: "Contact",  kind: "hub", r: 14, _fill: "#fb7185" });
+
+edges.push([me.id, workHub.id], [me.id, skillsHub.id], [me.id, eduHub.id], [me.id, contactHub.id]);
+
+DATA.work.forEach(w => { add({ ...w, r: 10, _fill: "#34d399" }); edges.push([workHub.id, w.id]); });
+DATA.skills.forEach(s => { add({ ...s, r: 10, _fill: "#a78bfa" }); edges.push([skillsHub.id, s.id]); });
+DATA.edu.forEach(e => { add({ ...e, r: 10, _fill: "#fbbf24" }); edges.push([eduHub.id, e.id]); });
+DATA.contact.forEach(c => { add({ ...c, r: 10, _fill: "#fb7185" }); edges.push([contactHub.id, c.id]); });
+
+// Initial layout: radial around center
+const W = () => window.innerWidth, H = () => window.innerHeight;
+function initPositions() {
+  me.x = W()/2; me.y = H()/2; me.vx = 0; me.vy = 0;
+  const hubs = [workHub, skillsHub, eduHub, contactHub];
+  hubs.forEach((h, i) => {
+    const a = (i / hubs.length) * Math.PI * 2 - Math.PI/2;
+    h.x = me.x + Math.cos(a) * 220;
+    h.y = me.y + Math.sin(a) * 180;
+    h.vx = 0; h.vy = 0;
+  });
+  nodes.filter(n => !["me","hub-work","hub-skills","hub-edu","hub-contact"].includes(n.id))
+    .forEach((n, i) => {
+      n.x = W()/2 + (Math.random()-0.5) * 500;
+      n.y = H()/2 + (Math.random()-0.5) * 400;
+      n.vx = 0; n.vy = 0;
+    });
+}
+
+const nodeById = Object.fromEntries(nodes.map(n => [n.id, n]));
+initPositions();
+
+// ---------- Physics ----------
+let running = true;
+function step() {
+  if (!running) return;
+  // repulsion
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i+1; j < nodes.length; j++) {
+      const a = nodes[i], b = nodes[j];
+      let dx = b.x - a.x, dy = b.y - a.y;
+      let d2 = dx*dx + dy*dy + 0.01;
+      const f = 2800 / d2;
+      const d = Math.sqrt(d2);
+      const fx = (dx/d) * f, fy = (dy/d) * f;
+      a.vx -= fx; a.vy -= fy;
+      b.vx += fx; b.vy += fy;
+    }
+  }
+  // spring (edges)
+  edges.forEach(([aid, bid]) => {
+    const a = nodeById[aid], b = nodeById[bid];
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const d = Math.sqrt(dx*dx + dy*dy) + 0.01;
+    const targetLen = (a.id === "me" || b.id === "me") ? 200 :
+                      (aid.startsWith("hub-") || bid.startsWith("hub-")) ? 110 : 90;
+    const f = (d - targetLen) * 0.03;
+    const fx = (dx/d) * f, fy = (dy/d) * f;
+    a.vx += fx; a.vy += fy;
+    b.vx -= fx; b.vy -= fy;
+  });
+  // center gravity
+  nodes.forEach(n => {
+    if (n.id === "me") return;
+    const dx = W()/2 - n.x, dy = H()/2 - n.y;
+    n.vx += dx * 0.0005; n.vy += dy * 0.0005;
+  });
+  // integrate + damping
+  nodes.forEach(n => {
+    if (n === dragging) return;
+    if (n.id === "me") { // me stays centered
+      n.x += (W()/2 - n.x) * 0.1;
+      n.y += (H()/2 - n.y) * 0.1;
+      n.vx = n.vy = 0;
+      return;
+    }
+    n.vx *= 0.82; n.vy *= 0.82;
+    n.x += n.vx; n.y += n.vy;
+  });
+}
+
+// ---------- Canvas ----------
+const canvas = document.getElementById("graph");
+const ctx = canvas.getContext("2d");
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = W() * dpr;
+  canvas.height = H() * dpr;
+  canvas.style.width = W() + "px";
+  canvas.style.height = H() + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resize();
+window.addEventListener("resize", () => { resize(); });
+
+let cam = { x: 0, y: 0, z: 1 };
+let selected = null;
+let hovered = null;
+let dragging = null;
+let dragCam = false;
+let lastMouse = { x: 0, y: 0 };
+
+function worldToScreen(x, y) {
+  return { x: (x - W()/2) * cam.z + W()/2 + cam.x, y: (y - H()/2) * cam.z + H()/2 + cam.y };
+}
+function screenToWorld(x, y) {
+  return { x: (x - W()/2 - cam.x) / cam.z + W()/2, y: (y - H()/2 - cam.y) / cam.z + H()/2 };
+}
+
+function draw() {
+  ctx.clearRect(0,0,W(),H());
+  // edges
+  ctx.lineWidth = 1;
+  edges.forEach(([aid, bid]) => {
+    const a = nodeById[aid], b = nodeById[bid];
+    const pa = worldToScreen(a.x, a.y), pb = worldToScreen(b.x, b.y);
+    const highlight = selected && (selected.id === aid || selected.id === bid);
+    ctx.strokeStyle = highlight ? "rgba(165,243,252,0.7)" : "rgba(165,243,252,0.18)";
+    ctx.beginPath();
+    ctx.moveTo(pa.x, pa.y);
+    // curved slight
+    const midX = (pa.x + pb.x) / 2, midY = (pa.y + pb.y) / 2;
+    ctx.quadraticCurveTo(midX, midY, pb.x, pb.y);
+    ctx.stroke();
+  });
+
+  // packet pulses
+  const t = performance.now();
+  edges.forEach(([aid, bid], i) => {
+    const a = nodeById[aid], b = nodeById[bid];
+    const pa = worldToScreen(a.x, a.y), pb = worldToScreen(b.x, b.y);
+    const speed = 0.00025 + (i % 5) * 0.00004;
+    const phase = ((t * speed) + i * 0.13) % 1;
+    const px = pa.x + (pb.x - pa.x) * phase;
+    const py = pa.y + (pb.y - pa.y) * phase;
+    ctx.fillStyle = "rgba(165,243,252,0.7)";
+    ctx.beginPath();
+    ctx.arc(px, py, 1.6, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  // nodes
+  nodes.forEach(n => {
+    const p = worldToScreen(n.x, n.y);
+    const r = n.r * cam.z;
+    const isSel = selected && selected.id === n.id;
+    const isHov = hovered && hovered.id === n.id;
+
+    // glow
+    if (n.id === "me" || isSel || isHov) {
+      const grd = ctx.createRadialGradient(p.x, p.y, r, p.x, p.y, r * 3);
+      grd.addColorStop(0, hexAlpha(n._fill, 0.45));
+      grd.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = grd;
+      ctx.beginPath(); ctx.arc(p.x, p.y, r*3, 0, Math.PI*2); ctx.fill();
+    }
+
+    ctx.fillStyle = n._fill;
+    ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI*2); ctx.fill();
+
+    ctx.strokeStyle = isSel ? "#fff" : "rgba(255,255,255,0.15)";
+    ctx.lineWidth = isSel ? 2 : 1;
+    ctx.stroke();
+
+    // labels
+    if (cam.z > 0.55) {
+      ctx.fillStyle = n.id === "me" ? "#fff" : "#d7e0ec";
+      ctx.font = `${n.id === "me" ? 600 : 500} ${n.id === "me" ? 14 : 12}px Inter, system-ui, sans-serif`;
+      ctx.textAlign = "center"; ctx.textBaseline = "top";
+      ctx.fillText(n.title, p.x, p.y + r + 6);
+    }
+  });
+
+  requestAnimationFrame(loop);
+}
+function loop() { step(); draw(); }
+function hexAlpha(hex, a) {
+  if (hex.startsWith("var")) return `rgba(165,243,252,${a})`;
+  const h = hex.replace("#",""); const r = parseInt(h.slice(0,2),16), g = parseInt(h.slice(2,4),16), b = parseInt(h.slice(4,6),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+loop();
+
+// ---------- Input ----------
+function pick(px, py) {
+  // returns topmost node under screen point
+  let hit = null;
+  for (const n of nodes) {
+    const p = worldToScreen(n.x, n.y);
+    const dx = px - p.x, dy = py - p.y;
+    const r = n.r * cam.z + 6;
+    if (dx*dx + dy*dy <= r*r) hit = n;
+  }
+  return hit;
+}
+
+canvas.addEventListener("mousedown", (e) => {
+  lastMouse.x = e.clientX; lastMouse.y = e.clientY;
+  const n = pick(e.clientX, e.clientY);
+  if (n) dragging = n;
+  else dragCam = true;
+});
+window.addEventListener("mousemove", (e) => {
+  const dx = e.clientX - lastMouse.x, dy = e.clientY - lastMouse.y;
+  lastMouse.x = e.clientX; lastMouse.y = e.clientY;
+  if (dragging) {
+    const w = screenToWorld(e.clientX, e.clientY);
+    dragging.x = w.x; dragging.y = w.y;
+    dragging.vx = dragging.vy = 0;
+  } else if (dragCam) {
+    cam.x += dx; cam.y += dy;
+  } else {
+    hovered = pick(e.clientX, e.clientY);
+    canvas.style.cursor = hovered ? "pointer" : "grab";
+  }
+});
+window.addEventListener("mouseup", (e) => {
+  const drag = dragging; dragging = null; dragCam = false;
+  // click detection
+  const moved = Math.abs(e.clientX - (drag ? worldToScreen(drag.x, drag.y).x : lastMouse.x)) > 6;
+  if (drag && !moved) openPanel(drag);
+});
+canvas.addEventListener("click", (e) => {
+  const n = pick(e.clientX, e.clientY);
+  if (n) openPanel(n);
+});
+
+canvas.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  const factor = Math.pow(1.0015, -e.deltaY);
+  cam.z = Math.min(2.5, Math.max(0.4, cam.z * factor));
+}, { passive: false });
+
+// Touch (basic pan + tap)
+let touch = null;
+canvas.addEventListener("touchstart", (e) => {
+  if (e.touches.length === 1) {
+    touch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    const n = pick(touch.x, touch.y);
+    if (n) dragging = n;
+  }
+});
+canvas.addEventListener("touchmove", (e) => {
+  if (!touch || e.touches.length !== 1) return;
+  const t = e.touches[0];
+  const dx = t.clientX - touch.x, dy = t.clientY - touch.y;
+  touch.x = t.clientX; touch.y = t.clientY;
+  if (dragging) {
+    const w = screenToWorld(t.clientX, t.clientY);
+    dragging.x = w.x; dragging.y = w.y;
+    dragging.vx = dragging.vy = 0;
+  } else {
+    cam.x += dx; cam.y += dy;
+  }
+});
+canvas.addEventListener("touchend", (e) => {
+  const wasDragging = dragging;
+  dragging = null;
+  if (wasDragging && touch) openPanel(wasDragging);
+  touch = null;
+});
+
+// ---------- Panel ----------
+const panel = document.getElementById("panel");
+const pKind = document.getElementById("p-kind");
+const pTitle = document.getElementById("p-title");
+const pWhere = document.getElementById("p-where");
+const pBody = document.getElementById("p-body");
+
+function openPanel(n) {
+  selected = n;
+  if (n.kind === "hub") {
+    pKind.textContent = "category";
+    pTitle.textContent = n.title;
+    pWhere.textContent = "Click a connected node to drill in.";
+    pBody.innerHTML = "";
+  } else if (n.kind === "me") {
+    pKind.textContent = "you are here";
+    pTitle.textContent = n.title;
+    pWhere.textContent = n.where || "";
+    pBody.innerHTML = n.body || "";
+  } else if (n.kind === "contact") {
+    pKind.textContent = "contact";
+    pTitle.textContent = n.title;
+    pWhere.textContent = n.sub || "";
+    pBody.innerHTML = n.link ? `<p><a href="${n.link}" target="_blank" rel="noopener">${n.link}</a></p>` : "";
+  } else {
+    pKind.textContent = n.kind;
+    pTitle.textContent = n.title;
+    pWhere.innerHTML = `${n.where || ""}${n.when ? ` · <span style="color:var(--muted)">${n.when}</span>` : ""}`;
+    pBody.innerHTML = `
+      ${n.bullets ? `<ul>${n.bullets.map(b => `<li>${b}</li>`).join("")}</ul>` : ""}
+      ${n.chips ? `<div class="chips">${n.chips.map(c => `<span class="chip">${c}</span>`).join("")}</div>` : ""}
+    `;
+  }
+  panel.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+}
+document.getElementById("close").addEventListener("click", () => {
+  panel.classList.remove("open");
+  panel.setAttribute("aria-hidden", "true");
+  selected = null;
+});
+
+// ---------- Controls ----------
+document.getElementById("reset").addEventListener("click", () => {
+  cam = { x: 0, y: 0, z: 1 };
+  initPositions();
+});
+document.getElementById("shuffle").addEventListener("click", () => {
+  nodes.forEach(n => {
+    if (n.id === "me") return;
+    n.vx = (Math.random() - 0.5) * 30;
+    n.vy = (Math.random() - 0.5) * 30;
+  });
+});
+const pauseBtn = document.getElementById("pause");
+pauseBtn.addEventListener("click", () => {
+  running = !running;
+  pauseBtn.textContent = running ? "Pause" : "Resume";
+  if (running) loop();
+});
+
+// Kick it with a little energy
+nodes.forEach(n => { n.vx = (Math.random() - 0.5) * 8; n.vy = (Math.random() - 0.5) * 8; });
+</script>
+</body>
+</html>
