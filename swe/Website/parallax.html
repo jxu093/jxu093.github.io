@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>J · Senior Software Engineer — Parallax</title>
+<meta name="description" content="A cinematic scroll through 9 years of building distributed systems." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23f472b6'/%3E%3Cstop offset='1' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='12' fill='url(%23g)'/%3E%3C/svg%3E" />
+<style>
+  :root {
+    --bg-0: #050510;
+    --bg-1: #0a0620;
+    --bg-2: #170a32;
+    --bg-3: #2a0f4a;
+    --fg: #f5f3ff;
+    --dim: #c4b8e8;
+    --muted: #7a6ba0;
+    --accent: #f472b6;
+    --accent-2: #7c3aed;
+    --accent-3: #38bdf8;
+    --card: rgba(255, 255, 255, 0.06);
+    --card-border: rgba(255, 255, 255, 0.14);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg-0); color: var(--fg); }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Gradient backdrop that shifts with scroll */
+  .backdrop {
+    position: fixed; inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(1000px 700px at 20% -10%, rgba(244,114,182,0.22), transparent 60%),
+      radial-gradient(900px 600px at 110% 20%, rgba(124,58,237,0.24), transparent 60%),
+      radial-gradient(800px 600px at 10% 110%, rgba(56,189,248,0.20), transparent 60%),
+      linear-gradient(180deg, var(--bg-0), var(--bg-1) 40%, var(--bg-2) 75%, var(--bg-3) 100%);
+    pointer-events: none;
+  }
+
+  /* Stars */
+  .stars, .stars::before, .stars::after {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  }
+  .stars {
+    background: transparent;
+    --s1: radial-gradient(1px 1px at 10% 20%, #fff 50%, transparent 50%);
+    --s2: radial-gradient(1.5px 1.5px at 80% 30%, #fff 50%, transparent 50%);
+    --s3: radial-gradient(1px 1px at 60% 80%, #fff 50%, transparent 50%);
+    background-image:
+      radial-gradient(1px 1px at 20% 15%, rgba(255,255,255,0.8) 50%, transparent 50%),
+      radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.6) 50%, transparent 50%),
+      radial-gradient(1.3px 1.3px at 40% 70%, rgba(255,255,255,0.8) 50%, transparent 50%),
+      radial-gradient(1px 1px at 85% 85%, rgba(255,255,255,0.5) 50%, transparent 50%),
+      radial-gradient(1.2px 1.2px at 10% 80%, rgba(255,255,255,0.7) 50%, transparent 50%),
+      radial-gradient(1px 1px at 55% 25%, rgba(255,255,255,0.4) 50%, transparent 50%);
+    background-size: 1200px 800px;
+    animation: drift 120s linear infinite;
+  }
+  @keyframes drift {
+    from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+    to   { background-position: 1200px 800px, -1200px 800px, 600px -800px, 1200px -400px, -600px 200px, 400px 500px; }
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 20;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 28px;
+    backdrop-filter: blur(14px);
+    background: rgba(5, 5, 16, 0.4);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  nav .brand { font-weight: 600; letter-spacing: 0.3px; display: flex; align-items: center; gap: 10px; }
+  nav .brand i {
+    display: inline-block; width: 12px; height: 12px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 0 12px rgba(244,114,182,0.6);
+  }
+  nav .links a {
+    color: var(--dim); text-decoration: none; margin-left: 18px; font-size: 14px;
+  }
+  nav .links a:hover { color: var(--fg); }
+
+  main { position: relative; z-index: 2; }
+
+  section {
+    position: relative;
+    min-height: 100vh;
+    padding: 120px 28px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    max-width: 920px;
+    position: relative;
+  }
+  .hero .eyebrow {
+    color: var(--accent);
+    font-size: 12px; letter-spacing: 6px; text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(44px, 9vw, 108px);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    margin: 0 0 24px;
+    font-weight: 800;
+    background: linear-gradient(180deg, #fff 0%, #c4b8e8 60%, #7c3aed 110%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 10px 40px rgba(124,58,237,0.25));
+  }
+  .hero p {
+    font-size: clamp(17px, 2vw, 22px);
+    color: var(--dim);
+    max-width: 56ch; margin: 0 auto;
+  }
+  .hero .scroll-hint {
+    position: absolute; bottom: -80px; left: 50%; transform: translateX(-50%);
+    color: var(--muted); font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+  }
+  .hero .scroll-hint::after {
+    content: "";
+    display: block; width: 1px; height: 32px;
+    margin: 10px auto 0;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+  }
+
+  /* Floating orbs that parallax */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.8;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .orb.a { width: 380px; height: 380px; background: rgba(244,114,182,0.4); top: 10%; left: -80px; }
+  .orb.b { width: 420px; height: 420px; background: rgba(124,58,237,0.4); top: 30%; right: -100px; }
+  .orb.c { width: 340px; height: 340px; background: rgba(56,189,248,0.35); bottom: 10%; left: 30%; }
+
+  /* Section headings */
+  .section-title {
+    font-size: clamp(32px, 5vw, 56px);
+    letter-spacing: -0.02em;
+    margin: 0 0 14px;
+    font-weight: 700;
+  }
+  .section-lede {
+    color: var(--dim);
+    font-size: 17px;
+    max-width: 60ch;
+    margin: 0 0 40px;
+  }
+
+  /* About */
+  .about {
+    max-width: 920px; width: 100%;
+  }
+  .about .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+  }
+  .stat {
+    padding: 22px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+  }
+  .stat .n {
+    font-size: 40px; font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent-3));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .stat .l { color: var(--dim); font-size: 13px; margin-top: 4px; }
+
+  /* Experience cards with 3D */
+  .exp-wrap {
+    max-width: 1100px; width: 100%;
+    perspective: 1200px;
+  }
+  .exp-stack {
+    display: grid;
+    gap: 28px;
+    margin-top: 40px;
+  }
+  .exp-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 28px 32px;
+    backdrop-filter: blur(14px);
+    transform-style: preserve-3d;
+    transition: transform .6s cubic-bezier(.2,.8,.2,1), box-shadow .6s;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateY(60px) rotateX(8deg);
+  }
+  .exp-card.in { opacity: 1; transform: translateY(0) rotateX(0); }
+  .exp-card:hover {
+    transform: translateY(-4px) rotateX(-2deg) rotateY(1deg);
+    box-shadow: 0 30px 80px rgba(124,58,237,0.25);
+  }
+  .exp-card h3 {
+    margin: 0 0 4px;
+    font-size: 22px; letter-spacing: -0.01em;
+  }
+  .exp-card .meta { color: var(--dim); font-size: 14px; margin-bottom: 16px; }
+  .exp-card .meta .dot { margin: 0 8px; opacity: 0.5; }
+  .exp-card ul { margin: 6px 0 16px; padding-left: 20px; color: #e2dcf4; }
+  .exp-card li { margin: 6px 0; }
+  .exp-card li::marker { color: var(--accent); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: 12px; padding: 3px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.05);
+    color: #e2dcf4;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* Skills constellation */
+  .skills-wrap {
+    max-width: 1100px; width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    margin-top: 40px;
+  }
+  .skill-card {
+    padding: 22px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .6s, transform .6s;
+  }
+  .skill-card.in { opacity: 1; transform: translateY(0); }
+  .skill-card h4 {
+    margin: 0 0 12px; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* Projects coming soon */
+  .projects-wrap {
+    max-width: 860px; width: 100%;
+    text-align: center;
+  }
+  .ghost-box {
+    margin-top: 36px;
+    padding: 48px 32px;
+    border: 1px dashed rgba(255,255,255,0.18);
+    border-radius: 20px;
+    background: var(--card);
+    backdrop-filter: blur(10px);
+  }
+  .ghost-box .big {
+    font-size: 22px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase;
+  }
+  .ghost-box p { color: var(--dim); margin: 10px 0 0; }
+
+  /* Contact */
+  .contact-wrap {
+    text-align: center;
+    max-width: 760px;
+  }
+  .contact-links {
+    margin-top: 32px;
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 14px;
+  }
+  .contact-links a {
+    padding: 12px 22px;
+    border-radius: 999px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    color: var(--fg);
+    text-decoration: none;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    transition: transform .2s, border-color .2s, background .2s;
+  }
+  .contact-links a:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    background: rgba(244,114,182,0.12);
+  }
+  .contact-links a.primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-color: transparent;
+  }
+
+  footer {
+    position: relative; z-index: 2;
+    text-align: center;
+    color: var(--muted); font-size: 12px;
+    padding: 28px 0 48px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .exp-card { opacity: 1; transform: none; transition: none; }
+    .skill-card { opacity: 1; transform: none; transition: none; }
+    .stars { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="backdrop"></div>
+<div class="stars"></div>
+
+<nav>
+  <div class="brand"><i></i><span>J</span></div>
+  <div class="links">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<main>
+  <section id="hero">
+    <div class="orb a" data-depth="0.15"></div>
+    <div class="orb b" data-depth="0.08"></div>
+    <div class="orb c" data-depth="0.22"></div>
+    <div class="hero">
+      <div class="eyebrow" data-depth="-0.05">Senior Software Engineer · Seattle</div>
+      <h1 data-depth="-0.12">Distributed systems<br/>that stay up.</h1>
+      <p data-depth="-0.06">
+        Nine years building backends. Seven of them at Microsoft on the Azure
+        Software Defined Networking control plane — the plumbing that keeps a
+        planet's worth of VMs talking.
+      </p>
+      <div class="scroll-hint">scroll</div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="about">
+      <h2 class="section-title">The short version.</h2>
+      <p class="section-lede">
+        I like the unglamorous parts of infrastructure: state machines, eventual
+        consistency, the bug you only catch under load. I care about systems that
+        are safe to change and humans who are good to work with.
+      </p>
+      <div class="stat-row">
+        <div class="stat"><div class="n">9</div><div class="l">years in industry</div></div>
+        <div class="stat"><div class="n">7</div><div class="l">years at Microsoft</div></div>
+        <div class="stat"><div class="n">Azure</div><div class="l">SDN control plane</div></div>
+        <div class="stat"><div class="n">Seattle</div><div class="l">home base</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="exp-wrap">
+      <h2 class="section-title">What I've been up to.</h2>
+      <p class="section-lede">Scaffold below — fill in the specifics later.</p>
+      <div class="exp-stack" id="exp-stack"></div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div style="max-width: 1100px; width: 100%;">
+      <h2 class="section-title">Toolbox.</h2>
+      <p class="section-lede">The things I reach for most often.</p>
+      <div class="skills-wrap" id="skills-wrap"></div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="projects-wrap">
+      <h2 class="section-title">Projects.</h2>
+      <p class="section-lede" style="margin-left:auto;margin-right:auto;">Coming soon — a small collection of things I build outside of work.</p>
+      <div class="ghost-box">
+        <div class="big">~/ under construction /</div>
+        <p>I'll drop a few things in here once they're polished. In the meantime, say hi.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-wrap">
+      <h2 class="section-title">Let's talk.</h2>
+      <p class="section-lede" style="margin-left:auto;margin-right:auto;">Open to Senior / Staff SWE conversations in Seattle or remote.</p>
+      <div class="contact-links">
+        <a class="primary" href="mailto:you@example.com">Email</a>
+        <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© <span id="yr"></span> J · built as a single HTML file, no frameworks.</footer>
+
+<script>
+// Data scaffold
+const EXPERIENCE = [
+  {
+    role: "Senior Software Engineer",
+    where: "Microsoft · Azure Networking — SDN Control Plane",
+    when:  "2023 — Present",
+    bullets: [
+      "TODO: flagship system/service you own (scale, tech, impact — one line).",
+      "TODO: a cross-team initiative you led end-to-end (outcome in numbers).",
+      "TODO: a thorny distributed-systems bug story or reliability win.",
+    ],
+    chips: ["C#", "Service Fabric", "Kusto", "gRPC", "BGP"],
+  },
+  {
+    role: "SWE II → Senior",
+    where: "Microsoft · Azure Networking",
+    when:  "2019 — 2023",
+    bullets: [
+      "TODO: component you shipped (what it did + who it served).",
+      "TODO: perf / reliability / cost improvement with numbers.",
+      "TODO: migration, rewrite, or framework you built.",
+    ],
+    chips: ["C#", "Azure", "Distributed systems"],
+  },
+  {
+    role: "Software Engineer",
+    where: "TODO: First company",
+    when:  "2017 — 2019",
+    bullets: ["TODO: first industry role — what you learned and shipped."],
+    chips: ["TODO stack"],
+  },
+];
+
+const SKILLS = {
+  "Languages":      ["C#", "C++", "Python", "Go", "TypeScript", "SQL"],
+  "Distributed":    ["Service Fabric", "Kubernetes", "gRPC", "Kafka", "Consensus"],
+  "Networking":     ["SDN", "BGP", "VXLAN", "L4/L7 LBs", "Telemetry"],
+  "Cloud / Infra":  ["Azure", "ARM / Bicep", "Terraform", "CI/CD"],
+  "Data":           ["Cosmos DB", "Kusto", "Redis", "Postgres"],
+  "Craft":          ["Design docs", "Oncall", "Mentoring", "Cross-team driving"],
+};
+
+// Render experience
+const expStack = document.getElementById("exp-stack");
+EXPERIENCE.forEach(e => {
+  const d = document.createElement("article");
+  d.className = "exp-card";
+  d.innerHTML = `
+    <h3>${e.role}</h3>
+    <div class="meta">${e.where}<span class="dot">·</span>${e.when}</div>
+    <ul>${e.bullets.map(b => `<li>${b}</li>`).join("")}</ul>
+    <div class="chips">${e.chips.map(c => `<span class="chip">${c}</span>`).join("")}</div>
+  `;
+  expStack.appendChild(d);
+});
+
+// Render skills
+const skillsWrap = document.getElementById("skills-wrap");
+Object.entries(SKILLS).forEach(([k, arr]) => {
+  const d = document.createElement("div");
+  d.className = "skill-card";
+  d.innerHTML = `<h4>${k}</h4><div class="chips">${arr.map(s => `<span class="chip">${s}</span>`).join("")}</div>`;
+  skillsWrap.appendChild(d);
+});
+
+// Reveal on scroll
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll(".exp-card, .skill-card").forEach(el => io.observe(el));
+
+// Parallax scroll + mouse
+const depthEls = document.querySelectorAll("[data-depth]");
+const orbs = document.querySelectorAll(".orb");
+let mx = 0, my = 0;
+window.addEventListener("mousemove", (e) => {
+  mx = (e.clientX / window.innerWidth - 0.5);
+  my = (e.clientY / window.innerHeight - 0.5);
+  orbs.forEach(o => {
+    const d = parseFloat(o.dataset.depth || "0.1");
+    o.style.transform = `translate(${mx * d * 120}px, ${my * d * 120}px)`;
+  });
+});
+
+let ticking = false;
+window.addEventListener("scroll", () => {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    const y = window.scrollY;
+    depthEls.forEach(el => {
+      const d = parseFloat(el.dataset.depth || "0");
+      el.style.transform = `translateY(${y * d}px)`;
+    });
+    ticking = false;
+  });
+});
+
+document.getElementById("yr").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
