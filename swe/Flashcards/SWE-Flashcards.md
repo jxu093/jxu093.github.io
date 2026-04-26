@@ -19,8 +19,14 @@ Decks in this file:
 10. System Design — DDIA Ch 2–3 (Data models, storage engines, indexes)
 11. System Design — Replication, Partitioning, Consistency, CAP
 12. System Design — Common design patterns & primitives
+13. Linked List
+14. Heap / Priority Queue
+15. Graphs
+16. 1-D DP
+17. Intervals
+18. Greedy
 
-At the bottom: a **deck template** for topics you'll complete (Intervals, Greedy, Advanced Graphs, 2-D DP, Bit Manipulation, Math & Geometry).
+At the bottom: a **deck template** for topics still to add (Advanced Graphs, 2-D DP, Bit Manipulation, Math & Geometry).
 
 ---
 
@@ -659,7 +665,8 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q5.** What's the trick for "longest consecutive sequence"? (See also F3)
+**Q5.** *Given an unsorted integer array, return the length of the longest consecutive elements sequence in O(n) time.* What's the trick for "longest consecutive sequence"? (See also F3)
+`Example: Input:  nums = [100,4,200,1,3,2] → Output: 4  (sequence: 1,2,3,4)`
 
 .
 .
@@ -667,7 +674,8 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q6.** Why does "product of array except self" need two passes rather than one?
+**Q6.** *Given an integer array `nums`, return an array `answer` where `answer[i]` equals the product of all elements except `nums[i]`, without using division, in O(n) time.* Why does this need two passes rather than one?
+`Example: Input:  nums = [1,2,3,4] → Output: [24,12,8,6]`
 
 .
 .
@@ -701,7 +709,7 @@ All three phases are O(n) time, O(1) space.
 
 ## 2. Two Pointers
 
-**Q1.** When is two pointers the right tool?
+**Q1.** You're looking at a new problem in an interview. What signals tell you that a two-pointer approach will work, and what does it buy you over brute force?
 
 .
 .
@@ -709,7 +717,8 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q2.** How does sorted two-sum work?
+**Q2.** *Given a sorted array and a target sum, find two numbers that add up to the target.* Walk through the two-pointer approach — why does it work, and why is it O(n)?
+`Example: Input:  numbers = [2,7,11,15], target = 9 → Output: [0,1]`
 
 .
 .
@@ -725,7 +734,9 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q4.** What's the "container with most water" invariant?
+**Q4.** *Given `n` vertical lines at positions `[0..n-1]` with heights `height[i]`, find two lines that together with the x-axis form the container holding the most water.*
+What's the "container with most water" invariant?
+`Example: height = [1,8,6,2,5,4,8,3,7] → 49`
 
 .
 .
@@ -733,7 +744,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q5.** Two approaches to "trapping rain water" — tradeoffs? (See also F5)
+**Q5.** *Given an elevation map `height[]`, compute how much water is trapped after raining.* Compare the two approaches and their space tradeoffs. (See also F5)
 
 .
 .
@@ -741,7 +752,8 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q6.** Standard "remove duplicates in place" pattern?
+**Q6.** *Given a sorted array `nums`, remove the duplicates in-place so each element appears only once. Return the number of unique elements.* What's the two-pointer pattern for this?
+`Example: Input:  nums = [0,0,1,1,1,2,2,3,3,4] → Output: 5  (nums modified to [0,1,2,3,4,...])`
 
 .
 .
@@ -757,7 +769,8 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q8.** How is "valid palindrome II" (at most one deletion) handled?
+**Q8.** *Given a string `s`, return `true` if it can be made into a palindrome by deleting at most one character.* How do you solve this without checking every possible deletion?
+`Example: Input:  s = "abca" → Output: true  (remove 'b' or 'c')`
 
 .
 .
@@ -767,7 +780,7 @@ All three phases are O(n) time, O(1) space.
 
 ## 3. Stack
 
-**Q1.** What problem class screams "stack"?
+**Q1.** You're reading a new interview problem. What patterns in the problem statement signal that a stack is the right data structure?
 
 .
 .
@@ -791,7 +804,8 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q4.** How do you evaluate Reverse Polish Notation with a stack?
+**Q4.** *Given an array of tokens representing an arithmetic expression in Reverse Polish Notation (e.g., `[\"2\",\"1\",\"+\",\"3\",\"*\"]` = (2+1)*3 = 9), evaluate and return the result.* Walk through the stack-based approach.
+`Example: Input:  tokens = [\"2\",\"1\",\"+\",\"3\",\"*\"] → Output: 9`
 
 .
 .
@@ -799,7 +813,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q5.** How to design "min stack" with O(1) getMin?
+**Q5.** *Design a stack that supports push, pop, top, and retrieving the minimum element — all in O(1) time.* What's the data structure trick that makes O(1) getMin possible?
 
 .
 .
@@ -807,7 +821,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q6.** What's the recursion-to-iteration trick using a stack?
+**Q6.** When you have a recursive solution (e.g., DFS on a tree) and need to convert it to iterative to avoid stack overflow, what's the general technique?
 
 .
 .
@@ -841,7 +855,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q3.** Template for finding leftmost index of target?
+**Q3.** You need to find the first occurrence of a target in a sorted array (or the insertion point if absent). Write out the binary search template — what's the loop condition and how do you update bounds?
 
 .
 .
@@ -849,7 +863,8 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q4.** How do you search in a rotated sorted array?
+**Q4.** *Given a sorted array that was rotated at an unknown pivot (e.g., `[4,5,6,7,0,1,2]`), search for a target value in O(log n).* How do you decide which half to search at each step?
+`Example: Input:  nums = [4,5,6,7,0,1,2], target = 0 → Output: 4`
 
 .
 .
@@ -857,7 +872,8 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q5.** Finding min of rotated sorted array — why compare mid to *right*?
+**Q5.** *Given a sorted array rotated at an unknown pivot (no duplicates), find the minimum element in O(log n).* In your binary search, why must you compare `mid` to the right endpoint rather than the left?
+`Example: Input:  nums = [3,4,5,1,2] → Output: 1`
 
 .
 .
@@ -883,7 +899,7 @@ All three phases are O(n) time, O(1) space.
 
 ## 5. Sliding Window
 
-**Q1.** What distinguishes fixed-size vs. variable-size sliding windows?
+**Q1.** In sliding window problems, what's the difference between fixed-size and variable-size windows? When do you use each, and how does the shrink logic differ?
 
 .
 .
@@ -891,7 +907,8 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q2.** Template for "longest substring without repeating characters"?
+**Q2.** *Given a string `s`, find the length of the longest substring without any repeating characters.* Walk through the sliding window template.
+`Example: Input:  s = "abcabcbb" → Output: 3  ("abc")`
 
 .
 .
@@ -899,7 +916,9 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q3.** Template for "minimum window substring"?
+**Q3.** *Given strings `s` and `t`, return the shortest substring of `s` that contains every character in `t` (including duplicates). Return `""` if no such substring exists.*
+What's the template for "minimum window substring"?
+`Example: s = "ADOBECODEBANC", t = "ABC" → "BANC"`
 
 .
 .
@@ -907,7 +926,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q4.** When is a deque used with sliding windows? (See also F11)
+**Q4.** Some sliding window problems need a deque (double-ended queue) instead of just two pointers. What type of problem requires this, and what invariant does the deque maintain? (See also F11)
 
 .
 .
@@ -915,7 +934,9 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q5.** "Best time to buy and sell stock" — why is this a window problem?
+**Q5.** *Given an array `prices` where `prices[i]` is the stock price on day `i`, find the maximum profit from one buy and one sell (buy before sell). Return 0 if no profit is possible.*
+"Best time to buy and sell stock" — why is this a window problem?
+`Example: prices = [7,1,5,3,6,4] → 5 (buy at 1, sell at 6)`
 
 .
 .
@@ -923,7 +944,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q6.** Longest repeating character replacement — why does `maxCount` not need updating on shrink? (See also F10)
+**Q6.** *Given a string `s` and integer `k`, you can replace at most `k` characters. Find the length of the longest substring where all characters are the same after replacements.* Why is it safe to leave `maxCount` stale-high when shrinking the window? (See also F10)
 
 .
 .
@@ -941,7 +962,7 @@ All three phases are O(n) time, O(1) space.
 
 ## 6. Trees
 
-**Q1.** Three DFS traversal orders and their canonical uses?
+**Q1.** Name the three DFS traversal orders for binary trees, state the node-visit sequence for each, and give a canonical use case where each one is the natural fit.
 
 .
 .
@@ -965,7 +986,9 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q4.** Diameter of a binary tree — what do you return vs. what do you update?
+**Q4.** *Given the root of a binary tree, return the length of the diameter — the longest path between any two nodes (measured in edges). The path may or may not pass through the root.*
+Diameter of a binary tree — what do you return vs. what do you update?
+`Example: root = [1,2,3,4,5] → 3 (path 4→2→1→3)`
 
 .
 .
@@ -973,7 +996,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q5.** What's the subtle bug in "validate BST"?
+**Q5.** *Given the root of a binary tree, determine if it is a valid BST (every node's value is strictly between its ancestors' constraints).* What's the common bug in a naive recursive check, and how do you fix it?
 
 .
 .
@@ -981,7 +1004,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q6.** LCA in a general binary tree — algorithm?
+**Q6.** *Given a binary tree and two nodes `p` and `q`, find their lowest common ancestor (the deepest node that has both p and q as descendants).* Describe the recursive algorithm.
 
 .
 .
@@ -989,7 +1012,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q7.** LCA in a BST — simpler version?
+**Q7.** *Given a BST and two nodes `p` and `q`, find their lowest common ancestor.* Why is this simpler than the general binary tree case, and what's the algorithm?
 
 .
 .
@@ -1005,7 +1028,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q9.** Level-order traversal — what structure and why?
+**Q9.** *Given a binary tree, return its level-order traversal as a list of lists (each inner list = one level, left to right).* What data structure drives this, and how do you know when one level ends and the next begins?
 
 .
 .
@@ -1021,7 +1044,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q11.** Kth smallest in BST — iterative inorder pattern? (See also F16)
+**Q11.** *Given a BST and integer `k`, return the kth smallest value (1-indexed).* Walk through the iterative inorder approach using a stack. (See also F16)
 
 .
 .
@@ -1029,7 +1052,9 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q12.** Max path sum — two quantities per recursion?
+**Q12.** *Given a binary tree where each node has an integer value (can be negative), find the path with the maximum sum. A path is any sequence of connected nodes (doesn't need to pass through the root or be root-to-leaf).*
+Max path sum — what two quantities do you compute per recursion?
+`Example: root = [-10,9,20,null,null,15,7] → 42 (path 15→20→7)`
 
 .
 .
@@ -1047,7 +1072,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q2.** Insert / search / startsWith — costs?
+**Q2.** For a trie supporting `insert(word)`, `search(word)`, and `startsWith(prefix)`, what is the time complexity of each operation and what determines it?
 
 .
 .
@@ -1063,7 +1088,9 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q4.** How does "Word Search II" use a trie?
+**Q4.** *Given an `m × n` board of characters and a list of words, return all words that can be formed by sequentially adjacent cells (horizontal/vertical, no cell reused per word).*
+How does "Word Search II" use a trie?
+`Example: board = [["o","a","a","n"],["e","t","a","e"],...], words = ["oath","pea","eat","rain"] → ["eat","oath"]`
 
 .
 .
@@ -1071,7 +1098,8 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q5.** How do you handle wildcard (`.`) in trie search?
+**Q5.** *Design a data structure that supports `addWord(word)` and `search(word)` where search can contain `.` as a wildcard matching any single character.* How does the wildcard change the trie search logic?
+`Example: addWord("bad"), addWord("dad") → search("b.d") → true; search(".ad") → true; search("b..") → true`
 
 .
 .
@@ -1089,7 +1117,7 @@ All three phases are O(n) time, O(1) space.
 
 ## 8. Backtracking
 
-**Q1.** Backtracking template in one sentence?
+**Q1.** If someone asked you to describe the backtracking template in one sentence — the pattern that subsets, permutations, and N-Queens all share — what would you say?
 
 .
 .
@@ -1097,7 +1125,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q2.** Subsets vs. permutations — structural difference?
+**Q2.** *Subsets: given `[1,2,3]`, return all subsets. Permutations: given `[1,2,3]`, return all orderings.* What's the key structural difference in the recursive calls?
 
 .
 .
@@ -1105,7 +1133,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q3.** Handling duplicates in "subsets II" / "permutations II"?
+**Q3.** *When the input array contains duplicates (e.g., `[1,2,2]`), how do you generate subsets or permutations without duplicate results?* What's the sorting + skip trick?
 
 .
 .
@@ -1113,7 +1141,9 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q4.** "Combination sum" — why OK to reuse elements?
+**Q4.** *Given an array of distinct integers `candidates` and a target integer, return all unique combinations that sum to target. The same number may be used unlimited times.*
+"Combination sum" — why is it OK to reuse elements, and how does the code express that?
+`Example: candidates = [2,3,6,7], target = 7 → [[2,2,3],[7]]`
 
 .
 .
@@ -1121,7 +1151,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q5.** How to prune in "N-Queens"? (See also F18)
+**Q5.** *Place n queens on an n×n board so no two attack each other.* What three things do you track to check conflicts in O(1) per placement, and what keys identify each diagonal? (See also F18)
 
 .
 .
@@ -1137,7 +1167,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q7.** "Word search" (DFS on grid) — standard trick for marking visited?
+**Q7.** *Given an m×n grid of characters and a word, determine if the word exists by following adjacent cells (no reuse).* What's the standard in-place trick for tracking visited cells during DFS, and why is it better than a separate set?
 
 .
 .
@@ -1163,7 +1193,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q2.** Fault vs. failure?
+**Q2.** In distributed systems, what's the difference between a fault and a failure? Why does this distinction matter for system design?
 
 .
 .
@@ -1187,7 +1217,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q5.** Three pillars of maintainability?
+**Q5.** DDIA identifies three pillars of maintainability. Name each one and explain in one sentence what it means in practice.
 
 .
 .
@@ -1195,7 +1225,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q6.** Two axes of scaling and the tradeoff?
+**Q6.** What are the two fundamental approaches to scaling a system, and what does each one trade off against the other?
 
 .
 .
@@ -1205,7 +1235,7 @@ All three phases are O(n) time, O(1) space.
 
 ## 10. System Design — DDIA Ch 2–3
 
-**Q1.** Document vs. relational vs. graph — when do you pick each?
+**Q1.** You're choosing a data model for a new service. When would you pick a document store vs. a relational database vs. a graph database? Give a one-sentence use case for each.
 
 .
 .
@@ -1221,7 +1251,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q3.** LSM-tree vs. B-tree — core difference?
+**Q3.** Your interviewer asks you to compare LSM-trees and B-trees as storage engine internals. What's the fundamental difference in how each handles writes, and what are the tradeoffs?
 
 .
 .
@@ -1237,7 +1267,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q5.** Two secondary index strategies in document stores?
+**Q5.** When a partitioned database needs a secondary index, there are two strategies. What are they, and what does each optimize for (reads vs. writes)?
 
 .
 .
@@ -1253,7 +1283,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q7.** OLTP vs. OLAP — key access pattern differences?
+**Q7.** You're explaining to a junior engineer why OLTP and OLAP workloads need different storage engines. What are the key differences in their access patterns?
 
 .
 .
@@ -1263,7 +1293,7 @@ All three phases are O(n) time, O(1) space.
 
 ## 11. System Design — Replication, Partitioning, Consistency, CAP
 
-**Q1.** Three replication architectures?
+**Q1.** Name the three main replication architectures for distributed databases. For each, state in one sentence how writes flow and what the key tradeoff is.
 
 .
 .
@@ -1287,7 +1317,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q4.** Range vs. hash partitioning — pain points?
+**Q4.** You're partitioning a database table across nodes. Compare range partitioning vs. hash partitioning — what does each do well, and where does each hurt?
 
 .
 .
@@ -1311,7 +1341,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q7.** Linearizability vs. serializability?
+**Q7.** An interviewer asks: 'What's the difference between linearizability and serializability?' These are commonly confused. Distinguish them clearly.
 
 .
 .
@@ -1327,7 +1357,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q9.** Split-brain and how leader-election prevents it?
+**Q9.** What is split-brain in a replicated system, why is it dangerous, and how does a proper leader-election protocol (e.g., Raft) prevent it?
 
 .
 .
@@ -1377,7 +1407,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q3.** Write-through vs. write-back vs. write-around?
+**Q3.** Compare the three cache write strategies — write-through, write-back, and write-around. For each, explain how the write flows and when you'd pick it.
 
 .
 .
@@ -1417,7 +1447,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q8.** Newsfeed: push (fan-out on write) vs. pull (fan-out on read)?
+**Q8.** You're designing a social media newsfeed. Compare the push model (fan-out on write) vs. pull model (fan-out on read) — how does each work, and what breaks at scale? What's the standard hybrid answer?
 
 .
 .
@@ -1441,7 +1471,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q11.** Blue/green vs. canary deploys?
+**Q11.** Compare blue/green deployments and canary deployments. How does each work, what does each optimize for, and when would you choose one over the other?
 
 .
 .
@@ -1449,7 +1479,7 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q12.** SD interview structure — 6 phases in order?
+**Q12.** Walk through the 6 phases of a system design interview in order. What do you cover in each phase?
 
 .
 .
@@ -1457,11 +1487,447 @@ All three phases are O(n) time, O(1) space.
 
 ---
 
-**Q13.** Two questions to always ask upfront?
+**Q13.** At the start of any system design interview, there are two categories of clarifying questions you should always ask before designing anything. What are they?
 
 .
 .
 ↳ **A:** (1) Scale: DAU, read/write ratio, data retention? (2) Consistency expectations: can this tolerate eventual consistency anywhere?
+
+---
+
+## 13. Linked List
+
+**Q1.** Slow/fast pointer — what 3 problem classes does it solve?
+
+.
+.
+↳ **A:** (1) Cycle detection (Floyd's). (2) Find midpoint. (3) Find Nth from end (start fast n nodes ahead, then walk together until fast hits null). All O(n) time, O(1) space.
+
+---
+
+**Q2.** Write out the iterative linked list reversal using three pointers. Which pointer do you return at the end, and why is that a common bug source?
+
+.
+.
+↳ **A:** `prev = None; curr = head; while curr: nxt = curr.next; curr.next = prev; prev = curr; curr = nxt; return prev`. The recursive version uses O(n) stack — interviewers want to see the O(1)-extra iterative one.
+
+---
+
+**Q3.** Floyd's cycle detection — how do you find the cycle entry point? (See also F13.)
+
+.
+.
+↳ **A:** After slow and fast meet inside the cycle, reset one pointer to head. Move both one step at a time; they meet at the cycle entry. Why: distance from head to entry equals distance from the meeting point to entry (algebra on the loop length and tortoise/hare distances).
+
+---
+
+**Q4.** Merge two sorted lists — why is a dummy head node the standard trick?
+
+.
+.
+↳ **A:** It eliminates the special case for the first node. `dummy = ListNode(0); tail = dummy; while a and b: ...; tail.next = a or b; return dummy.next`. Without dummy you'd write redundant "is this the first node?" branches at every comparison.
+
+---
+
+**Q5.** Find midpoint — does slow land on the left or right middle for an even-length list?
+
+.
+.
+↳ **A:** Depends on the loop. `while fast.next and fast.next.next` → slow stops on the **left** middle (good for splitting *before* reversing the second half — used in Reorder List, F22). `while fast and fast.next` → slow lands on the **right** middle (handy for palindrome checks where you want to start comparing from the right half).
+
+---
+
+**Q6.** Remove Nth from end — why an n+1 gap, not n? (See F12.)
+
+.
+.
+↳ **A:** Use a dummy node before head. Advance fast n+1 steps, then move both until fast is null. Slow then sits one node *before* the target — so `slow.next = slow.next.next` removes it. The +1 gap is what places slow correctly to splice; the dummy handles the case where the head itself is removed.
+
+---
+
+**Q7.** Reorder list — three-step pattern? (See F22.)
+
+.
+.
+↳ **A:** (1) Find midpoint with slow/fast (slow lands on left middle; null-terminate after slow). (2) Reverse the second half. (3) Interleave — walk both halves with two pointers, splicing nodes alternately. Each step O(n); total O(n) time, O(1) space.
+
+---
+
+**Q8.** You just finished coding a linked list solution. What are the most common bugs to check for before submitting?
+
+.
+.
+↳ **A:** (1) Forgetting to null-terminate the new tail when splitting (creates a cycle). (2) Losing the head reference when reversing — always return `prev`, not `head`. (3) Off-by-one in the n+1-gap problems. (4) Modifying `node.next` before saving the original `next`. (5) Skipping the dummy head and writing duplicated "first iteration" code.
+
+---
+
+## 14. Heap / Priority Queue
+
+**Q1.** When do you reach for a heap?
+
+.
+.
+↳ **A:** When you need repeated min/max access on a changing collection: top-K, median-of-stream, K-way merge, scheduling, Dijkstra. Heap gives O(log n) insert/pop and O(1) peek. For a single top-K on static data, sort + slice is simpler.
+
+---
+
+**Q2.** Top-K largest — min-heap or max-heap, and why?
+
+.
+.
+↳ **A:** **Min-heap of size K.** Push every element; if size > K, pop the smallest. The heap holds the K largest at the end; total O(n log K) — beats O(n log n) sort when K ≪ n. (For top-K smallest, use a max-heap of size K — symmetric.)
+
+---
+
+**Q3.** *Design a data structure that supports `addNum(int)` and `findMedian()` on a stream of integers, with O(log n) insert and O(1) median.* Describe the two-heap structure.
+
+.
+.
+↳ **A:** Max-heap holds the lower half, min-heap holds the upper half. Keep sizes equal or off by one. After each insert, rebalance so |sizes| ≤ 1. Median = larger heap's top (odd count) or average of both tops (even). Insert O(log n), query O(1).
+
+---
+
+**Q4.** *Given k sorted linked lists, merge them into one sorted list.* In the heap-based approach, what exactly goes into the heap, and why do you need a tiebreaker? (See F14.)
+
+.
+.
+↳ **A:** One node per list initially: `(value, list_idx, node_ref)` — the list_idx is a tiebreaker so heapq doesn't try to compare incomparable nodes when values tie. Pop min, push that node's `next` if any. Total O(N log K) where N = total nodes, K = lists. Divide-and-conquer pairwise merge has the same asymptotic cost but uses O(N) extra space; the heap version uses O(K).
+
+---
+
+**Q5.** *Given a list of CPU tasks (letters A–Z) and a cooldown `n`, return the minimum intervals to finish all tasks.* What's the O(1) math formula, and what does each term represent? (See F15.)
+
+.
+.
+↳ **A:** `result = max(len(tasks), (max_count - 1) * (n + 1) + count_of_max)`. The first term covers 'no idling needed' (tasks already spaced enough). The second covers 'must idle' — the most frequent task drives the skeleton, with all max-frequency tasks tacked on at the end. Always `max` of both — formula is exact, no edge cases.
+
+---
+
+**Q6.** Why is `heapify` O(n) and not O(n log n)?
+
+.
+.
+↳ **A:** Sift-down from the bottom up. Most nodes are near the leaves and sift down very few levels. Sum across levels: ∑ (n/2^h) · h converges to O(n). Building a heap from scratch is strictly faster than n successive inserts (each O(log n)).
+
+---
+
+**Q7.** Python heap gotcha — max-heap and tie-breaking?
+
+.
+.
+↳ **A:** `heapq` is min-only. For max, push `-x` and negate on pop, or wrap items in a class with reversed `__lt__`. For tuples, prefer `(-priority, tiebreaker, payload)` so equal priorities don't fall through to comparing payloads (which may not be comparable).
+
+---
+
+**Q8.** When NOT to use a heap?
+
+.
+.
+↳ **A:** (1) When you need order statistics for arbitrary K once — quickselect is O(n) average. (2) When data is mostly sorted already — a deque or two-pointer sweep is cheaper. (3) When you need O(log n) decrease-key on arbitrary elements — stdlib heap doesn't support it; either use lazy deletion (skip stale entries on pop) or an indexed heap.
+
+---
+
+## 15. Graphs
+
+**Q1.** BFS vs DFS — when do you pick each?
+
+.
+.
+↳ **A:** **BFS**: shortest path on unweighted graphs, level-order, "minimum steps". Uses a queue. **DFS**: path existence, topological order, cycle detection, articulation points, anything needing the call stack to remember context. BFS for distance, DFS for structure.
+
+---
+
+**Q2.** Visited tracking — mark on enqueue or on dequeue?
+
+.
+.
+↳ **A:** **Mark on enqueue** for BFS and iterative DFS. Marking on dequeue lets the same node be enqueued multiple times before any of them dequeues, blowing up to O(V·E) in dense graphs. Recursive DFS marks at the top of the function — same idea, before exploring neighbors.
+
+---
+
+**Q3.** Topological sort — Kahn's vs DFS, and how does each detect a cycle? (See F19.)
+
+.
+.
+↳ **A:** **Kahn's**: build in-degree map, enqueue all 0-in-degree nodes, repeatedly pop and decrement neighbors' in-degree. **Cycle if processed count < n.** **DFS 3-color**: white = unseen, gray = on the recursion stack, black = done. **Cycle if you encounter a gray neighbor.** Both O(V+E).
+
+---
+
+**Q4.** Detecting a cycle in an undirected graph?
+
+.
+.
+↳ **A:** DFS, passing in the parent. If you visit a neighbor that is already visited *and* not the parent, you've found a back edge → cycle. Or use Union-Find: for each edge, if both endpoints are already in the same set, that edge closes a cycle. (See F20 for the "valid tree" variant.)
+
+---
+
+**Q5.** Shortest path on an unweighted graph?
+
+.
+.
+↳ **A:** BFS from the source. The first time you reach a node is via a shortest path. Track distances with a `dist` map (or count BFS levels for the answer-only case). O(V+E).
+
+---
+
+**Q6.** Dijkstra — one-paragraph summary and the lazy-heap gotcha?
+
+.
+.
+↳ **A:** Min-heap of `(dist, node)`. Pop min; for each neighbor, relax: `if dist[u] + w < dist[v]: dist[v] = dist[u] + w; push(dist[v], v)`. **Gotcha**: stdlib heaps don't support decrease-key, so push lazily and skip stale entries on pop with `if d > dist[u]: continue`. Doesn't handle negative edges (use Bellman-Ford). O((V+E) log V).
+
+---
+
+**Q7.** Graph valid tree — exact two conditions? (See F20.)
+
+.
+.
+↳ **A:** (1) `edges == n - 1` (necessary: any tree has exactly n-1 edges; fewer disconnects it, more creates a cycle). (2) Graph is fully connected (e.g., BFS reaches all n nodes from any start). Both must hold. Pre-screening edge count is O(1) and short-circuits many failures cheaply.
+
+---
+
+**Q8.** Connected components — Union-Find vs BFS/DFS?
+
+.
+.
+↳ **A:** Both O(V+E). Union-Find shines when components form *online* (edges arriving over time — "number of islands II", "accounts merge"). BFS/DFS is simpler for one-shot static graphs. Union-Find with path compression + union-by-rank is near O(1) amortized per op (inverse Ackermann).
+
+---
+
+**Q9.** Bidirectional BFS — when is it worth the complexity?
+
+.
+.
+↳ **A:** When you know both source and target and the graph has high branching factor `b`. Single BFS explores ≈ b^d nodes; bidirectional explores ≈ 2 · b^(d/2) — exponentially fewer at long distances. Standard for word-ladder-style problems on large vocabularies.
+
+---
+
+**Q10.** Adjacency list vs matrix — what dictates the choice?
+
+.
+.
+↳ **A:** **List** for sparse graphs (E ≪ V²): O(V+E) space, fast neighbor iteration. **Matrix** for dense graphs and when you need O(1) edge-existence checks (e.g., Floyd–Warshall). Most interview graphs are sparse → list.
+
+---
+
+## 16. 1-D DP
+
+**Q1.** How do you recognize a DP problem?
+
+.
+.
+↳ **A:** Three signals: (1) "count ways" / "min/max over choices" / "is it possible". (2) Subproblems overlap (naive recursion repeats work). (3) Optimal substructure (best at i depends on best at smaller indices). If only (3) holds, greedy may suffice.
+
+---
+
+**Q2.** Top-down (memo) vs bottom-up (tab) — when each?
+
+.
+.
+↳ **A:** **Top-down**: cleaner when state space is sparse (you only compute reachable states) or when the recursion tree mirrors the problem naturally. **Bottom-up**: tighter constants, easier to space-optimize, no recursion-limit risk. Bottom-up is the interview default unless states are sparse or hard to enumerate.
+
+---
+
+**Q3.** Walk through the standard template for solving a 1-D dynamic programming problem — what do you define, what do you initialize, what do you iterate, and what do you return?
+
+.
+.
+↳ **A:** `dp[i]` = answer for prefix (or suffix) ending at i. Define base case (`dp[0]` or `dp[n]`). Write the transition: `dp[i] = f(dp[i-1], dp[i-2], …, nums[i])`. Iterate in dependency order. Return `dp[n-1]` or `dp[n]` per the framing.
+
+---
+
+**Q4.** Space optimization — when can you collapse to O(1)?
+
+.
+.
+↳ **A:** When `dp[i]` depends only on `dp[i-1]` (and maybe `dp[i-2]`), keep just those values in two scalars. Collapses O(n) → O(1) extra space. Climbing stairs, house robber, max-subarray (Kadane), and Fibonacci-style DPs all qualify.
+
+---
+
+**Q5.** *Given an array `nums` representing money in each house along a street, return the maximum amount you can rob without robbing two adjacent houses.*
+House Robber — what's the transition and the rolling-array form?
+`Example: nums = [2,7,9,3,1] → 12 (rob houses 0, 2, 4)`
+
+.
+.
+↳ **A:** `dp[i] = max(dp[i-1], dp[i-2] + nums[i])` — either skip i (take best up to i-1) or rob i (add to best up to i-2). Rolling: `prev2, prev1 = 0, 0; for x in nums: prev2, prev1 = prev1, max(prev1, prev2 + x); return prev1`.
+
+---
+
+**Q6.** *Coin Change: given coins and an amount, find the fewest coins needed. Coin Change II: count the number of combinations that make the amount.* Both use a 1-D DP array, but the loop order differs. What changes and why?
+`Example: Coin Change:  coins = [1,2,5], amount = 11 → 3 (5+5+1)\nCoin Change II: coins = [1,2,5], amount = 5 → 4 combinations`
+
+.
+.
+↳ **A:** **Coin Change** (min coins to make amount): outer loop over amounts, inner over coins. Order doesn't matter — you're counting min, not arrangements. **Coin Change II** (count combinations, not permutations): **outer over coins, inner over amounts**. Reversing this counts ordered arrangements (permutations) instead. The loop order encodes the combinatorial meaning.
+
+---
+
+**Q7.** Maximum Product Subarray — why track BOTH curMax and curMin? (See F21.)
+
+.
+.
+↳ **A:** A negative number flips signs. The new max product can come from `curMax * x` (if x is positive) OR `curMin * x` (if x is negative — two negatives multiply to a large positive). Track both, updating simultaneously: `newMax = max(x, curMax*x, curMin*x)`, symmetric for newMin. O(n) time, O(1) space.
+
+---
+
+**Q8.** *Given a string `s` and a dictionary of words `wordDict`, return `true` if `s` can be segmented into a space-separated sequence of one or more dictionary words.*
+Word Break — what's the DP state and transition?
+`Example: s = "leetcode", wordDict = ["leet","code"] → true`
+
+.
+.
+↳ **A:** `dp[i] = True` if `s[:i]` can be segmented. `dp[0] = True`. Transition: `dp[i] = any(dp[j] and s[j:i] in dict for j in 0..i-1)`. Return `dp[n]`. O(n²·k) where k is avg word length (the `in` check). Use a set for the dictionary.
+
+---
+
+**Q9.** *Given an integer array `nums`, return the length of the longest strictly increasing subsequence (not necessarily contiguous).*
+Longest Increasing Subsequence — naive O(n²) vs O(n log n)?
+`Example: nums = [10,9,2,5,3,7,101,18] → 4 (e.g. [2,3,7,101])`
+
+.
+.
+↳ **A:** Naive: `dp[i] = 1 + max(dp[j] for j<i if nums[j]<nums[i])` — O(n²). **Patience sort trick** (O(n log n)): keep a `tails` array where `tails[k]` is the smallest tail of any increasing subseq of length k+1. For each x, binary-search the leftmost tail ≥ x and replace. Length of tails = LIS length. The tails array is **NOT** a valid LIS — only its length is meaningful.
+
+---
+
+## 17. Intervals
+
+**Q1.** You're reading a new interview problem. What clues in the problem statement tell you it's an intervals problem, and what's your default first step after recognizing it?
+
+.
+.
+↳ **A:** Inputs are `[start, end]` pairs (meetings, ranges, scheduling, calendar slots). Almost always: sort first by start (or end), then sweep. Most problems reduce to 'merge overlapping' or 'count overlaps at any point in time'.
+
+---
+
+**Q2.** *Given an array of intervals `[[start, end], ...]`, merge all overlapping intervals and return the non-overlapping result.* Walk through the approach.
+`Example: Input:  intervals = [[1,3],[2,6],[8,10],[15,18]] → Output: [[1,6],[8,10],[15,18]]`
+
+.
+.
+↳ **A:** Sort by start. Iterate; if `intervals[i].start <= last.end`, extend `last.end = max(last.end, intervals[i].end)`. Else push intervals[i] as the new last. O(n log n) for the sort, O(n) merge.
+
+---
+
+**Q3.** *Given a sorted list of non-overlapping intervals and a new interval, insert the new interval and merge if necessary. Return the resulting sorted list of non-overlapping intervals.*
+Insert interval — what's the three-phase pattern?
+`Example: intervals = [[1,3],[6,9]], newInterval = [2,5] → [[1,5],[6,9]]`
+
+.
+.
+↳ **A:** (1) Copy intervals strictly before the new one (`end < new.start`). (2) Merge all overlapping: `while i < n and intervals[i].start <= new.end: new.end = max(new.end, intervals[i].end); i++`. Push the merged interval. (3) Copy the rest. O(n).
+
+---
+
+**Q4.** *Given an array of meeting time intervals `[[start, end], ...]`, return the minimum number of conference rooms required so that no two overlapping meetings share a room.*
+Min meeting rooms — how does the sweep-line approach work?
+`Example: intervals = [[0,30],[5,10],[15,20]] → 2`
+
+.
+.
+↳ **A:** Build two arrays: starts (sorted) and ends (sorted). Two pointers; whenever `starts[i] < ends[j]` you need a new room (`i++`); else free a room (`j++`). Track running max. O(n log n) for sorts, O(n) sweep. Heap variant: push end times into a min-heap; if next.start ≥ heap.top, pop; always push end. `len(heap)` at any moment = rooms in use.
+
+---
+
+**Q5.** *Given an array of intervals, return the minimum number of intervals you need to remove to make the remaining intervals non-overlapping.*
+Erase overlapping intervals — sort by what, and why?
+`Example: intervals = [[1,2],[2,3],[3,4],[1,3]] → 1 (remove [1,3])`
+
+.
+.
+↳ **A:** Sort by **end** (not start). Greedily keep an interval if its start ≥ the last-kept end; else drop it. Sorting by end maximizes room for future intervals. Number erased = total - kept. (This is "maximum non-overlapping intervals" in disguise — the classic interval scheduling proof works here.)
+
+---
+
+**Q6.** *Given two lists of closed intervals (each sorted and non-overlapping), return their intersection — all intervals that appear in both lists.*
+Intersection of two interval lists — what's the two-pointer pattern?
+`Example: A = [[0,2],[5,10]], B = [[1,5],[8,12]] → [[1,2],[5,5],[8,10]]`
+
+.
+.
+↳ **A:** Two pointers over both sorted lists. Compute `lo = max(a.start, b.start)`, `hi = min(a.end, b.end)`. If `lo <= hi`, emit `[lo, hi]`. Then advance the pointer whose interval ends first. O(m + n).
+
+---
+
+**Q7.** Two intervals share an endpoint: `[1,2]` and `[2,3]`. Do they overlap? What determines the answer, and why must you clarify this before coding?
+
+.
+.
+↳ **A:** Are `[1,2]` and `[2,3]` overlapping? Depends on whether endpoints are inclusive (closed) or exclusive (half-open). For meetings, `[2,3]` starting at 2 doesn't conflict with one ending at 2 — use `start < end` (strict). For closed real-number ranges, use `start <= end`. **Ask the interviewer** before coding.
+
+---
+
+## 18. Greedy
+
+**Q1.** When does greedy actually work?
+
+.
+.
+↳ **A:** When the problem admits an **exchange argument**: any optimal solution can be transformed into the greedy choice without making it worse. If you can't articulate the swap, it's probably DP. Greedy candidates also tend to have **matroid** structure or interval-scheduling structure.
+
+---
+
+**Q2.** *Given an array `nums` where `nums[i]` is the max jump length from position `i`, determine if you can reach the last index starting from index 0.*
+Jump Game I — what's the greedy pattern?
+`Example: nums = [2,3,1,1,4] → true; nums = [3,2,1,0,4] → false`
+
+.
+.
+↳ **A:** Track the maximum reachable index as you walk left to right. If `i > maxReach`, return False. Else `maxReach = max(maxReach, i + nums[i])`. Return True if you finish the loop. O(n), O(1).
+
+---
+
+**Q3.** *Given an array `nums` where `nums[i]` is the max jump length from position `i`, return the minimum number of jumps to reach the last index. (Guaranteed reachable.)*
+Jump Game II — how does the BFS-like greedy work?
+`Example: nums = [2,3,1,1,4] → 2`
+
+.
+.
+↳ **A:** Track `currentEnd` (farthest reachable with the jumps taken so far) and `farthest` (farthest reachable from any index in the current "level"). When `i == currentEnd`, take a jump: `jumps++; currentEnd = farthest`. O(n). Conceptually it's BFS without an explicit queue — levels are jump counts.
+
+---
+
+**Q4.** *There are `n` gas stations in a circle. `gas[i]` is the fuel at station `i`, `cost[i]` is the fuel needed to travel to station `i+1`. Starting with an empty tank, return the starting station index if you can complete the circuit, or -1 if impossible.*
+Gas Station — what's the single-pass trick?
+`Example: gas = [1,2,3,4,5], cost = [3,4,5,1,2] → 3`
+
+.
+.
+↳ **A:** If `sum(gas) < sum(cost)`, no solution. Otherwise there's exactly one. Walk once tracking `tank`; if `tank < 0`, reset start to `i+1` and tank to 0. The reset is valid because no station before `i+1` could've been a starting point (any prefix-sum dip below zero means you can't reach `i+1` from there either).
+
+---
+
+**Q5.** *Given a string `s`, partition it into as many parts as possible so that each letter appears in at most one part. Return a list of the partition lengths.*
+Partition Labels — what's the greedy pattern?
+`Example: s = "ababcbacadefegdehijhklij" → [9,7,8]`
+
+.
+.
+↳ **A:** Pre-compute the **last index** of each character: `last = {c: i for i, c in enumerate(s)}`. Walk left to right tracking `end = max(end, last[c])`. When `i == end`, close the current partition (length = end - start + 1) and start a new one. O(n).
+
+---
+
+**Q6.** Greedy vs DP — what tells you which to use?
+
+.
+.
+↳ **A:** If the optimal substructure has many overlapping decisions you must remember, → DP. If each step has an obvious locally-best choice that provably composes (exchange argument or no-cost swap), → greedy. Many problems admit both — greedy is faster but harder to prove correct. When unsure, write a small brute force and check on adversarial inputs.
+
+---
+
+**Q7.** Common trap — when does greedy silently fail?
+
+.
+.
+↳ **A:** Coin change with denominations like {1, 3, 4} and target 6: greedy takes 4+1+1 = 3 coins, optimal is 3+3 = 2 coins. Lesson: greedy works on canonical coin systems (US/EU coins) but not arbitrary ones. Always test a small counterexample before committing.
+
+---
+
+**Q8.** *Given a set of intervals, find the maximum number of non-overlapping intervals you can keep.* Sketch the exchange argument that proves the greedy (sort-by-end) approach is optimal.
+
+.
+.
+↳ **A:** Sort by end time; greedily take each interval whose start ≥ last-taken end. **Proof**: any optimal schedule's first interval can be swapped with the greedy choice (whose end is ≤ optimal's first end) without conflict; induct on the rest. Same argument backs 'erase overlapping intervals' (Intervals Q5).
 
 ---
 

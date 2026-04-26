@@ -752,9 +752,9 @@
       <div class="info-card">
         <h3>Week-by-Week Arc</h3>
         <div class="stat-row"><span class="stat-label">Weeks 1–2</span><span class="stat-value blue">Flagged re-solves + Intervals/Greedy</span></div>
-        <div class="stat-row"><span class="stat-label">Weeks 3–4</span><span class="stat-value blue">Greedy + 2-D DP + common SD designs</span></div>
+        <div class="stat-row"><span class="stat-label">Weeks 3–4</span><span class="stat-value blue">Greedy + 2-D DP + SD designs + Xu Vol 2</span></div>
         <div class="stat-row"><span class="stat-label">Weeks 5–6</span><span class="stat-value blue">Bit Manip + Adv Graphs + SD mocks</span></div>
-        <div class="stat-row"><span class="stat-label">SD Thread</span><span class="stat-value" style="color:var(--sd);">DDIA Ch 1–9 + 7 SD mocks</span></div>
+        <div class="stat-row"><span class="stat-label">SD Thread</span><span class="stat-value" style="color:var(--sd);">DDIA Ch 1–9 + Xu Vol 2 + 7 SD mocks</span></div>
       </div>
 
     </div>
@@ -816,7 +816,7 @@ const WEEKS = [
           { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Deck 0 (flagged) + Arrays & Hashing (first pass of each)' },
           { type: 'dsa-block', label: 'LC / DSA', text: '75 min: LC — <strong>Reorder List</strong> (linked list): find midpoint → reverse second half → merge. Also re-implement <strong>Remove Nth Node from End</strong> from scratch — pay attention to the n+1 gap.' },
         ],
-        flagged: ['Remove Nth Node from End (F12)']
+        flagged: ['Reorder List (F22)', 'Remove Nth Node from End (F12)']
       },
       {
         id: 'w1-wed',
@@ -837,7 +837,7 @@ const WEEKS = [
         time: '1.5 h',
         dotColor: '#89b4fa',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Stack deck (Deck 0 cards F6+F7 specifically)' },
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Stack deck + flagged F6/F7 (Daily Temps, Largest Rectangle) from Deck 0' },
           { type: 'dsa-block', label: 'LC / DSA', text: '75 min: LC — <strong>Merge K Sorted Lists</strong>: implement both the heap solution AND the divide-and-conquer solution. Write one sentence on when you\'d use each in a real system. Then re-implement <strong>Daily Temperatures</strong> from scratch using the monotonic stack.' },
         ],
         flagged: ['Merge K Sorted Lists (F14)', 'Daily Temperatures (F6)']
@@ -861,7 +861,7 @@ const WEEKS = [
         time: '3 h',
         dotColor: '#a6e3a1',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — Binary Search deck (F8+F9) <em>(moved from Fri)</em> + Sliding Window deck (F10+F11) + System Design (DDIA Ch 1) deck' },
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — Binary Search deck + flagged F8/F9 (Koko, Median 2 Sorted) <em>(moved from Fri)</em> + Sliding Window deck + flagged F10/F11 (LRCR, SW Max) + System Design (DDIA Ch 1) deck' },
           { type: 'mock-block', label: 'SD Mock #1 ★', text: '90 min: Design a URL shortener (solo, timed, record yourself or write it all up). Score yourself against the Hello Interview rubric after.' },
           { type: 'dsa-block', label: 'LC / DSA', text: '60 min: Re-implement <strong>Task Scheduler</strong> both ways: heap simulation AND the math formula (F15). Then <strong>Sliding Window Maximum</strong> with a deque from scratch — no peeking.' },
         ],
@@ -874,7 +874,7 @@ const WEEKS = [
         time: '3 h',
         dotColor: '#89b4fa',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — Trees deck (F15+F16) + Tries deck' },
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — Trees deck + flagged F16/F17 (Kth Smallest BST, Serialize Tree) + Tries deck' },
           { type: 'dsa-block', label: 'LC / DSA', text: '90 min: Timed — re-implement <strong>Serialize/Deserialize Binary Tree</strong> (BFS then DFS) + <strong>Kth Smallest in BST</strong> iterative. Both are flagged.' },
           { type: 'sd-block', label: 'System Design', text: '60 min: DDIA Ch 2 (Data Models) start — read + note-take, no more than 40 pages.' },
         ],
@@ -896,7 +896,7 @@ const WEEKS = [
         time: '1.5 h',
         dotColor: '#89b4fa',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Backtracking deck (F17) + Arrays & Hashing (+7d review — F1+F2+F3)' },
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Backtracking deck + flagged F18 (N-Queens) + Arrays & Hashing review — flagged F1/F2/F3 (+7d)' },
           { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Intervals kickoff: Insert Interval + Merge Intervals. Then re-solve <strong>N-Queens</strong> — without peeking, write the three tracking sets from memory.' },
         ],
         flagged: ['N-Queens (F18)']
@@ -920,7 +920,7 @@ const WEEKS = [
         time: '1.5 h',
         dotColor: '#89b4fa',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Two Pointers (+7d review — F4+F5)' },
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Two Pointers review — flagged F4/F5 (3Sum, Trap Rain) (+7d)' },
           { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Non-overlapping Intervals + <strong>Course Schedule</strong> re-solve (both Kahn\'s and DFS 3-color — write both). State the termination condition for each without hesitation.' },
         ],
         flagged: ['Course Schedule — both approaches (F19)']
@@ -945,7 +945,7 @@ const WEEKS = [
         time: '1.5 h',
         dotColor: '#89b4fa',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Stack (+7d review — F6+F7) + Heap deck (new, first pass)' },
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Stack review — flagged F6/F7 (Daily Temps, Largest Rectangle) (+7d) + Heap deck (new, first pass)' },
           { type: 'dsa-block', label: 'LC / DSA', text: '75 min: Re-solve <strong>Graph Valid Tree</strong> (prescreen first, then connectivity check) + <strong>Find the Duplicate Number</strong> using Floyd\'s cycle detection. Both flagged.' },
         ],
         flagged: ['Graph Valid Tree (F20)', 'Find the Duplicate Number (F13)']
@@ -982,7 +982,7 @@ const WEEKS = [
     label: 'Week 3',
     dates: 'Apr 27 – May 3, 2026',
     dsaFocus: 'Finish Intervals, start Greedy, continue 1-D DP',
-    sdFocus: 'Replication, Partitioning (DDIA Ch 5–6)',
+    sdFocus: 'Replication, Partitioning (DDIA Ch 5–6); Xu Vol 2: Distributed Message Queue',
     checkpoint: '<strong>End of Week 3:</strong> Intervals green, Greedy ~80%, 1-D DP ~70%, Replication + Partitioning internalized.',
     days: [
       {
@@ -1005,7 +1005,8 @@ const WEEKS = [
         dotColor: '#cba6f7',
         sessions: [
           { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — DDIA Ch 2–3 deck' },
-          { type: 'sd-block', label: 'System Design', text: '75 min: DDIA Ch 5 (Replication). Draw single-leader vs. multi-leader vs. leaderless from memory at the end.' },
+          { type: 'sd-block', label: 'System Design', text: '40 min: DDIA Ch 5 (Replication) — skim key concepts. Draw single-leader vs. multi-leader vs. leaderless from memory at the end.' },
+          { type: 'sd-block', label: 'System Design', text: '35 min: Xu Vol 2 — "Distributed Message Queue" chapter (mock prep for Thu\'s WhatsApp design — message ordering, delivery guarantees, consumer groups).' },
         ],
         flagged: []
       },
@@ -1040,7 +1041,7 @@ const WEEKS = [
         time: '1.5 h',
         dotColor: '#89b4fa',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Arrays & Hashing (+14d — F1+F2+F3)' },
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Arrays & Hashing review — flagged F1/F2/F3 (+14d)' },
           { type: 'dsa-block', label: 'LC / DSA', text: '75 min: 1-D DP push: Climbing Stairs, House Robber I & II, <strong>Maximum Product Subarray</strong> (flagged — implement tracking both curMax and curMin, update simultaneously). Then Longest Palindromic Substring.' },
         ],
         flagged: ['Maximum Product Subarray (F21)']
@@ -1077,7 +1078,7 @@ const WEEKS = [
     label: 'Week 4',
     dates: 'May 4 – May 10, 2026',
     dsaFocus: 'Finish Greedy + 1-D DP, start 2-D DP',
-    sdFocus: 'Transactions, Consistency, CAP, Consensus (DDIA Ch 7–9)',
+    sdFocus: 'Transactions, Consistency, CAP, Consensus (DDIA Ch 7–9); Xu Vol 2: Payment System',
     checkpoint: '<strong>End of Week 4:</strong> Greedy green, 1-D DP green, 2-D DP ~60%. CAP/transactions internalized.',
     days: [
       {
@@ -1100,7 +1101,8 @@ const WEEKS = [
         dotColor: '#cba6f7',
         sessions: [
           { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Replication deck' },
-          { type: 'sd-block', label: 'System Design', text: '75 min: DDIA Ch 7 (Transactions). Must be able to draw the isolation level matrix (read committed, snapshot, serializable) from memory.' },
+          { type: 'sd-block', label: 'System Design', text: '40 min: DDIA Ch 7 (Transactions) — focus on isolation levels. Must be able to draw the matrix (read committed, snapshot, serializable) from memory.' },
+          { type: 'sd-block', label: 'System Design', text: '35 min: Xu Vol 2 — "Payment System" chapter (concrete application of idempotency, exactly-once semantics, and transaction consistency).' },
         ],
         flagged: []
       },
@@ -1172,7 +1174,7 @@ const WEEKS = [
     label: 'Week 5',
     dates: 'May 11 – May 17, 2026',
     dsaFocus: 'Finish 2-D DP, Bit Manipulation, Math & Geometry, dip into Advanced Graphs',
-    sdFocus: 'Intensive mocks + weak-spot drilling',
+    sdFocus: 'Intensive mocks + weak-spot drilling; Xu Vol 2: targeted chapter for weakest area',
     checkpoint: '<strong>End of Week 5:</strong> All NeetCode 150 topics touched. 5 SD mocks done. STAR bank started.',
     days: [
       {
@@ -1195,7 +1197,8 @@ const WEEKS = [
         dotColor: '#cba6f7',
         sessions: [
           { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Consistency/CAP deck' },
-          { type: 'sd-block', label: 'System Design', text: '75 min: Pick your weakest topic from mocks 1–4 and re-attempt it fully. Compare to v1.' },
+          { type: 'sd-block', label: 'System Design', text: '35 min: Xu Vol 2 — read the chapter closest to your weakest mock topic (Proximity Service if geo patterns are weak, Metrics Monitoring for time-series/aggregation, or Hotel Reservation for booking/concurrency).' },
+          { type: 'sd-block', label: 'System Design', text: '40 min: Re-attempt your weakest SD topic from mocks 1–4 fully, applying what you just read. Compare to v1.' },
         ],
         flagged: []
       },
@@ -1469,6 +1472,15 @@ function linkifyText(html) {
     // Even indices are text nodes, odd are tags — skip tags
     if (i % 2 === 1) return part;
     let text = part;
+    // Pass 1: F## flagged-card links (Deck 0 cards F1–F22)
+    text = text.replace(/\bF(\d+)\b/g, (m, n) => {
+      const num = parseInt(n, 10);
+      if (num >= 1 && num <= 22) {
+        return `<a href="Flashcards/SWE-Flashcards.html#F${num}" target="_blank" rel="noopener" class="flag-card-link">F${num}</a>`;
+      }
+      return m;
+    });
+    // Pass 2: LeetCode problem name links
     for (const name of LC_NAMES_SORTED) {
       if (!text.includes(name)) continue;
       const url = LC_LINKS[name];
