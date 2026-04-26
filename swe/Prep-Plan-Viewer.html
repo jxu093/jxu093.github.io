@@ -474,6 +474,17 @@
     transition: border-color 0.15s, color 0.15s;
   }
   a.flag-card-link:hover { color: #fdd0b3; border-bottom-color: rgba(250,179,135,0.9); }
+
+  /* ── Deck links ── */
+  a.deck-link {
+    color: var(--dsa);
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(137,180,250,0.4);
+    transition: border-color 0.15s, color 0.15s;
+  }
+  a.deck-link:hover { color: #b0cefc; border-bottom-color: rgba(137,180,250,0.9); }
+  a.deck-link.sd-deck { color: var(--sd); border-bottom-color: rgba(203,166,247,0.4); }
+  a.deck-link.sd-deck:hover { color: #dcc4fa; border-bottom-color: rgba(203,166,247,0.9); }
   .flag-card-id {
     font-size: 10px;
     font-family: 'SF Mono', 'Fira Code', monospace;
@@ -1464,8 +1475,38 @@ const LC_LINKS = {
 // Sort by length descending so longer names match before shorter substrings
 const LC_NAMES_SORTED = Object.keys(LC_LINKS).sort((a, b) => b.length - a.length);
 
+// Deck name → flashcard deep-link mapping
+const DECK_LINKS = [
+  { pattern: 'Deck 0',                              id: 0, sd: false },
+  { pattern: 'Arrays & Hashing',                    id: 1, sd: false },
+  { pattern: 'Two Pointers',                        id: 2, sd: false },
+  { pattern: 'Stack deck',                          id: 3, sd: false },
+  { pattern: 'Binary Search',                       id: 4, sd: false },
+  { pattern: 'Sliding Window',                      id: 5, sd: false },
+  { pattern: 'Trees deck',                          id: 6, sd: false },
+  { pattern: 'Trees (',                             id: 6, sd: false, raw: true },
+  { pattern: 'Tries deck',                          id: 7, sd: false },
+  { pattern: 'Tries (',                             id: 7, sd: false, raw: true },
+  { pattern: 'Backtracking deck',                   id: 8, sd: false },
+  { pattern: 'Backtracking (',                      id: 8, sd: false, raw: true },
+  { pattern: 'DDIA Ch 1',                           id: 9, sd: true },
+  { pattern: 'DDIA Ch 2–3',                         id: 10, sd: true },
+  { pattern: 'DDIA Ch 2-3',                         id: 10, sd: true },
+  { pattern: 'Replication deck',                    id: 11, sd: true },
+  { pattern: 'Replication)',                        id: 11, sd: true, raw: true },
+  { pattern: 'Consistency/CAP deck',                id: 11, sd: true },
+  { pattern: 'Linked List',                         id: 13, sd: false },
+  { pattern: 'Heap deck',                           id: 14, sd: false },
+  { pattern: 'Heap (',                              id: 14, sd: false, raw: true },
+  { pattern: 'Graphs deck',                         id: 15, sd: false },
+  { pattern: '1-D DP',                              id: 16, sd: false },
+  { pattern: 'Intervals deck',                      id: 17, sd: false },
+  { pattern: 'Greedy deck',                         id: 18, sd: false },
+  { pattern: 'DP decks',                            id: 16, sd: false },
+];
+
 function linkifyText(html) {
-  // Two-pass approach: first protect existing tags, then linkify text runs only.
+  // Multi-pass approach: first protect existing tags, then linkify text runs only.
   // Split on HTML tags, process only text nodes, reassemble.
   const parts = html.split(/(<[^>]+>)/);
   return parts.map((part, i) => {
@@ -1480,7 +1521,22 @@ function linkifyText(html) {
       }
       return m;
     });
-    // Pass 2: LeetCode problem name links
+    // Pass 2: Deck name links (longest patterns first to avoid partial matches)
+    for (const d of DECK_LINKS) {
+      if (!text.includes(d.pattern)) continue;
+      const sdClass = d.sd ? ' sd-deck' : '';
+      if (d.raw) {
+        // For patterns like "Trees (" — link just the name part, keep the trailing char
+        const name = d.pattern.slice(0, -1).trim();
+        const trailing = d.pattern.slice(-1);
+        const link = `<a href="Flashcards/SWE-Flashcards.html#deck-${d.id}" target="_blank" rel="noopener" class="deck-link${sdClass}">${name}</a>${trailing}`;
+        text = text.split(d.pattern).join(link);
+      } else {
+        const link = `<a href="Flashcards/SWE-Flashcards.html#deck-${d.id}" target="_blank" rel="noopener" class="deck-link${sdClass}">${d.pattern}</a>`;
+        text = text.split(d.pattern).join(link);
+      }
+    }
+    // Pass 3: LeetCode problem name links
     for (const name of LC_NAMES_SORTED) {
       if (!text.includes(name)) continue;
       const url = LC_LINKS[name];
