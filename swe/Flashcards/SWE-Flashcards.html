@@ -910,15 +910,31 @@ loadState();
 loadFlags();
 updateFlagCount();
 
-// Deep-link: SWE-Flashcards.html#F14 → jump straight to that card
+// Deep-link: #F14 → flagged card, #deck-2 → Two Pointers deck, #deck-2-Q4 → specific card
 (function applyDeepLink() {
   const hash = window.location.hash.replace('#', '').trim();
-  if (hash && /^F\d+$/.test(hash)) {
+  if (!hash) return;
+  // Flagged card: #F14
+  if (/^F\d+$/.test(hash)) {
     const idx = DECKS[0].cards.findIndex(c => c.id === hash);
     if (idx >= 0) {
       state.deckIdx = 0;
       state.cardIdx = idx;
       state.expandedDecks.add(0);
+    }
+  }
+  // Deck (with optional card): #deck-2 or #deck-2-Q4
+  const deckMatch = hash.match(/^deck-(\d+)(?:-(.+))?$/);
+  if (deckMatch) {
+    const di = parseInt(deckMatch[1], 10);
+    if (di >= 0 && di < DECKS.length) {
+      state.deckIdx = di;
+      state.cardIdx = 0;
+      state.expandedDecks.add(di);
+      if (deckMatch[2]) {
+        const ci = DECKS[di].cards.findIndex(c => c.id === deckMatch[2]);
+        if (ci >= 0) state.cardIdx = ci;
+      }
     }
   }
 })();
