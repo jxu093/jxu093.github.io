@@ -6,25 +6,25 @@
 
 Decks in this file:
 
-0. **⚠️ Flagged Problems — Your Personal Gotchas** ← start here for every warm-up
-1. Arrays & Hashing
-2. Two Pointers
-3. Stack
-4. Binary Search
-5. Sliding Window
-6. Trees
-7. Tries
-8. Backtracking
-9. System Design — DDIA Ch 1 (Reliability, Scalability, Maintainability)
-10. System Design — DDIA Ch 2–3 (Data models, storage engines, indexes)
-11. System Design — Replication, Partitioning, Consistency, CAP
-12. System Design — Common design patterns & primitives
-13. Linked List
-14. Heap / Priority Queue
-15. Graphs
-16. 1-D DP
-17. Intervals
-18. Greedy
+0. **⚠️ Flagged Problems — Your Personal Gotchas**
+1. **Arrays & Hashing**
+2. **Two Pointers**
+3. **Stack**
+4. **Binary Search**
+5. **Sliding Window**
+6. **Trees**
+7. **Tries**
+8. **Backtracking**
+9. **System Design — DDIA Ch 1**
+10. **System Design — DDIA Ch 2–3**
+11. **System Design — Replication, Partitioning, Consistency, CAP**
+12. **System Design — Common design patterns & primitives**
+13. **Linked List**
+14. **Heap / Priority Queue**
+15. **Graphs**
+16. **1-D DP**
+17. **Intervals**
+18. **Greedy**
 
 At the bottom: a **deck template** for topics still to add (Advanced Graphs, 2-D DP, Bit Manipulation, Math & Geometry).
 
@@ -135,7 +135,7 @@ Sorting enables a two-pointer inner sweep (sum is monotonic with pointer movemen
 **F5 · Trapping Rain Water** — Two Pointers
 
 *Given an elevation map `height[]`, compute how much water it can trap after raining.*
-*Your note: "Track leftmax and rightmax. Beware while loop condition"*
+*Your note: "Two pointers moving inward. Which side is the bottleneck?"*
 
 Describe the two-pointer approach: what do the pointers track, when do you move which side, and what's the off-by-one in the while condition?
 
@@ -157,7 +157,7 @@ Maintain `leftMax` and `rightMax` — the tallest bar seen so far from each side
 **F6 · Daily Temperatures** — Stack
 
 *Given an array `temperatures`, return an array `answer` where `answer[i]` is the number of days you have to wait after day `i` to get a warmer temperature. If no future warmer day exists, `answer[i] = 0`.*
-*Your note: "Stack of previous index, pop and set result when larger temp found. Stack always has smaller value on top because bigger value will clear stack"*
+*Your note: "Monotonic stack — what order should values be in from bottom to top?"*
 
 Describe the monotonic stack invariant precisely: what does the stack store, what order are values in from bottom to top, and what happens when you see a larger temperature?
 
@@ -179,7 +179,7 @@ The stack stores **indices** of temperatures in strictly increasing order from b
 **F7 · Largest Rectangle in Histogram** — Stack
 
 *Given an array `heights` representing the widths of bars in a histogram, find the area of the largest rectangle.*
-*Your note: "Use monotonic stack and pop when lower height is found. Keep track of width by using index in stack or custom class with width"*
+*Your note: "Monotonic stack — but what extra info besides height do you need to store?"*
 
 What does the stack store (and why does it need more than just the index), and how do you track the correct width when you pop?
 
@@ -223,7 +223,7 @@ Search space: `k ∈ [1, max(piles)]`. Predicate: `sum(ceil(p / k) for p in pile
 **F9 · Median of Two Sorted Arrays** — Binary Search
 
 *Given two sorted arrays `nums1` and `nums2` of sizes `m` and `n`, return the median of the two sorted arrays in O(log(min(m, n))) time.*
-*Your note: "Binary search on smaller array for partition. j = (m+n+1)/2 - i. When left partitions ≤ right partitions, return the answer. Odd → max of left partition. Even → average with min of right partition."*
+*Your note: "Binary search a partition index in the shorter array. How do you derive the other partition?"*
 
 Walk through the full partition logic: what are you binary-searching on, how is `j` derived, what is the validity condition, and how do you handle out-of-bounds?
 
@@ -257,7 +257,7 @@ Binary search on the **partition index `i`** in the shorter array A (length `m`)
 **F10 · Longest Repeating Character Replacement** — Sliding Window
 
 *Given a string `s` and integer `k`, you can replace at most `k` characters in the window with any letter. Return the length of the longest substring with all the same letter after replacements.*
-*Your note: "Sliding window, keep track of max count and shift window if exceeds max number of swaps. Then record max"*
+*Your note: "Sliding window — what condition makes the window invalid?"*
 
 What is the invariant that determines when the window is invalid, and why is it OK for `maxCount` to be stale-high when shrinking?
 
@@ -329,7 +329,7 @@ You need to stop at the **node before** the target so you can rewire `.next`. Us
 **F13 · Find the Duplicate Number** — Linked List
 
 *Given an array `nums` of n+1 integers where each integer is in [1, n], find the duplicate without modifying the array, using O(1) extra space.*
-*Your note: "Binary search for candidate value which would have equal count of vals equal or less. OR solve like loop in linked list where 'next' val is using val as index. Must use 0 as starting index when finding loop entrance and return index"*
+*Your note: "Two approaches: one searches over values, the other treats the array as an implicit graph. What does index → value represent?"*
 
 Describe both approaches. For Floyd's: what is the "linked list", where does the traversal start, and what does the entrance of the cycle represent?
 
@@ -353,7 +353,7 @@ Output: 2
 **F14 · Merge K Sorted Lists** — Heap / Priority Queue
 
 *Given k sorted linked lists, merge them all into one sorted linked list.*
-*Your note: "Use heap or recursion (merge in parallel and then merge results). Heap is better for streaming data because it only requires head and not entire lists in memory. Divide and conquer is more space efficient"*
+*Your note: "Two approaches: one uses a shared data structure across all lists, the other pairs them up. When would you prefer each?"*
 
 Both approaches are O(N log k). When would you argue for one over the other in an interview, and what's the heap's specific memory advantage?
 
@@ -409,7 +409,7 @@ answer = max(len(tasks), (max_count - 1) * (n + 1) + count_of_max)
 **F16 · Kth Smallest Element in a BST** — Trees
 
 *Given a BST and integer `k`, return the kth smallest value.*
-*Your note: "Use stack for inorder traversal but also use pointer. Don't push without checking left first"*
+*Your note: "Iterative inorder — what two things does your loop manage, and what must you exhaust before popping?"*
 
 Write out the iterative inorder loop structure, and what's the exact bug caused by pushing without checking left first?
 
@@ -443,7 +443,7 @@ while node or stack:
 **F17 · Serialize and Deserialize Binary Tree** — Trees
 
 *Design an algorithm to serialize a binary tree to a string and deserialize it back. No constraints on format — just make it work.*
-*Your note: "Use queue to BFS and serialize null nodes, or recursive DFS and specify length as prefix for L and R child nodes"*
+*Your note: "How do you represent absent children in the serialized form? BFS vs DFS — which is simpler to code in an interview?"*
 
 Describe both approaches. What does each use as a null marker, and which is simpler to implement in an interview?
 
@@ -472,7 +472,7 @@ Deserialize: [1,2,3,null,null,4,5]
 **F18 · N-Queens** — Backtracking
 
 *Place n queens on an n×n chessboard so no two queens attack each other. Return all distinct solutions.*
-*Your note: "DFS one row at a time. Track diagonals with r+c and r-c+n-1"*
+*Your note: "Place one queen per row. What three conflict dimensions do you need to track, and how do you key each?"*
 
 What are the three sets you maintain, what keys do you use, and why does `r+c` and `r-c` capture diagonals?
 
@@ -501,7 +501,7 @@ DFS one row at a time (placement in row `r`, trying each column `c`). If none of
 **F19 · Course Schedule** — Graphs
 
 *Given `numCourses` and `prerequisites` (pairs [a, b] meaning b must come before a), determine if it's possible to finish all courses (i.e., no cycle in the prerequisite graph).*
-*Your note: "Topological sort with Khan's algorithm by keeping track of indegree. In the end all nodes should be visited. Or use DFS and keep track of visited nodes in current trip, if visiting again then there's a cycle"*
+*Your note: "Cycle detection in a directed graph. Two classic approaches — one BFS-based, one DFS-based. What signals a cycle in each?"*
 
 For Kahn's: what's the exact termination check? For DFS: what are the three node states and what distinguishes "visiting" from "visited"?
 
@@ -537,7 +537,7 @@ If you reach a node with state `1` during DFS, you've found a back edge → cycl
 **F20 · Graph Valid Tree** — Graphs
 
 *Given n nodes (labeled 0 to n-1) and a list of undirected edges, determine if the edges form a valid tree.*
-*Your note: "Can prescreen by checking edges.length == n-1. If more edges, there must be a cycle. If less, they must not be connected. If equal, then check if they're connected otherwise there must be a cycle"*
+*Your note: "A tree on n nodes has a specific edge count. What's the O(1) prescreen, and what does it NOT rule out?"*
 
 What does the prescreen catch, what can it NOT rule out alone, and what's the follow-up check?
 
@@ -557,18 +557,18 @@ Output: false
 ↳ **Answer:**
 A tree on n nodes has **exactly n-1 edges** — this is a necessary condition.
 
-**Prescreen (O(1)):** `if len(edges) != n - 1: return False`. If more → must have a cycle. If fewer → must be disconnected. This rules out most invalid inputs instantly.
+**Prescreen (O(1)):** `if len(edges) != n - 1: return False`. If more edges → must have a cycle. If fewer → must be disconnected. This rules out most invalid inputs instantly.
 
-**What it can't catch:** `n-1` edges doesn't guarantee a connected tree — a **forest** (multiple disconnected trees) also has fewer than n-1 edges... wait, actually n-1 edges for a forest of k components means n-k edges. So n-1 edges with k=1 is a tree; with k>1 you'd have n-k < n-1. So the only case that passes the prescreen but is still invalid is: n-1 edges with a cycle AND a disconnected component simultaneously. This is actually impossible for simple graphs, but it's still worth verifying connectivity since problems may have disconnected components with the right edge count in degenerate cases.
+**Why the prescreen alone is sufficient with a connectivity check:** For simple undirected graphs, n-1 edges + connected ⟺ tree. A graph with exactly n-1 edges *cannot* contain a cycle without also being disconnected (a cycle on k nodes uses k edges, leaving only n-1-k edges for the remaining n-k nodes — not enough to connect them). So the prescreen guarantees no cycles; you just need to verify connectivity.
 
-**Follow-up:** BFS/DFS from node 0, count reachable nodes. If `reachable == n`, it's a tree.
+**Follow-up:** BFS/DFS from node 0, count reachable nodes. If `reachable == n`, it's a tree. Both conditions together are necessary and sufficient.
 
 ---
 
 **F21 · Maximum Product Subarray** — 1-D DP
 
 *Given an integer array `nums`, find the contiguous subarray with the largest product, and return its value.*
-*Your note: "Keep track of rolling max and rolling min. Rolling max is max of max×num, min×num, or num"*
+*Your note: "Why can't you just track a running max like Kadane's? What does a negative number do?"*
 
 Why must you track both a running max AND a running min, and why must you update both simultaneously (not sequentially)?
 
@@ -601,7 +601,7 @@ cur_max, cur_min = new_max, new_min
 **F22 · Reorder List** — Linked List
 
 *Given the head of a singly linked list L0 → L1 → … → Ln, reorder it in-place to: L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → …*
-*Your note: "find midpoint, reverse second half, merge"*
+*Your note: "Three phases — all O(1) space. Think about what you'd need to interleave from both ends."*
 
 What are the three distinct phases of the solution, and what algorithm does each phase use?
 
@@ -640,7 +640,6 @@ All three phases are O(n) time, O(1) space.
 ↳ **A:** When you need O(n) lookup or counting and don't need order. Sorting is O(n log n); hashing trades memory for time. Prefer hashing when order is irrelevant and keys are hashable.
 
 ---
-
 **Q2.** What's the canonical pattern for "two sum"-style problems?
 
 .
@@ -648,7 +647,6 @@ All three phases are O(n) time, O(1) space.
 ↳ **A:** Single-pass hash map: for each element `x`, check if `target - x` is already in the map; otherwise insert `x` with its index. O(n) time, O(n) space.
 
 ---
-
 **Q3.** How do you detect a duplicate in one pass?
 
 .
@@ -656,7 +654,6 @@ All three phases are O(n) time, O(1) space.
 ↳ **A:** Walk the array, put each element into a set; if insertion finds it already there, you have a duplicate. O(n)/O(n).
 
 ---
-
 **Q4.** How do you group anagrams efficiently?
 
 .
@@ -664,25 +661,22 @@ All three phases are O(n) time, O(1) space.
 ↳ **A:** Use a hash map keyed by either the sorted string (O(k log k) per word) or a 26-length character-count tuple (O(k) per word). The tuple key is faster in tight loops.
 
 ---
-
 **Q5.** *Given an unsorted integer array, return the length of the longest consecutive elements sequence in O(n) time.* What's the trick for "longest consecutive sequence"? (See also F3)
-`Example: Input:  nums = [100,4,200,1,3,2] → Output: 4  (sequence: 1,2,3,4)`
+`Example: Input:  nums = [100,4,200,1,3,2] Output: 4  (sequence: 1,2,3,4)`
 
 .
 .
 ↳ **A:** Put all nums in a set. Only start counting when `n-1` is NOT in the set (n is the start of a run). Walk forward until the run breaks. Amortized O(n).
 
 ---
-
 **Q6.** *Given an integer array `nums`, return an array `answer` where `answer[i]` equals the product of all elements except `nums[i]`, without using division, in O(n) time.* Why does this need two passes rather than one?
-`Example: Input:  nums = [1,2,3,4] → Output: [24,12,8,6]`
+`Example: Input:  nums = [1,2,3,4] Output: [24,12,8,6]`
 
 .
 .
 ↳ **A:** You need each element's left-side product AND right-side product. One pass can carry only one side. Use prefix and suffix passes: first fill output with prefix products; then walk backward multiplying in suffix products using a running variable. O(n)/O(1) extra.
 
 ---
-
 **Q7.** How would you encode a list of strings to a single string and decode it back? (See also F2)
 
 .
@@ -690,7 +684,6 @@ All three phases are O(n) time, O(1) space.
 ↳ **A:** Prefix each string with its length and a delimiter: `"5#hello3#abc"`. Decode by reading the number up to `#`, then slicing that many chars. Robust to any string content.
 
 ---
-
 **Q8.** Why is O(1) for hash lookup only *expected*, not worst-case?
 
 .
@@ -698,12 +691,19 @@ All three phases are O(n) time, O(1) space.
 ↳ **A:** Assumes a good hash function distributes uniformly. Adversarial keys or a poor hash can cluster into one bucket, making lookup O(n). Randomized seeds and rehashing mitigate this.
 
 ---
-
 **Q9.** What's the O(n) approach for "top k frequent elements"? (See also F1)
 
 .
 .
 ↳ **A:** Bucket sort by frequency. Build `bucket[0..n]` where `bucket[i]` holds elements with frequency `i`. Scan from high to low, collect until k results. O(n), no heap needed.
+
+---
+**Q10.** *Given an integer array `nums` and an integer `k`, return the total number of subarrays whose sum equals `k`.* What's the prefix sum + hash map pattern, and why can't sliding window solve this?
+`Example: Input:  nums = [1,1,1], k = 2 Output: 2  (subarrays [1,1] starting at index 0 and 1)`
+
+.
+.
+↳ **A:** Sliding window fails because elements can be negative (shrinking the window doesn't guarantee the sum decreases). Instead: maintain a running `prefix_sum` and a hash map `{prefix_sum: count}` initialized with `{0: 1}`. At each index, check if `prefix_sum - k` exists in the map — if so, add its count to the result (those are subarrays ending here with sum k). Then increment `map[prefix_sum]`. O(n) time, O(n) space. This pattern generalizes: 'subarray with sum divisible by k' uses `prefix_sum % k` as the key.
 
 ---
 
@@ -716,16 +716,14 @@ All three phases are O(n) time, O(1) space.
 ↳ **A:** When the input is sorted (or sortable), or you need pairs/triples with a monotonic relationship (sum grows as left pointer moves right). Converts O(n²) brute force to O(n).
 
 ---
-
 **Q2.** *Given a sorted array and a target sum, find two numbers that add up to the target.* Walk through the two-pointer approach — why does it work, and why is it O(n)?
-`Example: Input:  numbers = [2,7,11,15], target = 9 → Output: [0,1]`
+`Example: Input:  numbers = [2,7,11,15], target = 9 Output: [0,1]`
 
 .
 .
 ↳ **A:** Left at 0, right at n-1. If sum < target, move `left++`; if > target, move `right--`; if equal, done. Correct because sum changes monotonically with each move.
 
 ---
-
 **Q3.** Why does 3Sum start with sorting? (See also F4)
 
 .
@@ -733,17 +731,15 @@ All three phases are O(n) time, O(1) space.
 ↳ **A:** Sorting enables the two-pointer inner loop and easy duplicate skipping. Total: O(n²) time, O(1) extra space.
 
 ---
-
 **Q4.** *Given `n` vertical lines at positions `[0..n-1]` with heights `height[i]`, find two lines that together with the x-axis form the container holding the most water.*
 What's the "container with most water" invariant?
-`Example: height = [1,8,6,2,5,4,8,3,7] → 49`
+`Example: Input:  height = [1,8,6,2,5,4,8,3,7] Output: 49`
 
 .
 .
 ↳ **A:** Area = `min(left_height, right_height) * width`. Moving the taller side inward can never increase area (width shrinks, min stays ≤). Always move the shorter side.
 
 ---
-
 **Q5.** *Given an elevation map `height[]`, compute how much water is trapped after raining.* Compare the two approaches and their space tradeoffs. (See also F5)
 
 .
@@ -751,16 +747,14 @@ What's the "container with most water" invariant?
 ↳ **A:** (1) Precompute `leftMax[]` and `rightMax[]` arrays; water at `i` = `min(L[i], R[i]) - h[i]`. O(n) time, O(n) space. (2) Two pointers tracking running maxes; same O(n) time, O(1) space. Two-pointer is preferred in interviews.
 
 ---
-
 **Q6.** *Given a sorted array `nums`, remove the duplicates in-place so each element appears only once. Return the number of unique elements.* What's the two-pointer pattern for this?
-`Example: Input:  nums = [0,0,1,1,1,2,2,3,3,4] → Output: 5  (nums modified to [0,1,2,3,4,...])`
+`Example: Input:  nums = [0,0,1,1,1,2,2,3,3,4] Output: 5  (nums modified to [0,1,2,3,4,...])`
 
 .
 .
 ↳ **A:** Slow pointer marks the write position; fast pointer scans. Write only when a new value is seen. O(n)/O(1).
 
 ---
-
 **Q7.** Why prefer two pointers over reversing for palindrome checks?
 
 .
@@ -768,9 +762,8 @@ What's the "container with most water" invariant?
 ↳ **A:** O(1) extra space and early exit on first mismatch. Reversing allocates a new string/array.
 
 ---
-
 **Q8.** *Given a string `s`, return `true` if it can be made into a palindrome by deleting at most one character.* How do you solve this without checking every possible deletion?
-`Example: Input:  s = "abca" → Output: true  (remove 'b' or 'c')`
+`Example: Input:  s = "abca" Output: true  (remove 'b' or 'c')`
 
 .
 .
@@ -787,7 +780,6 @@ What's the "container with most water" invariant?
 ↳ **A:** Matching/nested structures (parentheses, HTML), or a "nearest previous/next greater/smaller" relationship (monotonic stack).
 
 ---
-
 **Q2.** How does a monotonic decreasing stack help with "next greater element"? (See also F6)
 
 .
@@ -795,7 +787,6 @@ What's the "container with most water" invariant?
 ↳ **A:** Maintain indices with decreasing values. When you see a bigger value, pop all smaller ones — for each popped index, the current value IS its next greater element. O(n) amortized.
 
 ---
-
 **Q3.** What's the structure of "largest rectangle in histogram"? (See also F7)
 
 .
@@ -803,16 +794,14 @@ What's the "container with most water" invariant?
 ↳ **A:** Monotonic increasing stack of `(height, start_index)` pairs. When a bar breaks the increasing invariant, pop and compute `area = height * (i - start_index)`. The new element inherits the last popped `start_index`.
 
 ---
-
-**Q4.** *Given an array of tokens representing an arithmetic expression in Reverse Polish Notation (e.g., `[\"2\",\"1\",\"+\",\"3\",\"*\"]` = (2+1)*3 = 9), evaluate and return the result.* Walk through the stack-based approach.
-`Example: Input:  tokens = [\"2\",\"1\",\"+\",\"3\",\"*\"] → Output: 9`
+**Q4.** *Given an array of tokens representing an arithmetic expression in Reverse Polish Notation (e.g., `["2","1","+","3","*"]` = (2+1)*3 = 9), evaluate and return the result.* Walk through the stack-based approach.
+`Example: Input:  tokens = ["2","1","+","3","*"] Output: 9`
 
 .
 .
 ↳ **A:** Push operands. On operator, pop two (note order for non-commutative ops like `-` and `/`), apply, push result. Final stack top is the answer.
 
 ---
-
 **Q5.** *Design a stack that supports push, pop, top, and retrieving the minimum element — all in O(1) time.* What's the data structure trick that makes O(1) getMin possible?
 
 .
@@ -820,7 +809,6 @@ What's the "container with most water" invariant?
 ↳ **A:** Pair each pushed value with the current min at that point (as tuples in the stack, or a parallel min-stack). Pop takes both. All operations O(1).
 
 ---
-
 **Q6.** When you have a recursive solution (e.g., DFS on a tree) and need to convert it to iterative to avoid stack overflow, what's the general technique?
 
 .
@@ -828,12 +816,28 @@ What's the "container with most water" invariant?
 ↳ **A:** Manually push call frames (state tuples). Useful for tree/graph DFS to avoid Python's recursion limit. Also enables early-exit patterns that recursion makes awkward.
 
 ---
-
 **Q7.** When parsing "decode string" (e.g., `3[a2[c]]`), what do you push?
 
 .
 .
 ↳ **A:** On `[`: push the current string-being-built and the current multiplier; reset locals. On `]`: pop and combine: `prev_string + multiplier * current_string`.
+
+---
+**Q8.** *Given a string containing just the characters `(`, `)`, `{`, `}`, `[` and `]`, determine if the input string is valid (every open bracket is closed by the same type in the correct order).* Walk through the stack approach and the three ways it can fail.
+`Example: Input:  s = "([{}])" Output: true  Input:  s = "([)]" Output: false`
+
+.
+.
+↳ **A:** Push open brackets onto the stack. On a close bracket, pop and check it matches the corresponding open type (use a map: `)→(`, `]→[`, `}→{`). **Three failure modes:** (1) Close bracket but stack is empty (nothing to match). (2) Popped bracket doesn't match the close type (wrong nesting order). (3) After processing all chars, stack is non-empty (unclosed opens remain). O(n) time, O(n) space.
+
+---
+**Q9.** *Given `n` pairs of parentheses, write a function to generate all combinations of well-formed parentheses.*
+What are the two recursive choices and the constraints that prune invalid branches?
+`Example: Input:  n = 3 Output: ["((()))","(()())","(())()","()(())","()()()"]`
+
+.
+.
+↳ **A:** At each position, you can add `(` if `open_count < n`, or `)` if `close_count < open_count`. Base case: `len(path) == 2*n` → append to results. The constraint `close < open` is the key pruning rule — it ensures you never close a bracket that wasn't opened. This is backtracking with an implicit stack (open count acts as the stack depth). Total results = Catalan number C(n).
 
 ---
 
@@ -846,15 +850,26 @@ What's the "container with most water" invariant?
 ↳ **A:** (1) Loop condition (`l < r` vs `l <= r`). (2) Mid computation (`l + (r - l) // 2` to avoid overflow). (3) Which half to keep. (4) What `l` (or `r`) points to when the loop exits.
 
 ---
-
-**Q2.** How do you binary search on the answer space?
+**Q2.** You suspect a problem can be solved by binary searching on the answer value itself (not on an array index). What three things do you need to define, and what does the template look like?
 
 .
 .
-↳ **A:** When you can check "is X feasible?" in O(n), binary search over possible answer values. Common in "minimize the max" / "maximize the min" problems (Koko, ship packages, split array).
+↳ **A:** Define: (1) **search range** `[lo, hi]` over candidate answers (e.g., `[1, max(piles)]` for Koko). (2) **Feasibility predicate** `feasible(mid)` that checks in O(n) whether `mid` is a valid answer. (3) **Direction** — are you minimizing (search left when feasible) or maximizing (search right)?
+
+**Template (minimize):**
+```
+lo, hi = min_possible, max_possible
+while lo < hi:
+    mid = (lo + hi) // 2
+    if feasible(mid):
+        hi = mid        # mid works, try smaller
+    else:
+        lo = mid + 1    # mid fails, need bigger
+return lo
+```
+Common in 'minimize the max' / 'maximize the min' problems (Koko, ship packages, split array).
 
 ---
-
 **Q3.** You need to find the first occurrence of a target in a sorted array (or the insertion point if absent). Write out the binary search template — what's the loop condition and how do you update bounds?
 
 .
@@ -862,25 +877,22 @@ What's the "container with most water" invariant?
 ↳ **A:** `while l < r: m = (l+r)//2; if a[m] < target: l = m+1 else: r = m`. After loop, `l` is the insertion point.
 
 ---
-
 **Q4.** *Given a sorted array that was rotated at an unknown pivot (e.g., `[4,5,6,7,0,1,2]`), search for a target value in O(log n).* How do you decide which half to search at each step?
-`Example: Input:  nums = [4,5,6,7,0,1,2], target = 0 → Output: 4`
+`Example: Input:  nums = [4,5,6,7,0,1,2], target = 0 Output: 4`
 
 .
 .
 ↳ **A:** At each mid, one half is always sorted. Check which (`a[l] <= a[m]`). If target falls in that sorted half's range, search there; else search the other. O(log n).
 
 ---
-
 **Q5.** *Given a sorted array rotated at an unknown pivot (no duplicates), find the minimum element in O(log n).* In your binary search, why must you compare `mid` to the right endpoint rather than the left?
-`Example: Input:  nums = [3,4,5,1,2] → Output: 1`
+`Example: Input:  nums = [3,4,5,1,2] Output: 1`
 
 .
 .
 ↳ **A:** Right is a stable anchor: `a[m] > a[r]` means min is strictly right of m; else min is at m or left of m. Comparing to left breaks on already-sorted inputs.
 
 ---
-
 **Q6.** What does "Koko eating bananas" binary search over? (See also F8)
 
 .
@@ -888,7 +900,6 @@ What's the "container with most water" invariant?
 ↳ **A:** Speed `k ∈ [1, max(piles)]`. Predicate: `sum(ceil(p/k)) <= h`. Record candidate when predicate holds; continue searching left for minimum.
 
 ---
-
 **Q7.** Median of two sorted arrays in O(log(min(m, n))) — what's being searched? (See also F9)
 
 .
@@ -906,26 +917,23 @@ What's the "container with most water" invariant?
 ↳ **A:** Fixed: exactly k elements; slide one in, one out each step. Variable: expand right to satisfy/violate a condition, shrink left to restore; track the optimum.
 
 ---
-
 **Q2.** *Given a string `s`, find the length of the longest substring without any repeating characters.* Walk through the sliding window template.
-`Example: Input:  s = "abcabcbb" → Output: 3  ("abc")`
+`Example: Input:  s = "abcabcbb" Output: 3  ("abc")`
 
 .
 .
 ↳ **A:** Expand right, add char to a set. While duplicate exists, shrink left, remove char. Track `max(right - left + 1)`. O(n)/O(|alphabet|).
 
 ---
-
 **Q3.** *Given strings `s` and `t`, return the shortest substring of `s` that contains every character in `t` (including duplicates). Return `""` if no such substring exists.*
 What's the template for "minimum window substring"?
-`Example: s = "ADOBECODEBANC", t = "ABC" → "BANC"`
+`Example: Input:  s = "ADOBECODEBANC", t = "ABC" Output: "BANC"`
 
 .
 .
 ↳ **A:** Expand right, track char counts vs. required. When all required chars are satisfied, shrink left while still valid, tracking min window. O(n).
 
 ---
-
 **Q4.** Some sliding window problems need a deque (double-ended queue) instead of just two pointers. What type of problem requires this, and what invariant does the deque maintain? (See also F11)
 
 .
@@ -933,17 +941,15 @@ What's the template for "minimum window substring"?
 ↳ **A:** Sliding-window max/min in O(n): maintain indices in monotonic order; front is always the max/min of the current window. Pop from back when new element dominates; pop from front when out of window.
 
 ---
-
 **Q5.** *Given an array `prices` where `prices[i]` is the stock price on day `i`, find the maximum profit from one buy and one sell (buy before sell). Return 0 if no profit is possible.*
 "Best time to buy and sell stock" — why is this a window problem?
-`Example: prices = [7,1,5,3,6,4] → 5 (buy at 1, sell at 6)`
+`Example: Input:  prices = [7,1,5,3,6,4] Output: 5  (buy at 1, sell at 6)`
 
 .
 .
 ↳ **A:** Left pointer tracks the lowest price seen so far; right pointer scans. Max profit = `price - min_seen`. One pass, O(n).
 
 ---
-
 **Q6.** *Given a string `s` and integer `k`, you can replace at most `k` characters. Find the length of the longest substring where all characters are the same after replacements.* Why is it safe to leave `maxCount` stale-high when shrinking the window? (See also F10)
 
 .
@@ -951,7 +957,6 @@ What's the template for "minimum window substring"?
 ↳ **A:** `maxCount` tracks the best frequency seen in any window. A stale-high value only makes the check stricter — you'll never accept an invalid window. The result only updates when a genuinely larger valid window is found.
 
 ---
-
 **Q7.** For character-count windows, how do you avoid O(26) checks on every step?
 
 .
@@ -969,7 +974,6 @@ What's the template for "minimum window substring"?
 ↳ **A:** Pre-order (root, L, R): serialize/clone. In-order (L, root, R): sorted traversal of BSTs. Post-order (L, R, root): aggregate from children (heights, sums).
 
 ---
-
 **Q2.** How do you compute the height of a binary tree?
 
 .
@@ -977,7 +981,6 @@ What's the template for "minimum window substring"?
 ↳ **A:** `1 + max(height(left), height(right))`; return `-1` (or `0`) for `None` depending on your convention.
 
 ---
-
 **Q3.** How to check if a binary tree is balanced?
 
 .
@@ -985,17 +988,15 @@ What's the template for "minimum window substring"?
 ↳ **A:** Post-order recursion returning height; if any subtree returns `-1` (sentinel for "unbalanced"), propagate it up. O(n) with early-exit.
 
 ---
-
 **Q4.** *Given the root of a binary tree, return the length of the diameter — the longest path between any two nodes (measured in edges). The path may or may not pass through the root.*
 Diameter of a binary tree — what do you return vs. what do you update?
-`Example: root = [1,2,3,4,5] → 3 (path 4→2→1→3)`
+`Example: Input:  root = [1,2,3,4,5] Output: 3  (path 4→2→1→3 or 5→2→1→3)`
 
 .
 .
 ↳ **A:** Return height to parent. Update a shared `diameter` with `left_height + right_height` at each node. Diameter need not pass through the root.
 
 ---
-
 **Q5.** *Given the root of a binary tree, determine if it is a valid BST (every node's value is strictly between its ancestors' constraints).* What's the common bug in a naive recursive check, and how do you fix it?
 
 .
@@ -1003,7 +1004,6 @@ Diameter of a binary tree — what do you return vs. what do you update?
 ↳ **A:** Checking only `left < root < right` locally misses constraints from ancestors. Correct: pass `(min_bound, max_bound)` down the recursion, or do in-order traversal and verify strictly increasing.
 
 ---
-
 **Q6.** *Given a binary tree and two nodes `p` and `q`, find their lowest common ancestor (the deepest node that has both p and q as descendants).* Describe the recursive algorithm.
 
 .
@@ -1011,7 +1011,6 @@ Diameter of a binary tree — what do you return vs. what do you update?
 ↳ **A:** Recurse into both children. If both return non-null, current node is the LCA. Else return whichever child is non-null. O(n).
 
 ---
-
 **Q7.** *Given a BST and two nodes `p` and `q`, find their lowest common ancestor.* Why is this simpler than the general binary tree case, and what's the algorithm?
 
 .
@@ -1019,7 +1018,6 @@ Diameter of a binary tree — what do you return vs. what do you update?
 ↳ **A:** Walk from root: if both p,q < node → go left; if both > node → go right; else current node is the LCA. O(h).
 
 ---
-
 **Q8.** How to serialize/deserialize a binary tree? (See also F17)
 
 .
@@ -1027,7 +1025,6 @@ Diameter of a binary tree — what do you return vs. what do you update?
 ↳ **A:** Pre-order DFS with null markers (`"N"`), or BFS level-order. Deserialize by consuming tokens and recursively (or iteratively) building. O(n) both ways.
 
 ---
-
 **Q9.** *Given a binary tree, return its level-order traversal as a list of lists (each inner list = one level, left to right).* What data structure drives this, and how do you know when one level ends and the next begins?
 
 .
@@ -1035,15 +1032,15 @@ Diameter of a binary tree — what do you return vs. what do you update?
 ↳ **A:** A queue (BFS). Process one level at a time by recording the queue length at the level's start and popping exactly that many.
 
 ---
-
-**Q10.** Build a tree from preorder + inorder?
+**Q10.** *Given two integer arrays `preorder` and `inorder` (both representing traversals of the same binary tree with unique values), construct and return the binary tree.*
+How do you build a tree from preorder + inorder?
+`Example: Input:  preorder = [3,9,20,15,7], inorder = [9,3,15,20,7] Output: [3,9,20,null,null,15,7]`
 
 .
 .
 ↳ **A:** First element of preorder is the root. Find it in inorder — splits left/right subtrees. Use a hash map (value → inorder index) to make splits O(1). Recurse on slices. O(n) total.
 
 ---
-
 **Q11.** *Given a BST and integer `k`, return the kth smallest value (1-indexed).* Walk through the iterative inorder approach using a stack. (See also F16)
 
 .
@@ -1051,14 +1048,29 @@ Diameter of a binary tree — what do you return vs. what do you update?
 ↳ **A:** Use a stack and `node` pointer. Inner `while node:` pushes the entire left spine. Pop, decrement k, return if k==0, then go right. Never push without checking left first.
 
 ---
-
 **Q12.** *Given a binary tree where each node has an integer value (can be negative), find the path with the maximum sum. A path is any sequence of connected nodes (doesn't need to pass through the root or be root-to-leaf).*
 Max path sum — what two quantities do you compute per recursion?
-`Example: root = [-10,9,20,null,null,15,7] → 42 (path 15→20→7)`
+`Example: Input:  root = [-10,9,20,null,null,15,7] Output: 42  (path 15→20→7)`
 
 .
 .
 ↳ **A:** **Return to parent:** `node.val + max(0, max(left_gain, right_gain))` (a straight path that can extend upward). **Update global:** `node.val + max(0, left_gain) + max(0, right_gain)` (path that bends at this node).
+
+---
+**Q13.** *Given the root of a binary tree, invert it (mirror it) and return the root.* This is trivially easy — so what's the real interview value, and what's the one-liner?
+`Example: Input:  root = [4,2,7,1,3,6,9] Output: [4,7,2,9,6,3,1]`
+
+.
+.
+↳ **A:** Recursively swap left and right children: `root.left, root.right = invert(root.right), invert(root.left); return root`. Base case: `if not root: return None`. The interview value isn't the algorithm — it's demonstrating clean recursion, handling the base case, and (if asked) converting to iterative BFS with a queue. Also tests: can you recognize this is just a post-order traversal where the 'visit' step is a swap? O(n) time, O(h) space.
+
+---
+**Q14.** *Given the root of a binary tree, return the values of the nodes you can see from the right side, ordered from top to bottom.* How does this differ from a standard level-order traversal?
+`Example: Input:  root = [1,2,3,null,5,null,4] Output: [1,3,4]`
+
+.
+.
+↳ **A:** It's BFS level-order, but you only record the **last node of each level**. Process one level at a time (record queue length, pop that many); after each level, append the last-popped value. Alternatively, DFS with a `depth` parameter: visit right subtree first; if `depth == len(result)`, this is the first node seen at this depth from the right → append it. The DFS approach is O(n) time, O(h) space.
 
 ---
 
@@ -1071,7 +1083,6 @@ Max path sum — what two quantities do you compute per recursion?
 ↳ **A:** A map (or fixed-size array for known alphabet) from char → child node, plus a boolean `is_end` marking a completed word.
 
 ---
-
 **Q2.** For a trie supporting `insert(word)`, `search(word)`, and `startsWith(prefix)`, what is the time complexity of each operation and what determines it?
 
 .
@@ -1079,7 +1090,6 @@ Max path sum — what two quantities do you compute per recursion?
 ↳ **A:** All O(k) in the length of the word. Space O(total characters stored) worst case.
 
 ---
-
 **Q3.** When is a trie preferable to a hash set of strings?
 
 .
@@ -1087,26 +1097,23 @@ Max path sum — what two quantities do you compute per recursion?
 ↳ **A:** When you need prefix queries, autocomplete, or longest-common-prefix, or want to amortize repeated prefixes in memory.
 
 ---
-
 **Q4.** *Given an `m × n` board of characters and a list of words, return all words that can be formed by sequentially adjacent cells (horizontal/vertical, no cell reused per word).*
 How does "Word Search II" use a trie?
-`Example: board = [["o","a","a","n"],["e","t","a","e"],...], words = ["oath","pea","eat","rain"] → ["eat","oath"]`
+`Example: Input:  board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"] Output: ["eat","oath"]`
 
 .
 .
 ↳ **A:** Build a trie of all query words. DFS from each grid cell, advancing the trie pointer only if the next char is a child. Prune by removing found words from the trie mid-search.
 
 ---
-
 **Q5.** *Design a data structure that supports `addWord(word)` and `search(word)` where search can contain `.` as a wildcard matching any single character.* How does the wildcard change the trie search logic?
-`Example: addWord("bad"), addWord("dad") → search("b.d") → true; search(".ad") → true; search("b..") → true`
+`Example: addWord("bad"), addWord("dad") search("b.d") → true search(".ad") → true search("b..") → true`
 
 .
 .
 ↳ **A:** On `.`, recurse into ALL children rather than indexing one. Otherwise behaves like a normal search.
 
 ---
-
 **Q6.** Why `is_end` separately rather than just storing words at nodes?
 
 .
@@ -1124,7 +1131,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Recursive DFS: append a choice → recurse → pop the choice; at base case, record the current partial result.
 
 ---
-
 **Q2.** *Subsets: given `[1,2,3]`, return all subsets. Permutations: given `[1,2,3]`, return all orderings.* What's the key structural difference in the recursive calls?
 
 .
@@ -1132,7 +1138,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Subsets iterate from `start` to n (avoids duplicate orderings). Permutations use a `used` array, starting from 0 each level (all positions considered).
 
 ---
-
 **Q3.** *When the input array contains duplicates (e.g., `[1,2,2]`), how do you generate subsets or permutations without duplicate results?* What's the sorting + skip trick?
 
 .
@@ -1140,17 +1145,15 @@ How does "Word Search II" use a trie?
 ↳ **A:** Sort the input. Skip a value at the same depth if it equals the previous value (and for perms: the previous value was not just used — i.e., `not used[i-1]`).
 
 ---
-
 **Q4.** *Given an array of distinct integers `candidates` and a target integer, return all unique combinations that sum to target. The same number may be used unlimited times.*
 "Combination sum" — why is it OK to reuse elements, and how does the code express that?
-`Example: candidates = [2,3,6,7], target = 7 → [[2,2,3],[7]]`
+`Example: Input:  candidates = [2,3,6,7], target = 7 Output: [[2,2,3],[7]]`
 
 .
 .
 ↳ **A:** The recursive call passes `i` (not `i+1`) as the next start, allowing the same element again. Skip to `i+1` only when explicitly moving past an element.
 
 ---
-
 **Q5.** *Place n queens on an n×n board so no two attack each other.* What three things do you track to check conflicts in O(1) per placement, and what keys identify each diagonal? (See also F18)
 
 .
@@ -1158,7 +1161,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Track three sets: columns used, diagonals (`r - c`), anti-diagonals (`r + c`). Reject placements that conflict. O(1) check per candidate placement.
 
 ---
-
 **Q6.** Difference between DFS and backtracking?
 
 .
@@ -1166,7 +1168,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Backtracking *undoes* state changes on the way out of recursion (path, visited markers, partial counts). DFS over an immutable structure doesn't need to.
 
 ---
-
 **Q7.** *Given an m×n grid of characters and a word, determine if the word exists by following adjacent cells (no reuse).* What's the standard in-place trick for tracking visited cells during DFS, and why is it better than a separate set?
 
 .
@@ -1174,7 +1175,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Temporarily overwrite the grid cell with a sentinel (e.g., `'#'`); restore it on backtrack. Avoids a separate visited set.
 
 ---
-
 **Q8.** When should you memoize backtracking?
 
 .
@@ -1185,14 +1185,13 @@ How does "Word Search II" use a trie?
 
 ## 9. System Design — DDIA Ch 1
 
-**Q1.** Define reliability, scalability, and maintainability in one sentence each.
+**Q1.** You're presenting a design doc for a new service. How would you argue that the design addresses reliability, scalability, and maintainability — what concrete evidence would you point to for each?
 
 .
 .
-↳ **A:** Reliability: continues to work correctly under faults. Scalability: can cope with increased load. Maintainability: different people can productively work on it over time.
+↳ **A:** **Reliability** (works correctly under faults): redundancy, failover, retries with backoff, chaos testing, no single points of failure. **Scalability** (handles increased load): load parameters identified (QPS, data volume), horizontal scaling path, stateless tiers, partitioning strategy. **Maintainability** (productive to work on over time): operability (runbooks, monitoring, easy deploys), simplicity (clear abstractions, no accidental complexity), evolvability (modular boundaries, schema migration path). A good design doc addresses all three with specific mechanisms, not just aspirational statements.
 
 ---
-
 **Q2.** In distributed systems, what's the difference between a fault and a failure? Why does this distinction matter for system design?
 
 .
@@ -1200,7 +1199,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Fault is one component deviating from spec. Failure is the system as a whole stopping service. Fault tolerance = preventing faults from cascading into failure.
 
 ---
-
 **Q3.** Why measure latency with percentiles rather than averages?
 
 .
@@ -1208,7 +1206,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Averages hide tail behavior. p95/p99 show what slow users experience. Tail latency amplifies under fan-out.
 
 ---
-
 **Q4.** What is tail latency amplification?
 
 .
@@ -1216,16 +1213,7 @@ How does "Word Search II" use a trie?
 ↳ **A:** If a request fans out to many backends and waits for all, overall latency approaches the slowest backend's tail. 100 backends with p99=1s → ~63% of requests hit at least one slow one.
 
 ---
-
-**Q5.** DDIA identifies three pillars of maintainability. Name each one and explain in one sentence what it means in practice.
-
-.
-.
-↳ **A:** Operability (ops can keep it running), simplicity (reduce accidental complexity), evolvability (easy to change).
-
----
-
-**Q6.** What are the two fundamental approaches to scaling a system, and what does each one trade off against the other?
+**Q5.** What are the two fundamental approaches to scaling a system, and what does each one trade off against the other?
 
 .
 .
@@ -1242,7 +1230,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Relational: structured, many-to-many relationships, strong consistency. Document: self-contained records, schema flexibility, tree-shaped data. Graph: pervasive many-to-many with traversals (social, knowledge).
 
 ---
-
 **Q2.** Schema-on-read vs. schema-on-write tradeoff?
 
 .
@@ -1250,40 +1237,30 @@ How does "Word Search II" use a trie?
 ↳ **A:** Schema-on-write (relational): enforced at insert — rigid but safe. Schema-on-read (document): interpretation at read time — flexible but pushes validation into application code.
 
 ---
-
-**Q3.** Your interviewer asks you to compare LSM-trees and B-trees as storage engine internals. What's the fundamental difference in how each handles writes, and what are the tradeoffs?
+**Q3.** Your interviewer asks you to compare LSM-trees and B-trees as storage engine internals. What's the fundamental difference in how each handles writes, what is write amplification, and how does it manifest in each?
 
 .
 .
-↳ **A:** LSM: append-only writes into sorted segments, merged in background (high write throughput, better compression, worse tail read latency, write amplification in compaction). B-tree: in-place updates in balanced-tree pages (good read latency, mature, write amplification via page rewrites + WAL).
+↳ **A:** **LSM-tree:** append-only writes into sorted segments (SSTables), merged in background compaction. High write throughput, better compression, worse tail read latency. **B-tree:** in-place updates in fixed-size pages within a balanced tree. Good read latency, mature, but writes rewrite full pages + WAL entries.
+
+**Write amplification** = bytes written to storage / bytes of application data written. In LSM, compaction repeatedly merges and rewrites segments — a single logical write may be rewritten 10–30× across compaction levels. In B-trees, each write rewrites a full page (e.g., 4KB for a small update) plus a WAL entry. LSM typically has higher write amp but better sequential I/O; B-tree has lower write amp but random I/O.
 
 ---
-
-**Q4.** What is write amplification?
-
-.
-.
-↳ **A:** Bytes written to storage / bytes of application data written. LSM: compaction rewrites. B-tree: full-page writes + WAL entries.
-
----
-
-**Q5.** When a partitioned database needs a secondary index, there are two strategies. What are they, and what does each optimize for (reads vs. writes)?
+**Q4.** When a partitioned database needs a secondary index, there are two strategies. What are they, and what does each optimize for (reads vs. writes)?
 
 .
 .
 ↳ **A:** Local indexes (each partition indexes its own data; queries fan out to all partitions). Global indexes (partitioned separately; fast reads but writes are cross-partition, need async or distributed transactions).
 
 ---
-
-**Q6.** Why are covering indexes a big deal?
+**Q5.** Why are covering indexes a big deal?
 
 .
 .
 ↳ **A:** They contain all columns for a query — engine never touches the primary row. Big read-latency win at cost of index size and write overhead.
 
 ---
-
-**Q7.** You're explaining to a junior engineer why OLTP and OLAP workloads need different storage engines. What are the key differences in their access patterns?
+**Q6.** You're explaining to a junior engineer why OLTP and OLAP workloads need different storage engines. What are the key differences in their access patterns?
 
 .
 .
@@ -1300,7 +1277,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Single-leader (writes to leader, async/sync to followers). Multi-leader (writes at multiple nodes; conflict resolution needed). Leaderless (quorum reads and writes, e.g., Dynamo).
 
 ---
-
 **Q2.** Replication lag — what anomaly does it cause?
 
 .
@@ -1308,15 +1284,13 @@ How does "Word Search II" use a trie?
 ↳ **A:** Time between a write on leader and visibility on followers. Causes violations of read-your-writes, monotonic reads, and consistent-prefix guarantees.
 
 ---
-
-**Q3.** What is read-your-writes consistency?
+**Q3.** A user updates their profile photo but refreshes and still sees the old one. What consistency guarantee was violated, and name two infrastructure-level fixes.
 
 .
 .
-↳ **A:** After a user writes X, that user always sees X on subsequent reads. Typically achieved by routing that user's reads to the leader for a short window, or tagging the session with a version number.
+↳ **A:** **Read-your-writes consistency** was violated — after a user writes X, that same user should always see X on subsequent reads. **Fix 1:** Route that user's reads to the leader for a short window after their write (e.g., read from leader for 10s after any profile update). **Fix 2:** Tag the client session with the last write's version/timestamp; replicas only serve reads if they're caught up past that version. Both avoid forcing *all* reads to the leader while guaranteeing the writing user sees their own update.
 
 ---
-
 **Q4.** You're partitioning a database table across nodes. Compare range partitioning vs. hash partitioning — what does each do well, and where does each hurt?
 
 .
@@ -1324,7 +1298,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Range: ordered scans easy; risk of hot ranges (e.g., timestamp keys). Hash: uniform distribution; loses range-scan ability. Consistent hashing mitigates rebalancing pain.
 
 ---
-
 **Q5.** Hot partition — what is it, how do you mitigate?
 
 .
@@ -1332,7 +1305,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** One partition gets disproportionate traffic. Mitigations: salt the key with a random prefix (spreads writes; reads need fan-out), application-level sharding of hot keys, or caching in front.
 
 ---
-
 **Q6.** CAP in practical engineering terms?
 
 .
@@ -1340,7 +1312,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** During a network partition, choose between Consistency (reject requests that can't see the latest write) and Availability (answer with potentially stale data). Without a partition, you generally get both. Most systems choose per-request or per-operation.
 
 ---
-
 **Q7.** An interviewer asks: 'What's the difference between linearizability and serializability?' These are commonly confused. Distinguish them clearly.
 
 .
@@ -1348,7 +1319,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Linearizability: single-object, real-time ordering — each op appears to take effect at some instant between its start and end. Serializability: multi-object transactions appear to execute in some serial order (not necessarily real-time).
 
 ---
-
 **Q8.** What does quorum (R + W > N) guarantee?
 
 .
@@ -1356,7 +1326,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** At least one node responding to a read overlaps with the last successful write. In practice, still not linearizable without additional mechanisms (read repair, anti-entropy, no concurrent writes).
 
 ---
-
 **Q9.** What is split-brain in a replicated system, why is it dangerous, and how does a proper leader-election protocol (e.g., Raft) prevent it?
 
 .
@@ -1364,15 +1333,17 @@ How does "Word Search II" use a trie?
 ↳ **A:** Two nodes simultaneously believe they're leader. Prevention: fencing tokens (monotonically increasing epoch numbers), distributed consensus (Raft/Paxos) requiring majority to elect.
 
 ---
-
-**Q10.** Raft in one paragraph?
+**Q10.** When would you reach for a consensus protocol like Raft in a system design, what does it give you, and what does it cost?
 
 .
 .
-↳ **A:** One leader at a time, elected by majority vote in randomized-timeout elections (term numbers break ties). Leader appends log entries, replicates to followers; entry commits when a majority persists it. On crash, new election runs; candidates with the most up-to-date log win. Safety: committed entries never lost. Liveness: as long as majority up and communicating.
+↳ **A:** **When:** leader election, distributed locks, configuration stores, replicated state machines — anywhere you need a group of nodes to agree on a single value or ordering of events despite crashes. (Think: metadata services, coordination layers like etcd/ZooKeeper, not hot-path user data.)
+
+**What it gives you:** linearizable reads/writes, automatic leader election, guaranteed no split-brain. Committed entries are never lost as long as a majority survives.
+
+**What it costs:** writes require a majority round-trip (latency floor = network RTT to the slowest quorum member). Throughput limited to what a single leader can sequence. Requires an odd number of nodes (3 or 5 typical); 2 of 3 must be up for progress. Not suitable for high-throughput data planes — use it for control planes and coordination.
 
 ---
-
 **Q11.** What is a saga, and when over distributed transactions?
 
 .
@@ -1380,7 +1351,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** A long-running business transaction decomposed into local transactions with compensating actions on failure. Use when cross-service 2PC is impractical (microservices, external APIs). Tradeoff: availability and scale, at the cost of atomicity.
 
 ---
-
 **Q12.** Idempotency keys — why do they matter?
 
 .
@@ -1398,7 +1368,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** For static assets and cacheable responses: reduces origin load, lowers latency via edge PoPs, helps with DDoS absorption and global audiences.
 
 ---
-
 **Q2.** Cache placement — client, CDN, app, database? Tradeoffs?
 
 .
@@ -1406,7 +1375,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Closer to user = lower latency, harder to invalidate. Client: fastest, least control. CDN: good for shared cacheable content. App-level (Redis/Memcached): flexible, you control TTL/invalidation. DB buffer: automatic, limited to hot pages.
 
 ---
-
 **Q3.** Compare the three cache write strategies — write-through, write-back, and write-around. For each, explain how the write flows and when you'd pick it.
 
 .
@@ -1414,7 +1382,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Write-through: writes go to cache and DB together (consistent, slower). Write-back: write to cache, flush to DB later (fast, risk of loss on crash). Write-around: writes bypass cache, go straight to DB (avoids cache churn for write-heavy but rarely-read data).
 
 ---
-
 **Q4.** Message queue vs. pub/sub vs. event log — which for which job?
 
 .
@@ -1422,7 +1389,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Queue (SQS, RabbitMQ): one consumer processes each message, ordering per queue. Pub/sub: every subscriber gets a copy (fan-out). Event log (Kafka): durable replayable log, consumer groups, per-partition ordering. Choose based on replay, fan-out, ordering, and retention needs.
 
 ---
-
 **Q5.** How does a rate limiter typically work?
 
 .
@@ -1430,7 +1396,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Token bucket (allow bursts up to bucket size, refilled at rate r) or leaky bucket (smooths traffic). Implemented in Redis via INCR + EXPIRE or Lua script for atomicity. Shard by user key for distributed fairness.
 
 ---
-
 **Q6.** Consistent hashing — one sentence and why it matters for sharding?
 
 .
@@ -1438,7 +1403,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Hash keys and nodes onto a ring; a key is owned by the nearest clockwise node. Adding/removing a node only rehomes adjacent keys — not all keys. Virtual nodes smooth out skew.
 
 ---
-
 **Q7.** Bloom filter — guarantees and when to use?
 
 .
@@ -1446,7 +1410,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** "Definitely not in set" is reliable; "maybe in set" has a tunable false-positive rate. Use in front of expensive lookups (disk, remote KV) to skip confirmed misses at O(1) cost.
 
 ---
-
 **Q8.** You're designing a social media newsfeed. Compare the push model (fan-out on write) vs. pull model (fan-out on read) — how does each work, and what breaks at scale? What's the standard hybrid answer?
 
 .
@@ -1454,7 +1417,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Push: write to every follower's timeline at post time — fast reads, huge write amplification for celebrities. Pull: merge from each followee at read time — cheap writes, expensive hot reads. Hybrid (push for most, pull for celebrities) is the standard answer.
 
 ---
-
 **Q9.** What is the outbox pattern?
 
 .
@@ -1462,7 +1424,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Write domain changes AND outgoing events in the same local DB transaction (to an "outbox" table). A separate relay reads the outbox and publishes to the message bus. Solves "update DB and publish event atomically" without distributed transactions.
 
 ---
-
 **Q10.** How do you design for graceful degradation?
 
 .
@@ -1470,7 +1431,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Identify critical vs. non-critical paths. Non-critical paths fail closed (hide feature, serve stale, queue for later). Tools: circuit breakers, bulkheads, timeouts, fallbacks. The product must define "what's good enough."
 
 ---
-
 **Q11.** Compare blue/green deployments and canary deployments. How does each work, what does each optimize for, and when would you choose one over the other?
 
 .
@@ -1478,7 +1438,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Blue/green: two full environments; cut traffic over atomically (fast rollback, doubles infra). Canary: gradually shift traffic % to new version (safer, slower, needs good metrics + automated rollback).
 
 ---
-
 **Q12.** Walk through the 6 phases of a system design interview in order. What do you cover in each phase?
 
 .
@@ -1486,12 +1445,32 @@ How does "Word Search II" use a trie?
 ↳ **A:** (1) Requirements (functional + non-functional). (2) Back-of-envelope estimation (QPS, storage, bandwidth). (3) API design. (4) Data model. (5) High-level diagram. (6) Deep-dive into 1–2 hard components; discuss bottlenecks and tradeoffs.
 
 ---
-
 **Q13.** At the start of any system design interview, there are two categories of clarifying questions you should always ask before designing anything. What are they?
 
 .
 .
 ↳ **A:** (1) Scale: DAU, read/write ratio, data retention? (2) Consistency expectations: can this tolerate eventual consistency anywhere?
+
+---
+**Q14.** Compare the main load balancing strategies — round-robin, least connections, and consistent hashing. When would you pick each in a system design?
+
+.
+.
+↳ **A:** **Round-robin:** simplest, works when all servers are identical and requests have similar cost. Fails when backends have uneven capacity or requests vary widely in weight. **Least connections:** routes to the server with the fewest active connections — naturally adapts to slow servers and heterogeneous request costs. Good default for stateless services. **Consistent hashing:** routes by request key (e.g., user ID) — ensures the same key hits the same server. Needed for stateful services, sticky sessions, or caching tiers where locality matters. Use with virtual nodes to smooth out skew.
+
+---
+**Q15.** Your interviewer says 'tell me how you'd make this system observable.' What are the three pillars of observability, and what does each one help you diagnose?
+
+.
+.
+↳ **A:** **Metrics** (counters, gauges, histograms): answer 'what is happening right now?' — latency percentiles, error rates, queue depths, saturation. Alert on these. **Logs** (structured, per-event records): answer 'what happened to this specific request?' — debug individual failures, audit trails. Expensive at scale; use sampling or log levels. **Distributed traces** (spans across services): answer 'where did this request spend its time?' — diagnose latency in multi-service call chains, find the bottleneck service. Tools: Prometheus/Grafana for metrics, ELK/Datadog for logs, Jaeger/Zipkin for traces. In a design interview, mention all three and note that metrics are cheapest to query, traces are most useful for debugging fan-out.
+
+---
+**Q16.** What is back-pressure, and why is it better than unbounded queuing?
+
+.
+.
+↳ **A:** **Back-pressure** means a downstream system signals upstream to slow down when it's overwhelmed, rather than accepting work it can't handle. Without it, an overwhelmed service queues unboundedly → memory exhaustion → crash → cascading failure. **Mechanisms:** return HTTP 429/503 with retry-after headers, use bounded queues that reject when full, TCP flow control, reactive streams. **Design principle:** it's better to reject work at the edge (where the caller can retry or degrade gracefully) than to accept it and fail silently deep in the stack. Pairs with circuit breakers: back-pressure is the producer-side control, circuit breakers are the consumer-side control.
 
 ---
 
@@ -1504,7 +1483,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** (1) Cycle detection (Floyd's). (2) Find midpoint. (3) Find Nth from end (start fast n nodes ahead, then walk together until fast hits null). All O(n) time, O(1) space.
 
 ---
-
 **Q2.** Write out the iterative linked list reversal using three pointers. Which pointer do you return at the end, and why is that a common bug source?
 
 .
@@ -1512,7 +1490,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** `prev = None; curr = head; while curr: nxt = curr.next; curr.next = prev; prev = curr; curr = nxt; return prev`. The recursive version uses O(n) stack — interviewers want to see the O(1)-extra iterative one.
 
 ---
-
 **Q3.** Floyd's cycle detection — how do you find the cycle entry point? (See also F13.)
 
 .
@@ -1520,15 +1497,13 @@ How does "Word Search II" use a trie?
 ↳ **A:** After slow and fast meet inside the cycle, reset one pointer to head. Move both one step at a time; they meet at the cycle entry. Why: distance from head to entry equals distance from the meeting point to entry (algebra on the loop length and tortoise/hare distances).
 
 ---
-
 **Q4.** Merge two sorted lists — why is a dummy head node the standard trick?
 
 .
 .
-↳ **A:** It eliminates the special case for the first node. `dummy = ListNode(0); tail = dummy; while a and b: ...; tail.next = a or b; return dummy.next`. Without dummy you'd write redundant "is this the first node?" branches at every comparison.
+↳ **A:** It eliminates the special case for the first node. `dummy = ListNode(0); tail = dummy; while a and b: ...; tail.next = a or b; return dummy.next`. Without dummy you'd write redundant 'is this the first node?' branches at every comparison.
 
 ---
-
 **Q5.** Find midpoint — does slow land on the left or right middle for an even-length list?
 
 .
@@ -1536,7 +1511,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Depends on the loop. `while fast.next and fast.next.next` → slow stops on the **left** middle (good for splitting *before* reversing the second half — used in Reorder List, F22). `while fast and fast.next` → slow lands on the **right** middle (handy for palindrome checks where you want to start comparing from the right half).
 
 ---
-
 **Q6.** Remove Nth from end — why an n+1 gap, not n? (See F12.)
 
 .
@@ -1544,7 +1518,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Use a dummy node before head. Advance fast n+1 steps, then move both until fast is null. Slow then sits one node *before* the target — so `slow.next = slow.next.next` removes it. The +1 gap is what places slow correctly to splice; the dummy handles the case where the head itself is removed.
 
 ---
-
 **Q7.** Reorder list — three-step pattern? (See F22.)
 
 .
@@ -1552,12 +1525,11 @@ How does "Word Search II" use a trie?
 ↳ **A:** (1) Find midpoint with slow/fast (slow lands on left middle; null-terminate after slow). (2) Reverse the second half. (3) Interleave — walk both halves with two pointers, splicing nodes alternately. Each step O(n); total O(n) time, O(1) space.
 
 ---
-
 **Q8.** You just finished coding a linked list solution. What are the most common bugs to check for before submitting?
 
 .
 .
-↳ **A:** (1) Forgetting to null-terminate the new tail when splitting (creates a cycle). (2) Losing the head reference when reversing — always return `prev`, not `head`. (3) Off-by-one in the n+1-gap problems. (4) Modifying `node.next` before saving the original `next`. (5) Skipping the dummy head and writing duplicated "first iteration" code.
+↳ **A:** (1) Forgetting to null-terminate the new tail when splitting (creates a cycle). (2) Losing the head reference when reversing — always return `prev`, not `head`. (3) Off-by-one in the n+1-gap problems. (4) Modifying `node.next` before saving the original `next`. (5) Skipping the dummy head and writing duplicated 'first iteration' code.
 
 ---
 
@@ -1570,7 +1542,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** When you need repeated min/max access on a changing collection: top-K, median-of-stream, K-way merge, scheduling, Dijkstra. Heap gives O(log n) insert/pop and O(1) peek. For a single top-K on static data, sort + slice is simpler.
 
 ---
-
 **Q2.** Top-K largest — min-heap or max-heap, and why?
 
 .
@@ -1578,7 +1549,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** **Min-heap of size K.** Push every element; if size > K, pop the smallest. The heap holds the K largest at the end; total O(n log K) — beats O(n log n) sort when K ≪ n. (For top-K smallest, use a max-heap of size K — symmetric.)
 
 ---
-
 **Q3.** *Design a data structure that supports `addNum(int)` and `findMedian()` on a stream of integers, with O(log n) insert and O(1) median.* Describe the two-heap structure.
 
 .
@@ -1586,7 +1556,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Max-heap holds the lower half, min-heap holds the upper half. Keep sizes equal or off by one. After each insert, rebalance so |sizes| ≤ 1. Median = larger heap's top (odd count) or average of both tops (even). Insert O(log n), query O(1).
 
 ---
-
 **Q4.** *Given k sorted linked lists, merge them into one sorted list.* In the heap-based approach, what exactly goes into the heap, and why do you need a tiebreaker? (See F14.)
 
 .
@@ -1594,7 +1563,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** One node per list initially: `(value, list_idx, node_ref)` — the list_idx is a tiebreaker so heapq doesn't try to compare incomparable nodes when values tie. Pop min, push that node's `next` if any. Total O(N log K) where N = total nodes, K = lists. Divide-and-conquer pairwise merge has the same asymptotic cost but uses O(N) extra space; the heap version uses O(K).
 
 ---
-
 **Q5.** *Given a list of CPU tasks (letters A–Z) and a cooldown `n`, return the minimum intervals to finish all tasks.* What's the O(1) math formula, and what does each term represent? (See F15.)
 
 .
@@ -1602,7 +1570,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** `result = max(len(tasks), (max_count - 1) * (n + 1) + count_of_max)`. The first term covers 'no idling needed' (tasks already spaced enough). The second covers 'must idle' — the most frequent task drives the skeleton, with all max-frequency tasks tacked on at the end. Always `max` of both — formula is exact, no edge cases.
 
 ---
-
 **Q6.** Why is `heapify` O(n) and not O(n log n)?
 
 .
@@ -1610,7 +1577,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Sift-down from the bottom up. Most nodes are near the leaves and sift down very few levels. Sum across levels: ∑ (n/2^h) · h converges to O(n). Building a heap from scratch is strictly faster than n successive inserts (each O(log n)).
 
 ---
-
 **Q7.** Python heap gotcha — max-heap and tie-breaking?
 
 .
@@ -1618,7 +1584,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** `heapq` is min-only. For max, push `-x` and negate on pop, or wrap items in a class with reversed `__lt__`. For tuples, prefer `(-priority, tiebreaker, payload)` so equal priorities don't fall through to comparing payloads (which may not be comparable).
 
 ---
-
 **Q8.** When NOT to use a heap?
 
 .
@@ -1633,10 +1598,9 @@ How does "Word Search II" use a trie?
 
 .
 .
-↳ **A:** **BFS**: shortest path on unweighted graphs, level-order, "minimum steps". Uses a queue. **DFS**: path existence, topological order, cycle detection, articulation points, anything needing the call stack to remember context. BFS for distance, DFS for structure.
+↳ **A:** **BFS**: shortest path on unweighted graphs, level-order, 'minimum steps'. Uses a queue. **DFS**: path existence, topological order, cycle detection, articulation points, anything needing the call stack to remember context. BFS for distance, DFS for structure.
 
 ---
-
 **Q2.** Visited tracking — mark on enqueue or on dequeue?
 
 .
@@ -1644,7 +1608,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** **Mark on enqueue** for BFS and iterative DFS. Marking on dequeue lets the same node be enqueued multiple times before any of them dequeues, blowing up to O(V·E) in dense graphs. Recursive DFS marks at the top of the function — same idea, before exploring neighbors.
 
 ---
-
 **Q3.** Topological sort — Kahn's vs DFS, and how does each detect a cycle? (See F19.)
 
 .
@@ -1652,15 +1615,13 @@ How does "Word Search II" use a trie?
 ↳ **A:** **Kahn's**: build in-degree map, enqueue all 0-in-degree nodes, repeatedly pop and decrement neighbors' in-degree. **Cycle if processed count < n.** **DFS 3-color**: white = unseen, gray = on the recursion stack, black = done. **Cycle if you encounter a gray neighbor.** Both O(V+E).
 
 ---
-
 **Q4.** Detecting a cycle in an undirected graph?
 
 .
 .
-↳ **A:** DFS, passing in the parent. If you visit a neighbor that is already visited *and* not the parent, you've found a back edge → cycle. Or use Union-Find: for each edge, if both endpoints are already in the same set, that edge closes a cycle. (See F20 for the "valid tree" variant.)
+↳ **A:** DFS, passing in the parent. If you visit a neighbor that is already visited *and* not the parent, you've found a back edge → cycle. Or use Union-Find: for each edge, if both endpoints are already in the same set, that edge closes a cycle. (See F20 for the 'valid tree' variant.)
 
 ---
-
 **Q5.** Shortest path on an unweighted graph?
 
 .
@@ -1668,7 +1629,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** BFS from the source. The first time you reach a node is via a shortest path. Track distances with a `dist` map (or count BFS levels for the answer-only case). O(V+E).
 
 ---
-
 **Q6.** Dijkstra — one-paragraph summary and the lazy-heap gotcha?
 
 .
@@ -1676,7 +1636,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** Min-heap of `(dist, node)`. Pop min; for each neighbor, relax: `if dist[u] + w < dist[v]: dist[v] = dist[u] + w; push(dist[v], v)`. **Gotcha**: stdlib heaps don't support decrease-key, so push lazily and skip stale entries on pop with `if d > dist[u]: continue`. Doesn't handle negative edges (use Bellman-Ford). O((V+E) log V).
 
 ---
-
 **Q7.** Graph valid tree — exact two conditions? (See F20.)
 
 .
@@ -1684,15 +1643,13 @@ How does "Word Search II" use a trie?
 ↳ **A:** (1) `edges == n - 1` (necessary: any tree has exactly n-1 edges; fewer disconnects it, more creates a cycle). (2) Graph is fully connected (e.g., BFS reaches all n nodes from any start). Both must hold. Pre-screening edge count is O(1) and short-circuits many failures cheaply.
 
 ---
-
 **Q8.** Connected components — Union-Find vs BFS/DFS?
 
 .
 .
-↳ **A:** Both O(V+E). Union-Find shines when components form *online* (edges arriving over time — "number of islands II", "accounts merge"). BFS/DFS is simpler for one-shot static graphs. Union-Find with path compression + union-by-rank is near O(1) amortized per op (inverse Ackermann).
+↳ **A:** Both O(V+E). Union-Find shines when components form *online* (edges arriving over time — 'number of islands II', 'accounts merge'). BFS/DFS is simpler for one-shot static graphs. Union-Find with path compression + union-by-rank is near O(1) amortized per op (inverse Ackermann).
 
 ---
-
 **Q9.** Bidirectional BFS — when is it worth the complexity?
 
 .
@@ -1700,12 +1657,27 @@ How does "Word Search II" use a trie?
 ↳ **A:** When you know both source and target and the graph has high branching factor `b`. Single BFS explores ≈ b^d nodes; bidirectional explores ≈ 2 · b^(d/2) — exponentially fewer at long distances. Standard for word-ladder-style problems on large vocabularies.
 
 ---
-
 **Q10.** Adjacency list vs matrix — what dictates the choice?
 
 .
 .
 ↳ **A:** **List** for sparse graphs (E ≪ V²): O(V+E) space, fast neighbor iteration. **Matrix** for dense graphs and when you need O(1) edge-existence checks (e.g., Floyd–Warshall). Most interview graphs are sparse → list.
+
+---
+**Q11.** *Given an m × n 2D grid of `'1'`s (land) and `'0'`s (water), return the number of islands (groups of horizontally/vertically connected `'1'`s).* Walk through the approach and the in-place trick for visited tracking.
+`Example: Input:  grid = [   ["1","1","0","0","0"],   ["1","1","0","0","0"],   ["0","0","1","0","0"],   ["0","0","0","1","1"] ] Output: 3`
+
+.
+.
+↳ **A:** Scan the grid; when you hit a `'1'`, increment the island count and BFS/DFS to mark all connected `'1'`s as visited. **In-place trick:** overwrite visited cells with `'0'` (or `'#'`) instead of maintaining a separate visited set — saves O(m·n) space. Each cell is visited at most once → O(m·n) total. This is the canonical 'connected components on a grid' pattern and generalizes to: max area of island, surrounded regions, rotting oranges, shortest path in a grid.
+
+---
+**Q12.** *Given a reference to a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node has a value and a list of neighbors.*
+What data structure prevents creating duplicate clones, and what's the DFS vs BFS approach?
+
+.
+.
+↳ **A:** Use a hash map `{original_node: cloned_node}` as both a visited set and a lookup for already-cloned nodes. **DFS:** for each node, create its clone, store in the map, then recurse on each neighbor — if the neighbor is already in the map, just wire the existing clone. **BFS:** same map, but use a queue. Key insight: the map serves double duty — it's your visited set *and* your way to find the clone of any node you've already processed. O(V+E) time and space.
 
 ---
 
@@ -1715,10 +1687,9 @@ How does "Word Search II" use a trie?
 
 .
 .
-↳ **A:** Three signals: (1) "count ways" / "min/max over choices" / "is it possible". (2) Subproblems overlap (naive recursion repeats work). (3) Optimal substructure (best at i depends on best at smaller indices). If only (3) holds, greedy may suffice.
+↳ **A:** Three signals: (1) 'count ways' / 'min/max over choices' / 'is it possible'. (2) Subproblems overlap (naive recursion repeats work). (3) Optimal substructure (best at i depends on best at smaller indices). If only (3) holds, greedy may suffice.
 
 ---
-
 **Q2.** Top-down (memo) vs bottom-up (tab) — when each?
 
 .
@@ -1726,7 +1697,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** **Top-down**: cleaner when state space is sparse (you only compute reachable states) or when the recursion tree mirrors the problem naturally. **Bottom-up**: tighter constants, easier to space-optimize, no recursion-limit risk. Bottom-up is the interview default unless states are sparse or hard to enumerate.
 
 ---
-
 **Q3.** Walk through the standard template for solving a 1-D dynamic programming problem — what do you define, what do you initialize, what do you iterate, and what do you return?
 
 .
@@ -1734,7 +1704,6 @@ How does "Word Search II" use a trie?
 ↳ **A:** `dp[i]` = answer for prefix (or suffix) ending at i. Define base case (`dp[0]` or `dp[n]`). Write the transition: `dp[i] = f(dp[i-1], dp[i-2], …, nums[i])`. Iterate in dependency order. Return `dp[n-1]` or `dp[n]` per the framing.
 
 ---
-
 **Q4.** Space optimization — when can you collapse to O(1)?
 
 .
@@ -1742,26 +1711,23 @@ How does "Word Search II" use a trie?
 ↳ **A:** When `dp[i]` depends only on `dp[i-1]` (and maybe `dp[i-2]`), keep just those values in two scalars. Collapses O(n) → O(1) extra space. Climbing stairs, house robber, max-subarray (Kadane), and Fibonacci-style DPs all qualify.
 
 ---
-
 **Q5.** *Given an array `nums` representing money in each house along a street, return the maximum amount you can rob without robbing two adjacent houses.*
 House Robber — what's the transition and the rolling-array form?
-`Example: nums = [2,7,9,3,1] → 12 (rob houses 0, 2, 4)`
+`Example: Input:  nums = [2,7,9,3,1] Output: 12  (rob houses 0, 2, 4 → 2+9+1)`
 
 .
 .
 ↳ **A:** `dp[i] = max(dp[i-1], dp[i-2] + nums[i])` — either skip i (take best up to i-1) or rob i (add to best up to i-2). Rolling: `prev2, prev1 = 0, 0; for x in nums: prev2, prev1 = prev1, max(prev1, prev2 + x); return prev1`.
 
 ---
-
 **Q6.** *Coin Change: given coins and an amount, find the fewest coins needed. Coin Change II: count the number of combinations that make the amount.* Both use a 1-D DP array, but the loop order differs. What changes and why?
-`Example: Coin Change:  coins = [1,2,5], amount = 11 → 3 (5+5+1)\nCoin Change II: coins = [1,2,5], amount = 5 → 4 combinations`
+`Example: Coin Change:  coins = [1,2,5], amount = 11 → 3 (5+5+1) Coin Change II: coins = [1,2,5], amount = 5 → 4 combinations`
 
 .
 .
 ↳ **A:** **Coin Change** (min coins to make amount): outer loop over amounts, inner over coins. Order doesn't matter — you're counting min, not arrangements. **Coin Change II** (count combinations, not permutations): **outer over coins, inner over amounts**. Reversing this counts ordered arrangements (permutations) instead. The loop order encodes the combinatorial meaning.
 
 ---
-
 **Q7.** Maximum Product Subarray — why track BOTH curMax and curMin? (See F21.)
 
 .
@@ -1769,24 +1735,54 @@ House Robber — what's the transition and the rolling-array form?
 ↳ **A:** A negative number flips signs. The new max product can come from `curMax * x` (if x is positive) OR `curMin * x` (if x is negative — two negatives multiply to a large positive). Track both, updating simultaneously: `newMax = max(x, curMax*x, curMin*x)`, symmetric for newMin. O(n) time, O(1) space.
 
 ---
-
 **Q8.** *Given a string `s` and a dictionary of words `wordDict`, return `true` if `s` can be segmented into a space-separated sequence of one or more dictionary words.*
 Word Break — what's the DP state and transition?
-`Example: s = "leetcode", wordDict = ["leet","code"] → true`
+`Example: Input:  s = "leetcode", wordDict = ["leet","code"] Output: true`
 
 .
 .
 ↳ **A:** `dp[i] = True` if `s[:i]` can be segmented. `dp[0] = True`. Transition: `dp[i] = any(dp[j] and s[j:i] in dict for j in 0..i-1)`. Return `dp[n]`. O(n²·k) where k is avg word length (the `in` check). Use a set for the dictionary.
 
 ---
-
 **Q9.** *Given an integer array `nums`, return the length of the longest strictly increasing subsequence (not necessarily contiguous).*
 Longest Increasing Subsequence — naive O(n²) vs O(n log n)?
-`Example: nums = [10,9,2,5,3,7,101,18] → 4 (e.g. [2,3,7,101])`
+`Example: Input:  nums = [10,9,2,5,3,7,101,18] Output: 4  (e.g. [2,3,7,101])`
 
 .
 .
 ↳ **A:** Naive: `dp[i] = 1 + max(dp[j] for j<i if nums[j]<nums[i])` — O(n²). **Patience sort trick** (O(n log n)): keep a `tails` array where `tails[k]` is the smallest tail of any increasing subseq of length k+1. For each x, binary-search the leftmost tail ≥ x and replace. Length of tails = LIS length. The tails array is **NOT** a valid LIS — only its length is meaningful.
+
+---
+**Q10.** *Given a string `s`, return the number of palindromic substrings (every single character counts as a palindrome).*
+What's the expand-from-center technique, and why do you expand from both odd and even centers?
+`Example: Input:  s = "aaa" Output: 6  ("a","a","a","aa","aa","aaa")`
+
+.
+.
+↳ **A:** For each index `i`, expand outward while characters match. **Odd-length palindromes:** center at `(i, i)`. **Even-length palindromes:** center at `(i, i+1)`. You need both because a palindrome can be centered on a single character ("aba") or between two characters ("abba"). For each valid expansion, increment the count. O(n²) time, O(1) space. This same technique solves 'longest palindromic substring' — just track the longest expansion instead of counting.
+
+---
+**Q11.** *Given strings `text1` and `text2`, return the length of their longest common subsequence. If there is no common subsequence, return 0.*
+This is 2-D DP — what's the state, transition, and how do you read the recurrence?
+`Example: Input:  text1 = "abcde", text2 = "ace" Output: 3  ("ace")`
+
+.
+.
+↳ **A:** `dp[i][j]` = LCS length of `text1[:i]` and `text2[:j]`. **Transition:** if `text1[i-1] == text2[j-1]`: `dp[i][j] = dp[i-1][j-1] + 1` (both chars match, extend the LCS). Else: `dp[i][j] = max(dp[i-1][j], dp[i][j-1])` (skip one char from either string, take the better option). Base case: `dp[0][j] = dp[i][0] = 0`. Fill row by row. O(m·n) time. Space-optimizable to O(min(m,n)) since each row only depends on the previous row.
+
+---
+**Q12.** *Given two strings `word1` and `word2`, return the minimum number of operations (insert, delete, replace) to convert `word1` into `word2` (edit distance).*
+What's the DP state and the three transitions?
+`Example: Input:  word1 = "horse", word2 = "ros" Output: 3  (horse → rorse → rose → ros)`
+
+.
+.
+↳ **A:** `dp[i][j]` = min operations to convert `word1[:i]` to `word2[:j]`. **If chars match** (`word1[i-1] == word2[j-1]`): `dp[i][j] = dp[i-1][j-1]` (no operation needed). **Else** take the min of three operations:
+- `dp[i-1][j-1] + 1` → **replace** `word1[i-1]` with `word2[j-1]`
+- `dp[i-1][j] + 1` → **delete** from `word1`
+- `dp[i][j-1] + 1` → **insert** into `word1`
+
+Base cases: `dp[i][0] = i` (delete all), `dp[0][j] = j` (insert all). O(m·n) time, O(m·n) space (optimizable to O(min(m,n))).
 
 ---
 
@@ -1799,56 +1795,50 @@ Longest Increasing Subsequence — naive O(n²) vs O(n log n)?
 ↳ **A:** Inputs are `[start, end]` pairs (meetings, ranges, scheduling, calendar slots). Almost always: sort first by start (or end), then sweep. Most problems reduce to 'merge overlapping' or 'count overlaps at any point in time'.
 
 ---
-
 **Q2.** *Given an array of intervals `[[start, end], ...]`, merge all overlapping intervals and return the non-overlapping result.* Walk through the approach.
-`Example: Input:  intervals = [[1,3],[2,6],[8,10],[15,18]] → Output: [[1,6],[8,10],[15,18]]`
+`Example: Input:  intervals = [[1,3],[2,6],[8,10],[15,18]] Output: [[1,6],[8,10],[15,18]]`
 
 .
 .
 ↳ **A:** Sort by start. Iterate; if `intervals[i].start <= last.end`, extend `last.end = max(last.end, intervals[i].end)`. Else push intervals[i] as the new last. O(n log n) for the sort, O(n) merge.
 
 ---
-
 **Q3.** *Given a sorted list of non-overlapping intervals and a new interval, insert the new interval and merge if necessary. Return the resulting sorted list of non-overlapping intervals.*
 Insert interval — what's the three-phase pattern?
-`Example: intervals = [[1,3],[6,9]], newInterval = [2,5] → [[1,5],[6,9]]`
+`Example: Input:  intervals = [[1,3],[6,9]], newInterval = [2,5] Output: [[1,5],[6,9]]`
 
 .
 .
 ↳ **A:** (1) Copy intervals strictly before the new one (`end < new.start`). (2) Merge all overlapping: `while i < n and intervals[i].start <= new.end: new.end = max(new.end, intervals[i].end); i++`. Push the merged interval. (3) Copy the rest. O(n).
 
 ---
-
 **Q4.** *Given an array of meeting time intervals `[[start, end], ...]`, return the minimum number of conference rooms required so that no two overlapping meetings share a room.*
 Min meeting rooms — how does the sweep-line approach work?
-`Example: intervals = [[0,30],[5,10],[15,20]] → 2`
+`Example: Input:  intervals = [[0,30],[5,10],[15,20]] Output: 2  (meetings [0,30] and [5,10] overlap)`
 
 .
 .
 ↳ **A:** Build two arrays: starts (sorted) and ends (sorted). Two pointers; whenever `starts[i] < ends[j]` you need a new room (`i++`); else free a room (`j++`). Track running max. O(n log n) for sorts, O(n) sweep. Heap variant: push end times into a min-heap; if next.start ≥ heap.top, pop; always push end. `len(heap)` at any moment = rooms in use.
 
 ---
-
 **Q5.** *Given an array of intervals, return the minimum number of intervals you need to remove to make the remaining intervals non-overlapping.*
 Erase overlapping intervals — sort by what, and why?
-`Example: intervals = [[1,2],[2,3],[3,4],[1,3]] → 1 (remove [1,3])`
+`Example: Input:  intervals = [[1,2],[2,3],[3,4],[1,3]] Output: 1  (remove [1,3])`
 
 .
 .
-↳ **A:** Sort by **end** (not start). Greedily keep an interval if its start ≥ the last-kept end; else drop it. Sorting by end maximizes room for future intervals. Number erased = total - kept. (This is "maximum non-overlapping intervals" in disguise — the classic interval scheduling proof works here.)
+↳ **A:** Sort by **end** (not start). Greedily keep an interval if its start ≥ the last-kept end; else drop it. Sorting by end maximizes room for future intervals. Number erased = total - kept. (This is 'maximum non-overlapping intervals' in disguise — the classic interval scheduling proof works here.)
 
 ---
-
 **Q6.** *Given two lists of closed intervals (each sorted and non-overlapping), return their intersection — all intervals that appear in both lists.*
 Intersection of two interval lists — what's the two-pointer pattern?
-`Example: A = [[0,2],[5,10]], B = [[1,5],[8,12]] → [[1,2],[5,5],[8,10]]`
+`Example: Input:  A = [[0,2],[5,10],[13,23],[24,25]], B = [[1,5],[8,12],[15,24],[25,26]] Output: [[1,2],[5,5],[8,10],[15,23],[24,24],[25,25]]`
 
 .
 .
 ↳ **A:** Two pointers over both sorted lists. Compute `lo = max(a.start, b.start)`, `hi = min(a.end, b.end)`. If `lo <= hi`, emit `[lo, hi]`. Then advance the pointer whose interval ends first. O(m + n).
 
 ---
-
 **Q7.** Two intervals share an endpoint: `[1,2]` and `[2,3]`. Do they overlap? What determines the answer, and why must you clarify this before coding?
 
 .
@@ -1866,47 +1856,42 @@ Intersection of two interval lists — what's the two-pointer pattern?
 ↳ **A:** When the problem admits an **exchange argument**: any optimal solution can be transformed into the greedy choice without making it worse. If you can't articulate the swap, it's probably DP. Greedy candidates also tend to have **matroid** structure or interval-scheduling structure.
 
 ---
-
 **Q2.** *Given an array `nums` where `nums[i]` is the max jump length from position `i`, determine if you can reach the last index starting from index 0.*
 Jump Game I — what's the greedy pattern?
-`Example: nums = [2,3,1,1,4] → true; nums = [3,2,1,0,4] → false`
+`Example: Input:  nums = [2,3,1,1,4] → true         nums = [3,2,1,0,4] → false (stuck at index 3)`
 
 .
 .
 ↳ **A:** Track the maximum reachable index as you walk left to right. If `i > maxReach`, return False. Else `maxReach = max(maxReach, i + nums[i])`. Return True if you finish the loop. O(n), O(1).
 
 ---
-
 **Q3.** *Given an array `nums` where `nums[i]` is the max jump length from position `i`, return the minimum number of jumps to reach the last index. (Guaranteed reachable.)*
 Jump Game II — how does the BFS-like greedy work?
-`Example: nums = [2,3,1,1,4] → 2`
+`Example: Input:  nums = [2,3,1,1,4] Output: 2  (jump 1 step to index 1, then 3 steps to end)`
 
 .
 .
-↳ **A:** Track `currentEnd` (farthest reachable with the jumps taken so far) and `farthest` (farthest reachable from any index in the current "level"). When `i == currentEnd`, take a jump: `jumps++; currentEnd = farthest`. O(n). Conceptually it's BFS without an explicit queue — levels are jump counts.
+↳ **A:** Track `currentEnd` (farthest reachable with the jumps taken so far) and `farthest` (farthest reachable from any index in the current 'level'). When `i == currentEnd`, take a jump: `jumps++; currentEnd = farthest`. O(n). Conceptually it's BFS without an explicit queue — levels are jump counts.
 
 ---
-
 **Q4.** *There are `n` gas stations in a circle. `gas[i]` is the fuel at station `i`, `cost[i]` is the fuel needed to travel to station `i+1`. Starting with an empty tank, return the starting station index if you can complete the circuit, or -1 if impossible.*
 Gas Station — what's the single-pass trick?
-`Example: gas = [1,2,3,4,5], cost = [3,4,5,1,2] → 3`
+`Example: Input:  gas = [1,2,3,4,5], cost = [3,4,5,1,2] Output: 3  (start at station 3)`
 
 .
 .
 ↳ **A:** If `sum(gas) < sum(cost)`, no solution. Otherwise there's exactly one. Walk once tracking `tank`; if `tank < 0`, reset start to `i+1` and tank to 0. The reset is valid because no station before `i+1` could've been a starting point (any prefix-sum dip below zero means you can't reach `i+1` from there either).
 
 ---
-
 **Q5.** *Given a string `s`, partition it into as many parts as possible so that each letter appears in at most one part. Return a list of the partition lengths.*
 Partition Labels — what's the greedy pattern?
-`Example: s = "ababcbacadefegdehijhklij" → [9,7,8]`
+`Example: Input:  s = "ababcbacadefegdehijhklij" Output: [9,7,8]`
 
 .
 .
 ↳ **A:** Pre-compute the **last index** of each character: `last = {c: i for i, c in enumerate(s)}`. Walk left to right tracking `end = max(end, last[c])`. When `i == end`, close the current partition (length = end - start + 1) and start a new one. O(n).
 
 ---
-
 **Q6.** Greedy vs DP — what tells you which to use?
 
 .
@@ -1914,7 +1899,6 @@ Partition Labels — what's the greedy pattern?
 ↳ **A:** If the optimal substructure has many overlapping decisions you must remember, → DP. If each step has an obvious locally-best choice that provably composes (exchange argument or no-cost swap), → greedy. Many problems admit both — greedy is faster but harder to prove correct. When unsure, write a small brute force and check on adversarial inputs.
 
 ---
-
 **Q7.** Common trap — when does greedy silently fail?
 
 .
@@ -1922,7 +1906,6 @@ Partition Labels — what's the greedy pattern?
 ↳ **A:** Coin change with denominations like {1, 3, 4} and target 6: greedy takes 4+1+1 = 3 coins, optimal is 3+3 = 2 coins. Lesson: greedy works on canonical coin systems (US/EU coins) but not arbitrary ones. Always test a small counterexample before committing.
 
 ---
-
 **Q8.** *Given a set of intervals, find the maximum number of non-overlapping intervals you can keep.* Sketch the exchange argument that proves the greedy (sort-by-end) approach is optimal.
 
 .
@@ -1931,58 +1914,16 @@ Partition Labels — what's the greedy pattern?
 
 ---
 
-## Deck template (copy for each new topic)
+## Deck template (copy for new topics)
 
 ```
-## N. [Topic Name]
+## N. Topic Name
+
+**Q1.** Question text here
+
+.
+.
+↳ **A:** Answer text here
 
 ---
-
-**Q1.** [Signal / recognition: when do you pick this pattern?]
-
-.
-.
-↳ **A:** ...
-
----
-
-**Q2.** [Template / pseudocode]
-
-.
-.
-↳ **A:** ...
-
----
-
-**Q3.** [Edge case / common bug]
-
-.
-.
-↳ **A:** ...
-
----
-
-**Q4.** [Complexity reasoning]
-
-.
-.
-↳ **A:** ...
-
----
-
-**Q5.** [Variant showing mastery]
-
-.
-.
-↳ **A:** ...
-
----
-
-**Q6.** [2-3 NC150 problems that use this pattern]
-
-.
-.
-↳ **A:** ...
 ```
-
-Use for: Intervals, Greedy, Advanced Graphs, 2-D DP, Bit Manipulation, Math & Geometry.
