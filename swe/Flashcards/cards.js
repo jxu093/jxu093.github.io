@@ -253,6 +253,12 @@ const DECKS = [
         "id": "Q9",
         "question": "What's the O(n) approach for \"top k frequent elements\"? (See also F1)",
         "answer": "Bucket sort by frequency. Build `bucket[0..n]` where `bucket[i]` holds elements with frequency `i`. Scan from high to low, collect until k results. O(n), no heap needed."
+      },
+      {
+        "id": "Q10",
+        "question": "*Given an integer array `nums` and an integer `k`, return the total number of subarrays whose sum equals `k`.* What's the prefix sum + hash map pattern, and why can't sliding window solve this?",
+        "example": "Input:  nums = [1,1,1], k = 2\nOutput: 2  (subarrays [1,1] starting at index 0 and 1)",
+        "answer": "Sliding window fails because elements can be negative (shrinking the window doesn't guarantee the sum decreases). Instead: maintain a running `prefix_sum` and a hash map `{prefix_sum: count}` initialized with `{0: 1}`. At each index, check if `prefix_sum - k` exists in the map — if so, add its count to the result (those are subarrays ending here with sum k). Then increment `map[prefix_sum]`. O(n) time, O(n) space. This pattern generalizes: 'subarray with sum divisible by k' uses `prefix_sum % k` as the key."
       }
     ]
   },
@@ -345,6 +351,18 @@ const DECKS = [
         "id": "Q7",
         "question": "When parsing \"decode string\" (e.g., `3[a2[c]]`), what do you push?",
         "answer": "On `[`: push the current string-being-built and the current multiplier; reset locals. On `]`: pop and combine: `prev_string + multiplier * current_string`."
+      },
+      {
+        "id": "Q8",
+        "question": "*Given a string containing just the characters `(`, `)`, `{`, `}`, `[` and `]`, determine if the input string is valid (every open bracket is closed by the same type in the correct order).* Walk through the stack approach and the three ways it can fail.",
+        "example": "Input:  s = \"([{}])\"\nOutput: true\n\nInput:  s = \"([)]\"\nOutput: false",
+        "answer": "Push open brackets onto the stack. On a close bracket, pop and check it matches the corresponding open type (use a map: `)→(`, `]→[`, `}→{`). **Three failure modes:** (1) Close bracket but stack is empty (nothing to match). (2) Popped bracket doesn't match the close type (wrong nesting order). (3) After processing all chars, stack is non-empty (unclosed opens remain). O(n) time, O(n) space."
+      },
+      {
+        "id": "Q9",
+        "question": "*Given `n` pairs of parentheses, write a function to generate all combinations of well-formed parentheses.*\nWhat are the two recursive choices and the constraints that prune invalid branches?",
+        "example": "Input:  n = 3\nOutput: [\"((()))\",\"(()())\",\"(())()\",\"()(())\",\"()()()\"]",
+        "answer": "At each position, you can add `(` if `open_count < n`, or `)` if `close_count < open_count`. Base case: `len(path) == 2*n` → append to results. The constraint `close < open` is the key pruning rule — it ensures you never close a bracket that wasn't opened. This is backtracking with an implicit stack (open count acts as the stack depth). Total results = Catalan number C(n)."
       }
     ]
   },
@@ -359,8 +377,8 @@ const DECKS = [
       },
       {
         "id": "Q2",
-        "question": "How do you binary search on the answer space?",
-        "answer": "When you can check \"is X feasible?\" in O(n), binary search over possible answer values. Common in \"minimize the max\" / \"maximize the min\" problems (Koko, ship packages, split array)."
+        "question": "You suspect a problem can be solved by binary searching on the answer value itself (not on an array index). What three things do you need to define, and what does the template look like?",
+        "answer": "Define: (1) **search range** `[lo, hi]` over candidate answers (e.g., `[1, max(piles)]` for Koko). (2) **Feasibility predicate** `feasible(mid)` that checks in O(n) whether `mid` is a valid answer. (3) **Direction** — are you minimizing (search left when feasible) or maximizing (search right)?\n\n**Template (minimize):**\n```\nlo, hi = min_possible, max_possible\nwhile lo < hi:\n    mid = (lo + hi) // 2\n    if feasible(mid):\n        hi = mid        # mid works, try smaller\n    else:\n        lo = mid + 1    # mid fails, need bigger\nreturn lo\n```\nCommon in 'minimize the max' / 'maximize the min' problems (Koko, ship packages, split array)."
       },
       {
         "id": "Q3",
@@ -501,6 +519,18 @@ const DECKS = [
         "question": "*Given a binary tree where each node has an integer value (can be negative), find the path with the maximum sum. A path is any sequence of connected nodes (doesn't need to pass through the root or be root-to-leaf).*\nMax path sum — what two quantities do you compute per recursion?",
         "example": "Input:  root = [-10,9,20,null,null,15,7]\nOutput: 42  (path 15→20→7)",
         "answer": "**Return to parent:** `node.val + max(0, max(left_gain, right_gain))` (a straight path that can extend upward). **Update global:** `node.val + max(0, left_gain) + max(0, right_gain)` (path that bends at this node)."
+      },
+      {
+        "id": "Q13",
+        "question": "*Given the root of a binary tree, invert it (mirror it) and return the root.* This is trivially easy — so what's the real interview value, and what's the one-liner?",
+        "example": "Input:  root = [4,2,7,1,3,6,9]\nOutput: [4,7,2,9,6,3,1]",
+        "answer": "Recursively swap left and right children: `root.left, root.right = invert(root.right), invert(root.left); return root`. Base case: `if not root: return None`. The interview value isn't the algorithm — it's demonstrating clean recursion, handling the base case, and (if asked) converting to iterative BFS with a queue. Also tests: can you recognize this is just a post-order traversal where the 'visit' step is a swap? O(n) time, O(h) space."
+      },
+      {
+        "id": "Q14",
+        "question": "*Given the root of a binary tree, return the values of the nodes you can see from the right side, ordered from top to bottom.* How does this differ from a standard level-order traversal?",
+        "example": "Input:  root = [1,2,3,null,5,null,4]\nOutput: [1,3,4]",
+        "answer": "It's BFS level-order, but you only record the **last node of each level**. Process one level at a time (record queue length, pop that many); after each level, append the last-popped value. Alternatively, DFS with a `depth` parameter: visit right subtree first; if `depth == len(result)`, this is the first node seen at this depth from the right → append it. The DFS approach is O(n) time, O(h) space."
       }
     ]
   },
@@ -595,8 +625,8 @@ const DECKS = [
     "cards": [
       {
         "id": "Q1",
-        "question": "Define reliability, scalability, and maintainability in one sentence each.",
-        "answer": "Reliability: continues to work correctly under faults. Scalability: can cope with increased load. Maintainability: different people can productively work on it over time."
+        "question": "You're presenting a design doc for a new service. How would you argue that the design addresses reliability, scalability, and maintainability — what concrete evidence would you point to for each?",
+        "answer": "**Reliability** (works correctly under faults): redundancy, failover, retries with backoff, chaos testing, no single points of failure. **Scalability** (handles increased load): load parameters identified (QPS, data volume), horizontal scaling path, stateless tiers, partitioning strategy. **Maintainability** (productive to work on over time): operability (runbooks, monitoring, easy deploys), simplicity (clear abstractions, no accidental complexity), evolvability (modular boundaries, schema migration path). A good design doc addresses all three with specific mechanisms, not just aspirational statements."
       },
       {
         "id": "Q2",
@@ -615,11 +645,6 @@ const DECKS = [
       },
       {
         "id": "Q5",
-        "question": "DDIA identifies three pillars of maintainability. Name each one and explain in one sentence what it means in practice.",
-        "answer": "Operability (ops can keep it running), simplicity (reduce accidental complexity), evolvability (easy to change)."
-      },
-      {
-        "id": "Q6",
         "question": "What are the two fundamental approaches to scaling a system, and what does each one trade off against the other?",
         "answer": "Vertical (bigger machine): simple, limited ceiling. Horizontal (more machines): elastic, demands partitioning and failure handling."
       }
@@ -641,26 +666,21 @@ const DECKS = [
       },
       {
         "id": "Q3",
-        "question": "Your interviewer asks you to compare LSM-trees and B-trees as storage engine internals. What's the fundamental difference in how each handles writes, and what are the tradeoffs?",
-        "answer": "LSM: append-only writes into sorted segments, merged in background (high write throughput, better compression, worse tail read latency, write amplification in compaction). B-tree: in-place updates in balanced-tree pages (good read latency, mature, write amplification via page rewrites + WAL)."
+        "question": "Your interviewer asks you to compare LSM-trees and B-trees as storage engine internals. What's the fundamental difference in how each handles writes, what is write amplification, and how does it manifest in each?",
+        "answer": "**LSM-tree:** append-only writes into sorted segments (SSTables), merged in background compaction. High write throughput, better compression, worse tail read latency. **B-tree:** in-place updates in fixed-size pages within a balanced tree. Good read latency, mature, but writes rewrite full pages + WAL entries.\n\n**Write amplification** = bytes written to storage / bytes of application data written. In LSM, compaction repeatedly merges and rewrites segments — a single logical write may be rewritten 10–30× across compaction levels. In B-trees, each write rewrites a full page (e.g., 4KB for a small update) plus a WAL entry. LSM typically has higher write amp but better sequential I/O; B-tree has lower write amp but random I/O."
       },
       {
         "id": "Q4",
-        "question": "What is write amplification?",
-        "answer": "Bytes written to storage / bytes of application data written. LSM: compaction rewrites. B-tree: full-page writes + WAL entries."
-      },
-      {
-        "id": "Q5",
         "question": "When a partitioned database needs a secondary index, there are two strategies. What are they, and what does each optimize for (reads vs. writes)?",
         "answer": "Local indexes (each partition indexes its own data; queries fan out to all partitions). Global indexes (partitioned separately; fast reads but writes are cross-partition, need async or distributed transactions)."
       },
       {
-        "id": "Q6",
+        "id": "Q5",
         "question": "Why are covering indexes a big deal?",
         "answer": "They contain all columns for a query — engine never touches the primary row. Big read-latency win at cost of index size and write overhead."
       },
       {
-        "id": "Q7",
+        "id": "Q6",
         "question": "You're explaining to a junior engineer why OLTP and OLAP workloads need different storage engines. What are the key differences in their access patterns?",
         "answer": "OLTP: small row count per query, keyed by PK, latency-sensitive. OLAP: large aggregate scans, analyst-driven. Different engines optimize each (row-oriented vs. column-oriented)."
       }
@@ -682,8 +702,8 @@ const DECKS = [
       },
       {
         "id": "Q3",
-        "question": "What is read-your-writes consistency?",
-        "answer": "After a user writes X, that user always sees X on subsequent reads. Typically achieved by routing that user's reads to the leader for a short window, or tagging the session with a version number."
+        "question": "A user updates their profile photo but refreshes and still sees the old one. What consistency guarantee was violated, and name two infrastructure-level fixes.",
+        "answer": "**Read-your-writes consistency** was violated — after a user writes X, that same user should always see X on subsequent reads. **Fix 1:** Route that user's reads to the leader for a short window after their write (e.g., read from leader for 10s after any profile update). **Fix 2:** Tag the client session with the last write's version/timestamp; replicas only serve reads if they're caught up past that version. Both avoid forcing *all* reads to the leader while guaranteeing the writing user sees their own update."
       },
       {
         "id": "Q4",
@@ -717,8 +737,8 @@ const DECKS = [
       },
       {
         "id": "Q10",
-        "question": "Raft in one paragraph?",
-        "answer": "One leader at a time, elected by majority vote in randomized-timeout elections (term numbers break ties). Leader appends log entries, replicates to followers; entry commits when a majority persists it. On crash, new election runs; candidates with the most up-to-date log win. Safety: committed entries never lost. Liveness: as long as majority up and communicating."
+        "question": "When would you reach for a consensus protocol like Raft in a system design, what does it give you, and what does it cost?",
+        "answer": "**When:** leader election, distributed locks, configuration stores, replicated state machines — anywhere you need a group of nodes to agree on a single value or ordering of events despite crashes. (Think: metadata services, coordination layers like etcd/ZooKeeper, not hot-path user data.)\n\n**What it gives you:** linearizable reads/writes, automatic leader election, guaranteed no split-brain. Committed entries are never lost as long as a majority survives.\n\n**What it costs:** writes require a majority round-trip (latency floor = network RTT to the slowest quorum member). Throughput limited to what a single leader can sequence. Requires an odd number of nodes (3 or 5 typical); 2 of 3 must be up for progress. Not suitable for high-throughput data planes — use it for control planes and coordination."
       },
       {
         "id": "Q11",
@@ -800,6 +820,21 @@ const DECKS = [
         "id": "Q13",
         "question": "At the start of any system design interview, there are two categories of clarifying questions you should always ask before designing anything. What are they?",
         "answer": "(1) Scale: DAU, read/write ratio, data retention? (2) Consistency expectations: can this tolerate eventual consistency anywhere?"
+      },
+      {
+        "id": "Q14",
+        "question": "Compare the main load balancing strategies — round-robin, least connections, and consistent hashing. When would you pick each in a system design?",
+        "answer": "**Round-robin:** simplest, works when all servers are identical and requests have similar cost. Fails when backends have uneven capacity or requests vary widely in weight. **Least connections:** routes to the server with the fewest active connections — naturally adapts to slow servers and heterogeneous request costs. Good default for stateless services. **Consistent hashing:** routes by request key (e.g., user ID) — ensures the same key hits the same server. Needed for stateful services, sticky sessions, or caching tiers where locality matters. Use with virtual nodes to smooth out skew."
+      },
+      {
+        "id": "Q15",
+        "question": "Your interviewer says 'tell me how you'd make this system observable.' What are the three pillars of observability, and what does each one help you diagnose?",
+        "answer": "**Metrics** (counters, gauges, histograms): answer 'what is happening right now?' — latency percentiles, error rates, queue depths, saturation. Alert on these. **Logs** (structured, per-event records): answer 'what happened to this specific request?' — debug individual failures, audit trails. Expensive at scale; use sampling or log levels. **Distributed traces** (spans across services): answer 'where did this request spend its time?' — diagnose latency in multi-service call chains, find the bottleneck service. Tools: Prometheus/Grafana for metrics, ELK/Datadog for logs, Jaeger/Zipkin for traces. In a design interview, mention all three and note that metrics are cheapest to query, traces are most useful for debugging fan-out."
+      },
+      {
+        "id": "Q16",
+        "question": "What is back-pressure, and why is it better than unbounded queuing?",
+        "answer": "**Back-pressure** means a downstream system signals upstream to slow down when it's overwhelmed, rather than accepting work it can't handle. Without it, an overwhelmed service queues unboundedly → memory exhaustion → crash → cascading failure. **Mechanisms:** return HTTP 429/503 with retry-after headers, use bounded queues that reject when full, TCP flow control, reactive streams. **Design principle:** it's better to reject work at the edge (where the caller can retry or degrade gracefully) than to accept it and fail silently deep in the stack. Pairs with circuit breakers: back-pressure is the producer-side control, circuit breakers are the consumer-side control."
       }
     ]
   },
@@ -948,6 +983,17 @@ const DECKS = [
         "id": "Q10",
         "question": "Adjacency list vs matrix — what dictates the choice?",
         "answer": "**List** for sparse graphs (E ≪ V²): O(V+E) space, fast neighbor iteration. **Matrix** for dense graphs and when you need O(1) edge-existence checks (e.g., Floyd–Warshall). Most interview graphs are sparse → list."
+      },
+      {
+        "id": "Q11",
+        "question": "*Given an m × n 2D grid of `'1'`s (land) and `'0'`s (water), return the number of islands (groups of horizontally/vertically connected `'1'`s).* Walk through the approach and the in-place trick for visited tracking.",
+        "example": "Input:  grid = [\n  [\"1\",\"1\",\"0\",\"0\",\"0\"],\n  [\"1\",\"1\",\"0\",\"0\",\"0\"],\n  [\"0\",\"0\",\"1\",\"0\",\"0\"],\n  [\"0\",\"0\",\"0\",\"1\",\"1\"]\n]\nOutput: 3",
+        "answer": "Scan the grid; when you hit a `'1'`, increment the island count and BFS/DFS to mark all connected `'1'`s as visited. **In-place trick:** overwrite visited cells with `'0'` (or `'#'`) instead of maintaining a separate visited set — saves O(m·n) space. Each cell is visited at most once → O(m·n) total. This is the canonical 'connected components on a grid' pattern and generalizes to: max area of island, surrounded regions, rotting oranges, shortest path in a grid."
+      },
+      {
+        "id": "Q12",
+        "question": "*Given a reference to a node in a connected undirected graph, return a deep copy (clone) of the graph. Each node has a value and a list of neighbors.*\nWhat data structure prevents creating duplicate clones, and what's the DFS vs BFS approach?",
+        "answer": "Use a hash map `{original_node: cloned_node}` as both a visited set and a lookup for already-cloned nodes. **DFS:** for each node, create its clone, store in the map, then recurse on each neighbor — if the neighbor is already in the map, just wire the existing clone. **BFS:** same map, but use a queue. Key insight: the map serves double duty — it's your visited set *and* your way to find the clone of any node you've already processed. O(V+E) time and space."
       }
     ]
   },
@@ -1003,6 +1049,24 @@ const DECKS = [
         "question": "*Given an integer array `nums`, return the length of the longest strictly increasing subsequence (not necessarily contiguous).*\nLongest Increasing Subsequence — naive O(n²) vs O(n log n)?",
         "example": "Input:  nums = [10,9,2,5,3,7,101,18]\nOutput: 4  (e.g. [2,3,7,101])",
         "answer": "Naive: `dp[i] = 1 + max(dp[j] for j<i if nums[j]<nums[i])` — O(n²). **Patience sort trick** (O(n log n)): keep a `tails` array where `tails[k]` is the smallest tail of any increasing subseq of length k+1. For each x, binary-search the leftmost tail ≥ x and replace. Length of tails = LIS length. The tails array is **NOT** a valid LIS — only its length is meaningful."
+      },
+      {
+        "id": "Q10",
+        "question": "*Given a string `s`, return the number of palindromic substrings (every single character counts as a palindrome).*\nWhat's the expand-from-center technique, and why do you expand from both odd and even centers?",
+        "example": "Input:  s = \"aaa\"\nOutput: 6  (\"a\",\"a\",\"a\",\"aa\",\"aa\",\"aaa\")",
+        "answer": "For each index `i`, expand outward while characters match. **Odd-length palindromes:** center at `(i, i)`. **Even-length palindromes:** center at `(i, i+1)`. You need both because a palindrome can be centered on a single character (\"aba\") or between two characters (\"abba\"). For each valid expansion, increment the count. O(n²) time, O(1) space. This same technique solves 'longest palindromic substring' — just track the longest expansion instead of counting."
+      },
+      {
+        "id": "Q11",
+        "question": "*Given strings `text1` and `text2`, return the length of their longest common subsequence. If there is no common subsequence, return 0.*\nThis is 2-D DP — what's the state, transition, and how do you read the recurrence?",
+        "example": "Input:  text1 = \"abcde\", text2 = \"ace\"\nOutput: 3  (\"ace\")",
+        "answer": "`dp[i][j]` = LCS length of `text1[:i]` and `text2[:j]`. **Transition:** if `text1[i-1] == text2[j-1]`: `dp[i][j] = dp[i-1][j-1] + 1` (both chars match, extend the LCS). Else: `dp[i][j] = max(dp[i-1][j], dp[i][j-1])` (skip one char from either string, take the better option). Base case: `dp[0][j] = dp[i][0] = 0`. Fill row by row. O(m·n) time. Space-optimizable to O(min(m,n)) since each row only depends on the previous row."
+      },
+      {
+        "id": "Q12",
+        "question": "*Given two strings `word1` and `word2`, return the minimum number of operations (insert, delete, replace) to convert `word1` into `word2` (edit distance).*\nWhat's the DP state and the three transitions?",
+        "example": "Input:  word1 = \"horse\", word2 = \"ros\"\nOutput: 3  (horse → rorse → rose → ros)",
+        "answer": "`dp[i][j]` = min operations to convert `word1[:i]` to `word2[:j]`. **If chars match** (`word1[i-1] == word2[j-1]`): `dp[i][j] = dp[i-1][j-1]` (no operation needed). **Else** take the min of three operations:\n- `dp[i-1][j-1] + 1` → **replace** `word1[i-1]` with `word2[j-1]`\n- `dp[i-1][j] + 1` → **delete** from `word1`\n- `dp[i][j-1] + 1` → **insert** into `word1`\n\nBase cases: `dp[i][0] = i` (delete all), `dp[0][j] = j` (insert all). O(m·n) time, O(m·n) space (optimizable to O(min(m,n)))."
       }
     ]
   },
