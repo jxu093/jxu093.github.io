@@ -30,7 +30,7 @@
 
 ## How to use the flashcards
 
-**Flashcard system:** The flashcard file contains 13 decks. Deck 0 is the personal "flagged problems" deck (22 cards, F1–F22) — problems that caused trouble and need extra repetition. Decks 1–8 are DSA pattern decks. Decks 9–12 are System Design / DDIA decks.
+**Flashcard system:** The flashcard file contains 19 decks (185 cards total). Deck 0 is the personal "flagged problems" deck (22 cards, F1–F22) — problems that caused trouble and need extra repetition. Decks 1–8 are core DSA pattern decks (Arrays & Hashing, Two Pointers, Stack, Binary Search, Sliding Window, Trees, Tries, Backtracking). Decks 9–12 are System Design / DDIA decks. Decks 13–18 are additional DSA decks (Linked List, Heap / Priority Queue, Graphs, 1-D DP, Intervals, Greedy). The 1-D DP deck also includes 2-D DP cards (LCS, Edit Distance) since there's no separate 2-D DP deck yet.
 
 **Daily warm-up routine (15–30 min):**
 1. Open the specified deck(s) for that day
@@ -128,7 +128,7 @@ When you complete a topic or a flashcard deck for the first time, add review ses
 - **+21 days** (full deck)
 - **+30 days** (full deck, final)
 
-The flashcard file (`SWE-Flashcards.md`) is pre-populated with decks for the 8 completed DSA topics and a DDIA/SD deck. Add new decks as you finish topics (template at the bottom of that file).
+The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, Graphs, 1-D DP, Intervals, Greedy) and 4 System Design decks (DDIA Ch 1, Ch 2–3, Replication/Partitioning/Consistency, Common Patterns). Add new decks as you finish topics.
 
 ---
 
@@ -249,14 +249,14 @@ The flashcard file (`SWE-Flashcards.md`) is pre-populated with decks for the 8 c
 
 ### Fri May 1 — 1.5 h
 - 15 min: Flashcards — Arrays & Hashing (+14d — Deck 0 cards F1+F2+F3)
-- 75 min: LC — 1-D DP push: Climbing Stairs, House Robber I & II, **Maximum Product Subarray** (flagged — implement tracking both curMax and curMin, update simultaneously). Then Longest Palindromic Substring.
+- 75 min: LC — 1-D DP push: Climbing Stairs, House Robber I & II, **Maximum Product Subarray** (flagged — implement tracking both curMax and curMin, update simultaneously). Then Longest Palindromic Substring (see 1-D DP Q10 for expand-from-center pattern).
 
 > ⚠️ *Flagged re-solve:* Maximum Product Subarray
 
 ### Sat May 2 — 3 h
 - 30 min: Flashcards — mixed
 - 90 min: **SD Mock #3** — Design a rate limiter (prefer a real peer mock this week if possible).
-- 60 min: LC — Longest Common Subsequence + Word Break (1-D DP).
+- 60 min: LC — Longest Common Subsequence (see 1-D DP Q11 for the 2-D DP state/transition) + Word Break.
 
 ### Sun May 3 — 3 h
 - 30 min: Flashcards — review everything ≥14d old
@@ -296,7 +296,7 @@ The flashcard file (`SWE-Flashcards.md`) is pre-populated with decks for the 8 c
 ### Sat May 9 — 3 h
 - 30 min: Flashcards — mixed
 - 90 min: **SD Mock #4** — Design a distributed job scheduler. Peer mock if possible.
-- 60 min: LC — Edit Distance + Interleaving String (2-D DP).
+- 60 min: LC — Edit Distance (see 1-D DP Q12 for the three-operation transition) + Interleaving String (2-D DP).
 
 ### Sun May 10 — 3 h
 - 30 min: Flashcards — review everything ≥14d old
@@ -412,11 +412,11 @@ Before sending applications, you should be able to:
 - Solve any NeetCode 150 medium in ≤ 25 min with ≥ 60% first-pass success.
 - Complete a 45-min SD mock covering requirements → estimation → API → data model → HLD → deep-dive → tradeoffs, with your peer-rated score ≥ "hire" on ≥ 2 of your last 3 mocks.
 - Recite 6 STAR stories in under 2 min each, without notes.
-- Explain CAP, replication lag, LSM vs B-tree, consistent hashing, and Raft basics without opening DDIA.
+- Explain CAP, replication lag, LSM vs B-tree (including write amplification), consistent hashing, when to reach for consensus (and its costs), load balancing strategies, and the three pillars of observability — without opening DDIA.
 
 ---
 
-See the **About this plan** section at the top for a full list of companion files. `SWE-Flashcards.md` has the initial decks — add new decks as you complete each new topic.
+See the **About this plan** section at the top for a full list of companion files. The flashcard decks cover all 14 DSA topics and 4 SD topics (19 decks, 185 cards). Add new decks as you complete each new topic.
 
 ---
 

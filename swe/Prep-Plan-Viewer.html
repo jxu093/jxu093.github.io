@@ -748,7 +748,7 @@
           <li>Solve any NeetCode 150 medium in ≤ 25 min with ≥ 60% first-pass success</li>
           <li>SD mock peer-rated "hire" on ≥ 2 of last 3 mocks (45-min full format)</li>
           <li>6 STAR stories recited under 2 min each, without notes</li>
-          <li>Explain CAP, replication lag, LSM vs B-tree, consistent hashing, and Raft without DDIA</li>
+          <li>Explain CAP, replication lag, LSM vs B-tree (including write amplification), consistent hashing, when to reach for consensus (and its costs), load balancing strategies, and the three pillars of observability — without DDIA</li>
         </ul>
       </div>
 
@@ -1053,7 +1053,7 @@ const WEEKS = [
         dotColor: '#89b4fa',
         sessions: [
           { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Arrays & Hashing review — flagged F1/F2/F3 (+14d)' },
-          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: 1-D DP push: Climbing Stairs, House Robber I & II, <strong>Maximum Product Subarray</strong> (flagged — implement tracking both curMax and curMin, update simultaneously). Then Longest Palindromic Substring.' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '75 min: 1-D DP push: Climbing Stairs, House Robber I & II, <strong>Maximum Product Subarray</strong> (flagged — implement tracking both curMax and curMin, update simultaneously). Then Longest Palindromic Substring (see <a href="SWE-Flashcards.html#Q10" class="deck-link">1-D DP Q10</a> for expand-from-center pattern).' },
         ],
         flagged: ['Maximum Product Subarray (F21)']
       },
@@ -1066,7 +1066,7 @@ const WEEKS = [
         sessions: [
           { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — mixed' },
           { type: 'mock-block', label: 'SD Mock #3 ★', text: '90 min: Design a rate limiter (prefer a real peer mock this week if possible).' },
-          { type: 'dsa-block', label: 'LC / DSA', text: '60 min: Longest Common Subsequence + Word Break (1-D DP).' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '60 min: Longest Common Subsequence (see <a href="SWE-Flashcards.html#Q11" class="deck-link">1-D DP Q11</a> for the 2-D DP state/transition) + Word Break.' },
         ],
         flagged: []
       },
@@ -1162,7 +1162,7 @@ const WEEKS = [
         sessions: [
           { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — mixed' },
           { type: 'mock-block', label: 'SD Mock #4 ★', text: '90 min: Design a distributed job scheduler. Peer mock if possible.' },
-          { type: 'dsa-block', label: 'LC / DSA', text: '60 min: Edit Distance + Interleaving String (2-D DP).' },
+          { type: 'dsa-block', label: 'LC / DSA', text: '60 min: Edit Distance (see <a href="SWE-Flashcards.html#Q12" class="deck-link">1-D DP Q12</a> for the three-operation transition) + Interleaving String (2-D DP).' },
         ],
         flagged: []
       },
