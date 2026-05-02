@@ -835,6 +835,31 @@ const DECKS = [
         "id": "Q16",
         "question": "What is back-pressure, and why is it better than unbounded queuing?",
         "answer": "**Back-pressure** means a downstream system signals upstream to slow down when it's overwhelmed, rather than accepting work it can't handle. Without it, an overwhelmed service queues unboundedly → memory exhaustion → crash → cascading failure. **Mechanisms:** return HTTP 429/503 with retry-after headers, use bounded queues that reject when full, TCP flow control, reactive streams. **Design principle:** it's better to reject work at the edge (where the caller can retry or degrade gracefully) than to accept it and fail silently deep in the stack. Pairs with circuit breakers: back-pressure is the producer-side control, circuit breakers are the consumer-side control."
+      },
+      {
+        "id": "Q17",
+        "question": "When you say 'WebSockets' in a design, what must you define beyond mentioning the upgrade? Give a concrete example for a chat system.",
+        "answer": "Define the actual event contract: named events with specific fields. Example: event 'newMessage' with fields chatId, senderId, content, timestamp, attachments. Also define reconnection behavior (client sends last-seen offset, server replays missed messages). Just saying 'use WebSockets' without the contract is incomplete."
+      },
+      {
+        "id": "Q18",
+        "question": "In a messaging system, how do you guarantee offline message delivery? What data structure tracks what a user has missed, and what's the reconnect flow?",
+        "answer": "Store a last_delivered_message_id (offset) per user per chat. On reconnect: client sends its offset → server fetches all messages after that offset from durable storage → streams them to the client. Push notifications are just hints — they can be dropped. The offset + persistent storage is what guarantees delivery, not the notification."
+      },
+      {
+        "id": "Q19",
+        "question": "How should a chat system handle media attachments (images, video)? Walk through the upload and send flow.",
+        "answer": "Client requests a pre-signed upload URL from the API server → uploads the file directly to blob storage (S3/GCS) → sends a message containing only the blob key/URL. The message service never touches the binary data. This keeps the DB lean (only stores references) and avoids overloading the message path with large payloads."
+      },
+      {
+        "id": "Q20",
+        "question": "You have N WebSocket servers and need to deliver a message to a user connected to one of them. How does the message reach the right server? What problems arise at scale and how do you mitigate them?",
+        "answer": "PubSub layer: each WS server subscribes to topics for its connected users. Message is published to the recipient's topic → only the right server receives and forwards it. At scale, subscription churn is the problem. Mitigations: (1) single multiplexed connection per WS server to the broker (not one per user), (2) batch subscribe/unsubscribe ops, (3) grace period before unsubscribing on disconnect so brief reconnects don't re-subscribe."
+      },
+      {
+        "id": "Q21",
+        "question": "How does supporting multiple devices per user change a messaging system's design? What needs to be per-device instead of per-user?",
+        "answer": "Each device is a separate client session. The User Activity Service stores all active device sessions per user. Fan-out pushes to every connected device. Delivery tracking (offsets) must be per-device, not per-user — one device may be online while another is offline, and each needs independent catchup state on reconnect."
       }
     ]
   },

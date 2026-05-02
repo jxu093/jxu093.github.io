@@ -21,6 +21,7 @@
 
 **Companion files (all in the `SWE Interview/` folder):**
 - `SWE-Prep-Plan.md` — this file
+- `Mock-Practice-Notes.md` — categorized takeaways from every SD mock and practice session; review before each new mock
 - `Flashcards/SWE-Flashcards.md` — full flashcard deck in markdown (source of truth)
 - `Flashcards/SWE-Flashcards.html` — interactive flashcard web app (open in browser); deep-link to a specific card via `SWE-Flashcards.html#F14`
 - `Flashcards/cards.js` — card data file loaded by the HTML app
@@ -30,7 +31,7 @@
 
 ## How to use the flashcards
 
-**Flashcard system:** The flashcard file contains 19 decks (185 cards total). Deck 0 is the personal "flagged problems" deck (22 cards, F1–F22) — problems that caused trouble and need extra repetition. Decks 1–8 are core DSA pattern decks (Arrays & Hashing, Two Pointers, Stack, Binary Search, Sliding Window, Trees, Tries, Backtracking). Decks 9–12 are System Design / DDIA decks. Decks 13–18 are additional DSA decks (Linked List, Heap / Priority Queue, Graphs, 1-D DP, Intervals, Greedy). The 1-D DP deck also includes 2-D DP cards (LCS, Edit Distance) since there's no separate 2-D DP deck yet.
+**Flashcard system:** The flashcard file contains 19 decks (190 cards total). Deck 0 is the personal "flagged problems" deck (22 cards, F1–F22) — problems that caused trouble and need extra repetition. Decks 1–8 are core DSA pattern decks (Arrays & Hashing, Two Pointers, Stack, Binary Search, Sliding Window, Trees, Tries, Backtracking). Decks 9–12 are System Design / DDIA decks (Deck 12 includes Q17–Q21 from WhatsApp mock learnings: WebSocket contracts, offline delivery, pre-signed uploads, PubSub fan-out, multi-device). Decks 13–18 are additional DSA decks (Linked List, Heap / Priority Queue, Graphs, 1-D DP, Intervals, Greedy). The 1-D DP deck also includes 2-D DP cards (LCS, Edit Distance) since there's no separate 2-D DP deck yet.
 
 **Daily warm-up routine (15–30 min):**
 1. Open the specified deck(s) for that day
@@ -212,7 +213,7 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 > ⚠️ *Flagged re-solves:* Graph Valid Tree, Find the Duplicate Number
 
 ### Sat Apr 25 — 3 h
-- 30 min: Flashcards — mixed (Intervals deck new + SD)
+- 30 min: Flashcards — Intervals deck (first pass) + SD DDIA Ch 2–3 (+3d review) + SD DDIA Ch 1 (+7d review)
 - 90 min: **SD Mock #2** — Design Twitter/X feed (solo or peer). Focus specifically on write vs. read fan-out tradeoffs.
 - 60 min: LC — Meeting Rooms II (finish Intervals) + Greedy kickoff: Jump Game + Gas Station.
 
@@ -254,8 +255,9 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 > ⚠️ *Flagged re-solve:* Maximum Product Subarray
 
 ### Sat May 2 — 3 h
-- 30 min: Flashcards — mixed
-- 90 min: **SD Mock #3** — Design a rate limiter (prefer a real peer mock this week if possible).
+- 30 min: Flashcards — Deck 12 Q17–Q21 first pass (WhatsApp mock learnings: WebSocket contracts, offline delivery offsets, pre-signed uploads, PubSub fan-out, multi-device) + Intervals (+7d) + Heap (+7d)
+- 10 min: **Pre-mock review** — read `Mock-Practice-Notes.md` themes index. Focus areas for this mock: define API response shapes (not just requests), articulate fault tolerance concretely (what happens when X fails).
+- 80 min: **SD Mock #3** — Design a rate limiter (prefer a real peer mock this week if possible). Post-mock: add entry to `Mock-Practice-Notes.md`.
 - 60 min: LC — Longest Common Subsequence (see 1-D DP Q11 for the 2-D DP state/transition) + Word Break.
 
 ### Sun May 3 — 3 h
@@ -286,16 +288,17 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 - 75 min: LC — Unique Paths + Longest Increasing Subsequence (2-D DP intro).
 
 ### Thu May 7 — 1.5 h
-- 15 min: Flashcards — new Consistency/CAP deck
-- 75 min: SD problem — Design Instagram/photo upload+feed (timed 45 min).
+- 15 min: Flashcards — new Consistency/CAP deck + review Deck 12 Q19 (pre-signed uploads — directly applies to Instagram)
+- 75 min: SD problem — Design Instagram/photo upload+feed (timed 45 min). Apply WhatsApp learnings: pre-signed upload URLs for media, blob storage with DB references, fan-out for feed delivery. Define API response shapes explicitly.
 
 ### Fri May 8 — 1.5 h
 - 15 min: Flashcards — Sliding Window (+21d)
 - 75 min: LC review — re-solve this week's 2-D DPs from scratch. Explain the state + transition out loud.
 
 ### Sat May 9 — 3 h
-- 30 min: Flashcards — mixed
-- 90 min: **SD Mock #4** — Design a distributed job scheduler. Peer mock if possible.
+- 30 min: Flashcards — Deck 12 Q17–Q21 (+7d) + Trees (+21d) + Tries (+21d) + Backtracking (+21d)
+- 10 min: **Pre-mock review** — read `Mock-Practice-Notes.md` themes index. Check which gaps from mocks 1–3 are recurring.
+- 80 min: **SD Mock #4** — Design a distributed job scheduler. Peer mock if possible. Post-mock: add entry to `Mock-Practice-Notes.md`.
 - 60 min: LC — Edit Distance (see 1-D DP Q12 for the three-operation transition) + Interleaving String (2-D DP).
 
 ### Sun May 10 — 3 h
@@ -327,20 +330,21 @@ This week shifts toward synthesis. Fewer new concepts, more end-to-end practice.
 - 75 min: LC — Rotate Image + Spiral Matrix + Happy Number (math & geometry).
 
 ### Thu May 14 — 1.5 h
-- 15 min: Flashcards — all SD decks, fast pass
-- 75 min: SD problem — Design a search autocomplete / typeahead (timed 45 min).
+- 15 min: Flashcards — all SD decks fast pass (including Deck 12 Q17–Q21 at +14d)
+- 75 min: SD problem — Design a search autocomplete / typeahead (timed 45 min). Apply: WebSocket event contract for streaming suggestions, API response shapes, cursor-based pagination for history.
 
 ### Fri May 15 — 1.5 h
 - 15 min: Flashcards — Arrays & Hashing (+30d, final)
 - 75 min: LC — Advanced Graphs sampler: Network Delay Time (Dijkstra) + Reconstruct Itinerary (Hierholzer). Know Dijkstra cold.
 
 ### Sat May 16 — 3 h
-- 30 min: Flashcards — mixed
-- 120 min: **SD Mock #5** — full 60-min peer mock (book this by Tue May 12). 60 min of self-review afterward.
+- 30 min: Flashcards — Deck 12 Q17–Q21 (+14d) + Heap (+21d) + Intervals (+21d) + Graphs (+21d)
+- 10 min: **Pre-mock review** — read `Mock-Practice-Notes.md` themes index. By now you have 4 mocks logged — check which themes keep appearing. These are your real weak spots vs. one-off mistakes.
+- 110 min: **SD Mock #5** — full 60-min peer mock (book this by Tue May 12). 50 min of self-review afterward. Post-mock: add entry to `Mock-Practice-Notes.md`.
 - 30 min: LC — 1 hard problem from a topic you're confident in (confidence build).
 
 ### Sun May 17 — 3 h
-- 30 min: Flashcards
+- 30 min: Flashcards — 1-D DP (+21d) + SD Replication (+14d) + Consistency/CAP (+7d)
 - 90 min: 2 mediums timed, mixed topics, pick at random.
 - 60 min: Behavioral prep — write 4–6 STAR stories from your Azure SDN work. Cover: conflict, ambiguity, driving change, scope creep, failure, mentoring.
 
@@ -360,8 +364,8 @@ This week shifts toward synthesis. Fewer new concepts, more end-to-end practice.
 - 75 min: **Full LC interview sim** — 1 medium in 20 min + 1 hard in 40 min. Strict timing. No hints.
 
 ### Tue May 19 — 1.5 h
-- 15 min: Flashcards — all SD decks fast pass
-- 75 min: SD problem — Design YouTube/video streaming (timed 45 min).
+- 15 min: Flashcards — all SD decks fast pass (Deck 12 Q17–Q21 at +21d — should feel automatic by now)
+- 75 min: SD problem — Design YouTube/video streaming (timed 45 min). Apply: pre-signed uploads for video, blob storage references, API response shapes.
 
 ### Wed May 20 — 1.5 h
 - 15 min: Flashcards — Heap (+30d) + DP decks (new)
@@ -369,20 +373,21 @@ This week shifts toward synthesis. Fewer new concepts, more end-to-end practice.
 
 ### Thu May 21 — 1.5 h
 - 15 min: Flashcards — Behavioral STAR recall (speak each story out loud in < 2 min)
-- 75 min: SD problem — Design a notification system (timed 45 min).
+- 75 min: SD problem — Design a notification system (timed 45 min). Key connection: notification ≠ delivery (WhatsApp mock lesson). Design for offline catchup with per-device offsets, not just push.
 
 ### Fri May 22 — 1.5 h
-- 15 min: Flashcards
+- 15 min: Flashcards — Linked List (+30d) + Graphs (+30d)
 - 75 min: LC — 1 hard from a weak topic. Full write-up.
 
 ### Sat May 23 — 3 h
-- 30 min: Flashcards
-- 90 min: **SD Mock #6** — peer mock, pretend it's on-site.
+- 30 min: Flashcards — SD Replication (+21d) + Consistency/CAP (+14d) + Intervals (+30d, from own notes) + Greedy (+3d)
+- 10 min: **Pre-mock review** — `Mock-Practice-Notes.md` final themes check. Any theme that appeared in 3+ mocks = drill it one more time before the mock.
+- 80 min: **SD Mock #6** — peer mock, pretend it's on-site. Post-mock: add entry to `Mock-Practice-Notes.md`.
 - 60 min: LC — 1 medium + 1 hard, timed.
 
 ### Sun May 24 — 3 h
-- 30 min: Flashcards — final sweep
-- 90 min: **SD Mock #7** — solo timed, pick a design you haven't done yet (e.g., Dropbox, Uber).
+- 30 min: Flashcards — final sweep (Deck 12 Q17–Q21 at +30d — mark mature if instant)
+- 90 min: **SD Mock #7** — solo timed, pick a design you haven't done yet (e.g., Dropbox, Uber). Post-mock: final `Mock-Practice-Notes.md` entry.
 - 60 min: Final behavioral rehearsal + resume/LinkedIn polish.
 
 **End of Week 6:** Ready to apply starting Mon May 25.
@@ -393,7 +398,7 @@ This week shifts toward synthesis. Fewer new concepts, more end-to-end practice.
 
 - LC problems solved, by topic, by difficulty
 - LC "first-try correct" rate (target > 60% on mediums in completed topics by end of Week 4)
-- SD mocks done + 1-line takeaway for each
+- SD mocks done + entry in `Mock-Practice-Notes.md` for each (check themes index for recurring gaps)
 - Flashcard deck completion (first pass + review count)
 - DDIA chapters fully absorbed (able to explain without notes)
 - STAR stories polished (target: 6 by Week 6)
