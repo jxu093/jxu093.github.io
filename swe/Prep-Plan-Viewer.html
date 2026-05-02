@@ -968,7 +968,7 @@ const WEEKS = [
         time: '3 h',
         dotColor: '#a6e3a1',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — mixed (Intervals deck new + SD)' },
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — Intervals deck (first pass) + SD DDIA Ch 2–3 (+3d review) + SD DDIA Ch 1 (+7d review)' },
           { type: 'mock-block', label: 'SD Mock #2 ★', text: '90 min: Design Twitter/X feed (solo or peer). Focus specifically on write vs. read fan-out tradeoffs.' },
           { type: 'dsa-block', label: 'LC / DSA', text: '60 min: Meeting Rooms II (finish Intervals) + Greedy kickoff: Jump Game + Gas Station.' },
         ],
@@ -1064,8 +1064,9 @@ const WEEKS = [
         time: '3 h',
         dotColor: '#a6e3a1',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — mixed' },
-          { type: 'mock-block', label: 'SD Mock #3 ★', text: '90 min: Design a rate limiter (prefer a real peer mock this week if possible).' },
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — Deck 12 Q17–Q21 first pass (WhatsApp mock learnings: WebSocket contracts, offline delivery offsets, pre-signed uploads, PubSub fan-out, multi-device) + Intervals (+7d) + Heap (+7d)' },
+          { type: 'sd-block', label: 'Pre-mock review', text: '10 min: Read Mock-Practice-Notes.md themes index. Focus areas for this mock: define API response shapes (not just requests), articulate fault tolerance concretely (what happens when X fails).' },
+          { type: 'mock-block', label: 'SD Mock #3 ★', text: '80 min: Design a rate limiter (prefer a real peer mock this week if possible). Post-mock: add entry to Mock-Practice-Notes.md.' },
           { type: 'dsa-block', label: 'LC / DSA', text: '60 min: Longest Common Subsequence (see <a href="SWE-Flashcards.html#Q11" class="deck-link">1-D DP Q11</a> for the 2-D DP state/transition) + Word Break.' },
         ],
         flagged: []
@@ -1136,8 +1137,8 @@ const WEEKS = [
         time: '1.5 h',
         dotColor: '#cba6f7',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — new Consistency/CAP deck' },
-          { type: 'sd-block', label: 'System Design', text: '75 min: SD problem — Design Instagram/photo upload+feed (timed 45 min).' },
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — new Consistency/CAP deck + review Deck 12 Q19 (pre-signed uploads — directly applies to Instagram)' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: SD problem — Design Instagram/photo upload+feed (timed 45 min). Apply WhatsApp learnings: pre-signed upload URLs for media, blob storage with DB references, fan-out for feed delivery. Define API response shapes explicitly.' },
         ],
         flagged: []
       },
@@ -1160,8 +1161,9 @@ const WEEKS = [
         time: '3 h',
         dotColor: '#a6e3a1',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — mixed' },
-          { type: 'mock-block', label: 'SD Mock #4 ★', text: '90 min: Design a distributed job scheduler. Peer mock if possible.' },
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — Deck 12 Q17–Q21 (+7d) + Trees (+21d) + Tries (+21d) + Backtracking (+21d)' },
+          { type: 'sd-block', label: 'Pre-mock review', text: '10 min: Read Mock-Practice-Notes.md themes index. Check which gaps from mocks 1–3 are recurring.' },
+          { type: 'mock-block', label: 'SD Mock #4 ★', text: '80 min: Design a distributed job scheduler. Peer mock if possible. Post-mock: add entry to Mock-Practice-Notes.md.' },
           { type: 'dsa-block', label: 'LC / DSA', text: '60 min: Edit Distance (see <a href="SWE-Flashcards.html#Q12" class="deck-link">1-D DP Q12</a> for the three-operation transition) + Interleaving String (2-D DP).' },
         ],
         flagged: []
@@ -1232,8 +1234,8 @@ const WEEKS = [
         time: '1.5 h',
         dotColor: '#cba6f7',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — all SD decks, fast pass' },
-          { type: 'sd-block', label: 'System Design', text: '75 min: Design a search autocomplete / typeahead (timed 45 min).' },
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — all SD decks fast pass (including Deck 12 Q17–Q21 at +14d)' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: Design a search autocomplete / typeahead (timed 45 min). Apply: WebSocket event contract for streaming suggestions, API response shapes, cursor-based pagination for history.' },
         ],
         flagged: []
       },
@@ -1256,8 +1258,9 @@ const WEEKS = [
         time: '3 h',
         dotColor: '#a6e3a1',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — mixed' },
-          { type: 'mock-block', label: 'SD Mock #5 ★', text: '120 min: Full 60-min peer mock (book by Tue May 12). 60 min of self-review afterward.' },
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — Deck 12 Q17–Q21 (+14d) + Heap (+21d) + Intervals (+21d) + Graphs (+21d)' },
+          { type: 'sd-block', label: 'Pre-mock review', text: '10 min: Read Mock-Practice-Notes.md themes index. By now you have 4 mocks logged — check which themes keep appearing. These are your real weak spots vs. one-off mistakes.' },
+          { type: 'mock-block', label: 'SD Mock #5 ★', text: '110 min: Full 60-min peer mock (book by Tue May 12). 50 min of self-review afterward. Post-mock: add entry to Mock-Practice-Notes.md.' },
           { type: 'dsa-block', label: 'LC / DSA', text: '30 min: 1 hard problem from a topic you\'re confident in (confidence build).' },
         ],
         flagged: []
@@ -1269,7 +1272,7 @@ const WEEKS = [
         time: '3 h',
         dotColor: '#89b4fa',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards' },
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — 1-D DP (+21d) + SD Replication (+14d) + Consistency/CAP (+7d)' },
           { type: 'dsa-block', label: 'LC / DSA', text: '90 min: 2 mediums timed, mixed topics, pick at random.' },
           { type: 'mixed-block', label: 'Behavioral', text: '60 min: Write 4–6 STAR stories from your Azure SDN work. Cover: conflict, ambiguity, driving change, scope creep, failure, mentoring.' },
         ],
@@ -1303,8 +1306,8 @@ const WEEKS = [
         time: '1.5 h',
         dotColor: '#cba6f7',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — all SD decks fast pass' },
-          { type: 'sd-block', label: 'System Design', text: '75 min: Design YouTube/video streaming (timed 45 min).' },
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — all SD decks fast pass (Deck 12 Q17–Q21 at +21d — should feel automatic by now)' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: Design YouTube/video streaming (timed 45 min). Apply: pre-signed uploads for video, blob storage references, API response shapes.' },
         ],
         flagged: []
       },
@@ -1328,7 +1331,7 @@ const WEEKS = [
         dotColor: '#cba6f7',
         sessions: [
           { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Behavioral STAR recall (speak each story out loud in < 2 min)' },
-          { type: 'sd-block', label: 'System Design', text: '75 min: Design a notification system (timed 45 min).' },
+          { type: 'sd-block', label: 'System Design', text: '75 min: Design a notification system (timed 45 min). Key connection: notification ≠ delivery (WhatsApp mock lesson). Design for offline catchup with per-device offsets, not just push.' },
         ],
         flagged: []
       },
@@ -1339,7 +1342,7 @@ const WEEKS = [
         time: '1.5 h',
         dotColor: '#89b4fa',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards' },
+          { type: 'warmup', label: 'Warm-up', text: '15 min: Flashcards — Linked List (+30d) + Graphs (+30d)' },
           { type: 'dsa-block', label: 'LC / DSA', text: '75 min: 1 hard from a weak topic. Full write-up.' },
         ],
         flagged: []
@@ -1351,8 +1354,9 @@ const WEEKS = [
         time: '3 h',
         dotColor: '#a6e3a1',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards' },
-          { type: 'mock-block', label: 'SD Mock #6 ★', text: '90 min: Peer mock — pretend it\'s on-site.' },
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — SD Replication (+21d) + Consistency/CAP (+14d) + Intervals (+30d, from own notes) + Greedy (+3d)' },
+          { type: 'sd-block', label: 'Pre-mock review', text: '10 min: Mock-Practice-Notes.md final themes check. Any theme that appeared in 3+ mocks = drill it one more time before the mock.' },
+          { type: 'mock-block', label: 'SD Mock #6 ★', text: '80 min: Peer mock — pretend it\'s on-site. Post-mock: add entry to Mock-Practice-Notes.md.' },
           { type: 'dsa-block', label: 'LC / DSA', text: '60 min: 1 medium + 1 hard, timed.' },
         ],
         flagged: []
@@ -1364,8 +1368,8 @@ const WEEKS = [
         time: '3 h',
         dotColor: '#89b4fa',
         sessions: [
-          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — final sweep' },
-          { type: 'mock-block', label: 'SD Mock #7 ★', text: '90 min: Solo timed — pick a design you haven\'t done yet (e.g., Dropbox, Uber).' },
+          { type: 'warmup', label: 'Warm-up', text: '30 min: Flashcards — final sweep (Deck 12 Q17–Q21 at +30d — mark mature if instant)' },
+          { type: 'mock-block', label: 'SD Mock #7 ★', text: '90 min: Solo timed — pick a design you haven\'t done yet (e.g., Dropbox, Uber). Post-mock: final Mock-Practice-Notes.md entry.' },
           { type: 'mixed-block', label: 'Behavioral + Admin', text: '60 min: Final behavioral rehearsal + resume/LinkedIn polish.' },
         ],
         flagged: []
