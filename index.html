@@ -1,20 +1,477 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Wow</title>
-    <style>
-      html,body{height:100%;margin:0}
-      body{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f172a,#0b3a5b);font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#fff}
-      .splash{font-size:clamp(48px,12vw,120px);font-weight:700;letter-spacing:0.02em;text-transform:none;opacity:0.98}
-      .sub{margin-top:12px;font-size:14px;opacity:0.75;text-align:center}
-    </style>
-  </head>
-  <body>
-    <div>
-      <div class="splash">Wow</div>
-      <div class="sub">a tiny splash — refreshed</div>
-    </div>
-  </body>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jerry Xu — Senior Software Engineer</title>
+<meta name="description" content="Interactive career timeline — Jerry Xu, Senior Software Engineer, Azure SDN." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23111827'/%3E%3Ccircle cx='32' cy='32' r='10' fill='%2338bdf8'/%3E%3C/svg%3E" />
+<style>
+  :root {
+    --bg: #0a0d14;
+    --bg-2: #0f131c;
+    --panel: #111726;
+    --fg: #e7ecf3;
+    --dim: #8a95ac;
+    --muted: #606c85;
+    --line: #1e2636;
+    --accent: #38bdf8;
+    --accent-2: #a78bfa;
+    --ok: #34d399;
+    --warm: #fb923c;
+    --hot: #f472b6;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+  body {
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(56,189,248,0.10), transparent 60%),
+      radial-gradient(1000px 500px at 110% 10%, rgba(167,139,250,0.10), transparent 60%),
+      var(--bg);
+    min-height: 100vh;
+  }
+
+  .nav {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 28px;
+    backdrop-filter: blur(10px);
+    background: rgba(10,13,20,0.6);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: 0.3px; }
+  .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+  .nav a { color: var(--dim); text-decoration: none; margin-left: 16px; font-size: 13px; }
+  .nav a:hover { color: var(--fg); }
+  .nav .resume-link {
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-weight: 500;
+    transition: .2s;
+  }
+  .nav .resume-link:hover { background: var(--accent); color: #04111a; }
+
+  .hero {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 72px 28px 48px;
+  }
+  .eyebrow {
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1.05;
+    margin: 0 0 14px;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    background: linear-gradient(180deg, #fff 0%, #c6d0e4 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .tag {
+    display: inline-flex; gap: 8px; align-items: center;
+    color: var(--dim); font-size: 14px;
+  }
+  .tag b { color: var(--fg); font-weight: 500; }
+  .lede {
+    margin-top: 22px; max-width: 68ch; color: var(--dim);
+    font-size: 17px; line-height: 1.6;
+  }
+
+  /* Timeline */
+  .timeline-wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 28px 80px;
+    position: relative;
+  }
+  .decade-rail {
+    position: absolute;
+    left: 28px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--line) 8%, var(--line) 92%, transparent);
+  }
+  .timeline {
+    position: relative;
+    padding-left: 80px;
+  }
+  .year-pill {
+    position: sticky;
+    top: 82px;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--dim);
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin: 32px 0 16px -80px;
+    z-index: 2;
+  }
+
+  .node {
+    position: relative;
+    margin: 18px 0 26px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .node.in { opacity: 1; transform: none; }
+
+  .node::before {
+    content: "";
+    position: absolute;
+    left: -57px; top: 18px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 4px rgba(56,189,248,0.12);
+  }
+  .node.milestone::before { border-color: var(--warm); box-shadow: 0 0 0 4px rgba(251,146,60,0.15); }
+  .node.edu::before { border-color: var(--hot); box-shadow: 0 0 0 4px rgba(244,114,182,0.15); }
+  .node.project::before { border-color: var(--accent-2); box-shadow: 0 0 0 4px rgba(167,139,250,0.15); }
+
+  .card {
+    background: linear-gradient(180deg, var(--panel), #0d1220);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover { border-color: #2a3552; transform: translateY(-1px); }
+  .card.open { border-color: var(--accent); box-shadow: 0 8px 30px rgba(56,189,248,0.08); }
+
+  .card .top {
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  }
+  .card .role { font-size: 17px; font-weight: 600; color: var(--fg); }
+  .card .at { color: var(--muted); }
+  .card .where { color: var(--accent); font-weight: 500; }
+  .card .when { margin-left: auto; color: var(--muted); font-size: 13px; }
+
+  .card .sub {
+    margin-top: 4px; color: var(--dim); font-size: 14px;
+  }
+
+  .card .body {
+    max-height: 0; overflow: hidden;
+    transition: max-height .4s ease;
+  }
+  .card.open .body { max-height: 800px; }
+  .card .body-inner { padding-top: 14px; }
+  .card ul { margin: 8px 0 0; padding-left: 20px; }
+  .card li { margin: 4px 0; color: var(--fg); }
+  .card li::marker { color: var(--accent); }
+
+  .chips { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: 12px; padding: 2px 10px;
+    border-radius: 999px;
+    background: rgba(56,189,248,0.08);
+    color: #b7e3f8; border: 1px solid rgba(56,189,248,0.18);
+  }
+  .chip.warm { background: rgba(251,146,60,0.08); color: #fcd2a8; border-color: rgba(251,146,60,0.2); }
+  .chip.purple { background: rgba(167,139,250,0.08); color: #d6c6ff; border-color: rgba(167,139,250,0.2); }
+
+  .filters {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    max-width: 1120px; margin: 0 auto; padding: 0 28px 12px;
+  }
+  .filter-btn {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--dim);
+    padding: 6px 12px; font-size: 13px;
+    border-radius: 999px; cursor: pointer;
+    transition: .15s;
+  }
+  .filter-btn:hover { color: var(--fg); }
+  .filter-btn.on { color: #04111a; background: var(--accent); border-color: var(--accent); }
+
+  /* Skills strip */
+  .skills {
+    max-width: 1120px; margin: 40px auto 0; padding: 0 28px 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  .skill-block {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .skill-block h4 {
+    margin: 0 0 8px; color: var(--accent);
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .skill-block .list { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* Contact strip */
+  .contact {
+    max-width: 1120px; margin: 0 auto 80px;
+    padding: 28px; border-radius: 14px;
+    background: linear-gradient(120deg, rgba(56,189,248,0.08), rgba(167,139,250,0.06));
+    border: 1px solid var(--line);
+    margin-left: 28px; margin-right: 28px;
+  }
+  .contact h3 { margin: 0 0 8px; }
+  .contact .links a {
+    color: var(--fg); text-decoration: none;
+    border-bottom: 1px solid var(--line);
+    margin-right: 20px;
+  }
+  .contact .links a:hover { border-color: var(--accent); color: var(--accent); }
+
+  footer {
+    text-align: center; color: var(--muted);
+    font-size: 12px; padding: 24px 0 40px;
+  }
+
+  @media (max-width: 640px) {
+    .timeline { padding-left: 48px; }
+    .decade-rail { left: 14px; }
+    .node::before { left: -43px; }
+    .year-pill { margin-left: -48px; }
+    .card .when { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="brand"><span class="dot"></span><span>Jerry Xu</span></div>
+  <div>
+    <a href="#timeline">Timeline</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+    <a href="resume.pdf" class="resume-link" target="_blank">Resume PDF</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="eyebrow">Redmond, WA · Open to opportunities</div>
+  <h1>Senior Software Engineer<br/>Azure SDN Control Plane</h1>
+  <div class="tag">
+    <b>Jerry Xu</b>
+    <span>·</span>
+    <span>Microsoft · 9+ years building distributed systems at global scale</span>
+  </div>
+  <p class="lede">
+    Specializing in large-scale distributed systems and control plane architecture on Azure's SDN
+    platform. Proven track record of driving cross-organizational designs and delivering
+    production-critical systems that improve reliability for millions of resources. Click any
+    card below to expand it, or filter by category.
+  </p>
+</header>
+
+<div class="filters" role="tablist" aria-label="Filter timeline">
+  <button class="filter-btn on" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="work">Work</button>
+  <button class="filter-btn" data-filter="project">Projects</button>
+  <button class="filter-btn" data-filter="edu">Education</button>
+</div>
+
+<main class="timeline-wrap" id="timeline">
+  <div class="decade-rail"></div>
+  <div class="timeline" id="tl"></div>
+</main>
+
+<section class="skills" id="skills"></section>
+
+<section class="contact" id="contact">
+  <h3>Let's talk</h3>
+  <div class="links">
+    <a href="mailto:jxu000@gmail.com">jxu000@gmail.com</a>
+    <a href="tel:4255881166">425-588-1166</a>
+    <a href="https://github.com/jxu093" target="_blank" rel="noopener">GitHub</a>
+    <a href="resume.pdf" target="_blank">Resume PDF</a>
+  </div>
+</section>
+
+<footer>— end of file —</footer>
+
+<script>
+const EVENTS = [
+  {
+    year: "Present",
+    kind: "work",
+    role: "Senior Software Engineer",
+    where: "Microsoft · Azure SDN",
+    when: "Jun 2022 — Present",
+    sub: "Azure SDN Control Plane",
+    bullets: [
+      "Redesigned goal-state distribution to route publish calls to VM home availability zones, reducing cross-AZ traffic by 66–75% and improving resilience during zone-level pubsub outages.",
+      "Built a proactive error-triage workflow surfacing low-frequency failures below alerting thresholds — evolved from manual review to AI-driven classification, uncovering previously undetected production issues.",
+      "Onboarded a new 6-person engineering team in India through structured weekly sessions; team grew to 15+ engineers with independent contributions within two months.",
+    ],
+    chips: ["C#", "Azure", "Distributed Systems", "SDN", "AI"],
+  },
+  {
+    year: "2022",
+    kind: "milestone",
+    role: "Promoted to Senior Software Engineer",
+    where: "Microsoft",
+    when: "Jun 2022",
+    sub: "Technical leadership milestone",
+    bullets: [
+      "Promoted after leading cross-organizational design with Azure Compute to redesign the VM deletion API, eliminating resource-conflict incidents caused by premature SDN release.",
+    ],
+    chips: ["Leadership", "Design", "Cross-org"],
+  },
+  {
+    year: "2020",
+    kind: "milestone",
+    role: "Promoted to Software Engineer II",
+    where: "Microsoft",
+    when: "Mar 2020",
+    sub: "",
+    bullets: [
+      "Promoted after driving integration of regional network management into Azure's new SDN control plane with pub/sub-based goal-state publishing — part of a multi-org effort that reduced VM lifecycle latency by 90%.",
+    ],
+    chips: ["SDN", "Pub/Sub", "Scale"],
+  },
+  {
+    year: "2019",
+    kind: "work",
+    role: "Software Engineer",
+    where: "Microsoft · Azure SDN",
+    when: "Jan 2019 — Mar 2020",
+    sub: "Azure SDN Control Plane",
+    bullets: [
+      "Drove integration of regional network management into Azure's new SDN control plane, implementing pub/sub-based goal-state publishing for VM, NIC, and network policy resources.",
+      "Part of a multi-org effort that reduced VM lifecycle latency by 90%.",
+    ],
+    chips: ["C#", "Service Fabric", "gRPC", "Pub/Sub"],
+  },
+  {
+    year: "2018",
+    kind: "work",
+    role: "Software Developer",
+    where: "Capital One Canada",
+    when: "Aug 2018 — Dec 2018",
+    sub: "Real-time data streams",
+    bullets: [
+      "Designed and prototyped real-time event-driven data streams using Apache Kafka for financial ledger updates, architected for zero data loss across ~2M Canadian cardholders.",
+    ],
+    chips: ["Apache Kafka", "Java", "Event-driven"],
+  },
+  {
+    year: "2017",
+    kind: "work",
+    role: "Software Developer",
+    where: "IBM",
+    when: "2017 — 2018",
+    sub: "Enterprise backend services",
+    bullets: [
+      "Built and maintained robust backend services in Java/C++, focusing on enterprise-scale data processing, storage reliability, and security practices including OWASP principles and GDPR compliance.",
+    ],
+    chips: ["Java", "C++", "OWASP", "GDPR"],
+  },
+  {
+    year: "2017",
+    kind: "edu",
+    role: "B.Sc. Computer Science, Minor in Business",
+    where: "McMaster University",
+    when: "2013 — 2017",
+    sub: "Dean's Honor List",
+    bullets: [
+      "Bachelor of Science in Computer Science with a Minor in Business.",
+      "Graduated on the Dean's Honor List.",
+    ],
+    chips: ["Computer Science", "Business", "Dean's Honor List"],
+  },
+];
+
+const SKILLS = {
+  "Languages":      ["C#", "Java", "Python", "C++"],
+  "Cloud & Infra":  ["Azure", "AWS", "SDN", "Microservices"],
+  "Distributed":    ["Apache Kafka", "Distributed Systems", "REST APIs"],
+  "Tools":          ["Git", "GitHub"],
+};
+
+// ---------- Render ----------
+const tl = document.getElementById("tl");
+let currentYear = null;
+EVENTS.forEach((e, i) => {
+  if (e.year !== currentYear) {
+    const p = document.createElement("div");
+    p.className = "year-pill";
+    p.textContent = e.year.toUpperCase();
+    tl.appendChild(p);
+    currentYear = e.year;
+  }
+  const node = document.createElement("article");
+  node.className = "node " + e.kind;
+  node.dataset.kind = e.kind;
+  node.innerHTML = `
+    <div class="card" tabindex="0" role="button" aria-expanded="false">
+      <div class="top">
+        <span class="role">${e.role}</span>
+        <span class="at">·</span>
+        <span class="where">${e.where}</span>
+        <span class="when">${e.when}</span>
+      </div>
+      <div class="sub">${e.sub}</div>
+      <div class="body"><div class="body-inner">
+        <ul>${e.bullets.map(b => `<li>${b}</li>`).join("")}</ul>
+        <div class="chips">${e.chips.map(c => `<span class="chip ${e.kind === 'edu' ? 'purple' : e.kind === 'project' ? 'purple' : e.kind === 'milestone' ? 'warm' : ''}">${c}</span>`).join("")}</div>
+      </div></div>
+    </div>`;
+  tl.appendChild(node);
+});
+
+// Skills
+const skillsEl = document.getElementById("skills");
+Object.entries(SKILLS).forEach(([k, arr]) => {
+  const block = document.createElement("div");
+  block.className = "skill-block";
+  block.innerHTML = `<h4>${k}</h4><div class="list">${arr.map(s => `<span class="chip">${s}</span>`).join("")}</div>`;
+  skillsEl.appendChild(block);
+});
+
+// Interactions
+document.querySelectorAll(".card").forEach(card => {
+  const toggle = () => {
+    const open = card.classList.toggle("open");
+    card.setAttribute("aria-expanded", open ? "true" : "false");
+  };
+  card.addEventListener("click", toggle);
+  card.addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); toggle(); }
+  });
+});
+
+// Reveal on scroll
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(en => {
+    if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll(".node").forEach(n => io.observe(n));
+
+// Filters
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("on"));
+    btn.classList.add("on");
+    const f = btn.dataset.filter;
+    document.querySelectorAll(".node").forEach(n => {
+      n.style.display = (f === "all" || n.dataset.kind === f) ? "" : "none";
+    });
+  });
+});
+</script>
+</body>
 </html>
