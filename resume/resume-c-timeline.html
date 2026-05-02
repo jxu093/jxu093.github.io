@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jerry Xu — Resume</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #eef0f4;
+            color: #3a3a3a;
+            line-height: 1.6;
+        }
+
+        .page {
+            max-width: 780px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
+            padding: 56px 56px 48px;
+        }
+
+        /* Header — centered, minimal */
+        header {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        header .contact {
+            font-size: 0.82rem;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+
+        header .contact a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+        header .contact a:hover {
+            color: #1B2A4A;
+        }
+
+        header .contact .dot {
+            margin: 0 8px;
+            color: #d1d5db;
+        }
+
+        .header-rule {
+            width: 48px;
+            height: 3px;
+            background: #1B2A4A;
+            margin: 20px auto 28px;
+            border-radius: 2px;
+        }
+
+        /* Summary */
+        .summary {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #4a4a4a;
+            line-height: 1.75;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        /* Section headers */
+        h2 {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #1B2A4A;
+            margin-bottom: 24px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #1B2A4A;
+        }
+
+        section {
+            margin-bottom: 36px;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: #e5e7eb;
+        }
+
+        .timeline-entry {
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .timeline-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -29px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #1B2A4A;
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 2px #1B2A4A;
+        }
+
+        .timeline-dot.secondary {
+            background: #fff;
+            box-shadow: 0 0 0 2px #6b7280;
+        }
+
+        .timeline-dot.tertiary {
+            background: #fff;
+            box-shadow: 0 0 0 2px #9ca3af;
+        }
+
+        .timeline-date {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #1B2A4A;
+            margin-bottom: 4px;
+        }
+
+        .timeline-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .timeline-subtitle {
+            font-size: 0.82rem;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .promotion {
+            font-size: 0.78rem;
+            color: #6b7280;
+            font-style: italic;
+            margin-bottom: 10px;
+            display: inline-block;
+            background: #f3f4f6;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+
+        .promotion .arrow {
+            color: #1B2A4A;
+            font-style: normal;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        ul li {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            padding-left: 14px;
+            position: relative;
+            margin-bottom: 8px;
+            color: #4a4a4a;
+        }
+
+        ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #1B2A4A;
+        }
+
+        /* Education in timeline */
+        .edu-detail {
+            font-size: 0.85rem;
+            color: #4a4a4a;
+            margin-top: 4px;
+        }
+
+        .edu-honor {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: #1B2A4A;
+            background: rgba(27, 42, 74, 0.06);
+            padding: 3px 10px;
+            border-radius: 10px;
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        /* Skills */
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            font-size: 0.78rem;
+            padding: 5px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            color: #6b7280;
+            background: #f9fafb;
+        }
+
+        /* Print */
+        @media print {
+            body { background: white; }
+            .page { box-shadow: none; margin: 0; max-width: none; }
+        }
+
+        @media (max-width: 600px) {
+            .page { margin: 0; padding: 32px 24px; border-radius: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>Jerry Xu</h1>
+            <div class="contact">
+                Redmond, WA<span class="dot">&middot;</span><a href="mailto:jxu000@gmail.com">jxu000@gmail.com</a><span class="dot">&middot;</span>425-588-1166<span class="dot">&middot;</span><a href="https://jxu093.github.io">jxu093.github.io</a>
+            </div>
+        </header>
+
+        <div class="header-rule"></div>
+
+        <p class="summary">
+            Senior Software Engineer specializing in large-scale distributed systems and control plane architecture. Leads high-impact infrastructure initiatives on Azure's SDN platform, improving reliability, scalability, and performance across millions of resources. Proven ability to drive cross-organizational designs and deliver production-critical systems at global scale.
+        </p>
+
+        <section>
+            <h2>Experience &amp; education</h2>
+
+            <div class="timeline">
+                <div class="timeline-entry">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Jan 2019 – Present</div>
+                    <div class="timeline-title">Microsoft — Azure SDN Control Plane</div>
+                    <div class="timeline-subtitle">Senior Software Engineer</div>
+                    <div class="promotion">
+                        SWE <span class="arrow">&rarr;</span> SWE II <span class="arrow">(Mar 2020) &rarr;</span> Senior <span class="arrow">(Jun 2022)</span>
+                    </div>
+                    <ul>
+                        <li>Drove the integration of regional network management into Azure's new SDN control plane, implementing pub/sub-based goal-state publishing for VM, NIC, and network policy resources. Part of a multi-org effort that reduced VM lifecycle latency by 90%.</li>
+                        <li>Led cross-organizational design with Azure Compute to redesign the VM deletion API, eliminating resource-conflict incidents caused by premature SDN release and enabling migration of the VM lifecycle to a modern IaaS architecture.</li>
+                        <li>Redesigned goal-state distribution to route publish calls to VM home availability zones, reducing cross-AZ traffic by 66–75% and improving resilience during zone-level pubsub outages.</li>
+                        <li>Built a proactive error-triage workflow to surface low-frequency failures below alerting thresholds, evolving it from manual review to AI-driven classification and uncovering previously undetected production issues.</li>
+                        <li>Onboarded a new 6-person engineering team in India through structured weekly sessions and hands-on support, enabling independent contributions within two months. The team has since grown to 15+ engineers.</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-entry">
+                    <div class="timeline-dot secondary"></div>
+                    <div class="timeline-date">Aug – Dec 2018</div>
+                    <div class="timeline-title">Capital One Canada</div>
+                    <div class="timeline-subtitle">Software Developer</div>
+                    <ul>
+                        <li>Designed and prototyped real-time event-driven data streams using Apache Kafka for financial ledger updates, architected for zero data loss across ~2M Canadian cardholders.</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-entry">
+                    <div class="timeline-dot secondary"></div>
+                    <div class="timeline-date">2017 – 2018</div>
+                    <div class="timeline-title">IBM</div>
+                    <div class="timeline-subtitle">Software Developer</div>
+                    <ul>
+                        <li>Built and maintained robust backend services in Java/C++, focusing on enterprise-scale data processing, storage reliability, and security practices including OWASP principles and GDPR compliance.</li>
+                    </ul>
+                </div>
+
+                <div class="timeline-entry">
+                    <div class="timeline-dot tertiary"></div>
+                    <div class="timeline-date">2017</div>
+                    <div class="timeline-title">McMaster University</div>
+                    <div class="edu-detail">BSc Computer Science, Minor in Business</div>
+                    <span class="edu-honor">Dean's Honor List</span>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Technical skills</h2>
+            <div class="skill-tags">
+                <span class="skill-tag">C#</span>
+                <span class="skill-tag">Java</span>
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">Azure</span>
+                <span class="skill-tag">AWS</span>
+                <span class="skill-tag">Apache Kafka</span>
+                <span class="skill-tag">Git</span>
+                <span class="skill-tag">SDN</span>
+                <span class="skill-tag">Microservices</span>
+                <span class="skill-tag">REST APIs</span>
+                <span class="skill-tag">Distributed Systems</span>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

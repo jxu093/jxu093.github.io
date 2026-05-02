@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jerry Xu — Resume</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #eef0f4;
+            color: #3a3a3a;
+            line-height: 1.6;
+        }
+
+        .page {
+            max-width: 780px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
+            padding: 48px 52px;
+        }
+
+        /* Header */
+        header {
+            border-left: 5px solid #1B2A4A;
+            padding-left: 20px;
+            margin-bottom: 32px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1B2A4A;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        header .contact {
+            font-size: 0.82rem;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        header .contact a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+        header .contact a:hover {
+            color: #1B2A4A;
+        }
+
+        header .contact .dot {
+            margin: 0 8px;
+            color: #d1d5db;
+        }
+
+        /* Summary banner */
+        .summary-banner {
+            background: #1B2A4A;
+            color: rgba(255,255,255,0.88);
+            padding: 20px 24px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            line-height: 1.75;
+            margin-bottom: 36px;
+        }
+
+        /* Section headers */
+        h2 {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #1B2A4A;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #1B2A4A;
+        }
+
+        section {
+            margin-bottom: 32px;
+        }
+
+        /* Experience entries */
+        .entry {
+            margin-bottom: 24px;
+        }
+
+        .entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 2px;
+        }
+
+        .entry-company {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1B2A4A;
+        }
+
+        .entry-role {
+            font-weight: 400;
+            color: #333;
+        }
+
+        .entry-date {
+            font-size: 0.78rem;
+            color: #9ca3af;
+            white-space: nowrap;
+        }
+
+        .promotion {
+            font-size: 0.78rem;
+            color: #6b7280;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .promotion .arrow {
+            color: #1B2A4A;
+            font-style: normal;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            padding-left: 16px;
+            position: relative;
+            margin-bottom: 8px;
+            color: #4a4a4a;
+            border-left: 2px solid #e5e7eb;
+        }
+
+        /* Earlier roles side-by-side */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .two-col .entry {
+            margin-bottom: 0;
+        }
+
+        .two-col ul li {
+            font-size: 0.82rem;
+        }
+
+        /* Education row */
+        .edu-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .edu-school {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #1B2A4A;
+        }
+
+        .edu-detail {
+            font-size: 0.85rem;
+            color: #4a4a4a;
+        }
+
+        .edu-honor {
+            font-size: 0.8rem;
+            color: #6b7280;
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        .edu-year {
+            font-size: 0.78rem;
+            color: #9ca3af;
+        }
+
+        /* Skills */
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            font-size: 0.78rem;
+            padding: 5px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            color: #6b7280;
+            background: #f9fafb;
+        }
+
+        /* Print */
+        @media print {
+            body { background: white; }
+            .page { box-shadow: none; margin: 0; max-width: none; }
+            .summary-banner {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page { margin: 0; padding: 32px 24px; border-radius: 0; }
+            .two-col { grid-template-columns: 1fr; }
+            .entry-header { flex-direction: column; }
+            .edu-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header>
+            <h1>Jerry Xu</h1>
+            <div class="contact">
+                Redmond, WA<span class="dot">&middot;</span><a href="mailto:jxu000@gmail.com">jxu000@gmail.com</a><span class="dot">&middot;</span>425-588-1166<span class="dot">&middot;</span><a href="https://jxu093.github.io">jxu093.github.io</a>
+            </div>
+        </header>
+
+        <div class="summary-banner">
+            Senior Software Engineer specializing in large-scale distributed systems and control plane architecture. Leads high-impact infrastructure initiatives on Azure's SDN platform, improving reliability, scalability, and performance across millions of resources. Proven ability to drive cross-organizational designs and deliver production-critical systems at global scale.
+        </div>
+
+        <section>
+            <h2>Professional experience</h2>
+
+            <div class="entry">
+                <div class="entry-header">
+                    <span><span class="entry-company">Microsoft</span> <span class="entry-role">&mdash; Azure SDN Control Plane</span></span>
+                    <span class="entry-date">Jan 2019 – Present</span>
+                </div>
+                <div class="promotion">
+                    Software Engineer <span class="arrow">&rarr;</span> Software Engineer II <span class="arrow">(Mar 2020) &rarr;</span> Senior Software Engineer <span class="arrow">(Jun 2022)</span>
+                </div>
+                <ul>
+                    <li>Drove the integration of regional network management into Azure's new SDN control plane, implementing pub/sub-based goal-state publishing for VM, NIC, and network policy resources. Part of a multi-org effort that reduced VM lifecycle latency by 90%.</li>
+                    <li>Led cross-organizational design with Azure Compute to redesign the VM deletion API, eliminating resource-conflict incidents caused by premature SDN release and enabling migration of the VM lifecycle to a modern IaaS architecture.</li>
+                    <li>Redesigned goal-state distribution to route publish calls to VM home availability zones, reducing cross-AZ traffic by 66–75% and improving resilience during zone-level pubsub outages.</li>
+                    <li>Built a proactive error-triage workflow to surface low-frequency failures below alerting thresholds, evolving it from manual review to AI-driven classification and uncovering previously undetected production issues.</li>
+                    <li>Onboarded a new 6-person engineering team in India through structured weekly sessions and hands-on support, enabling independent contributions within two months. The team has since grown to 15+ engineers.</li>
+                </ul>
+            </div>
+
+            <div class="two-col">
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-company">Capital One Canada</span>
+                        <span class="entry-date">Aug – Dec 2018</span>
+                    </div>
+                    <div style="font-size: 0.82rem; color: #6b7280; margin-bottom: 8px;">Software Developer</div>
+                    <ul>
+                        <li>Designed and prototyped real-time event-driven data streams using Apache Kafka for financial ledger updates, architected for zero data loss across ~2M Canadian cardholders.</li>
+                    </ul>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-company">IBM</span>
+                        <span class="entry-date">2017 – 2018</span>
+                    </div>
+                    <div style="font-size: 0.82rem; color: #6b7280; margin-bottom: 8px;">Software Developer</div>
+                    <ul>
+                        <li>Built and maintained robust backend services in Java/C++, focusing on enterprise-scale data processing, storage reliability, and security practices including OWASP principles and GDPR compliance.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Education</h2>
+            <div class="edu-row">
+                <div>
+                    <span class="edu-school">McMaster University</span>
+                    <span class="edu-detail"> &mdash; BSc Computer Science, Minor in Business</span>
+                    <div class="edu-honor">Dean's Honor List</div>
+                </div>
+                <span class="edu-year">2017</span>
+            </div>
+        </section>
+
+        <section>
+            <h2>Technical skills</h2>
+            <div class="skill-tags">
+                <span class="skill-tag">C#</span>
+                <span class="skill-tag">Java</span>
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">Azure</span>
+                <span class="skill-tag">AWS</span>
+                <span class="skill-tag">Apache Kafka</span>
+                <span class="skill-tag">Git</span>
+                <span class="skill-tag">SDN</span>
+                <span class="skill-tag">Microservices</span>
+                <span class="skill-tag">REST APIs</span>
+                <span class="skill-tag">Distributed Systems</span>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

@@ -703,10 +703,10 @@ function renderCard() {
     topicEl.style.display = 'none';
   }
 
-  // LeetCode link (Deck 0 only)
+  // LeetCode link
   const lcLinkArea = document.getElementById('lc-link-area');
   const lcLink     = document.getElementById('lc-link');
-  const lcUrl = CARD_LC_URLS[card.id];
+  const lcUrl = CARD_LC_URLS[card.id] || CARD_LC_URLS[deck.id + '-' + card.id];
   if (lcUrl) {
     lcLink.href = lcUrl;
     lcLinkArea.style.display = '';
@@ -879,8 +879,10 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// ── LeetCode URLs for Deck 0 cards ──
+// ── LeetCode URLs ──
+// Keys: "cardId" for Deck 0 (F1–F22), "deckId-cardId" for concept decks
 const CARD_LC_URLS = {
+  // Deck 0: Flagged problems
   'F1':  'https://leetcode.com/problems/top-k-frequent-elements/',
   'F2':  'https://leetcode.com/problems/encode-and-decode-strings/',
   'F3':  'https://leetcode.com/problems/longest-consecutive-sequence/',
@@ -903,6 +905,99 @@ const CARD_LC_URLS = {
   'F20': 'https://leetcode.com/problems/graph-valid-tree/',
   'F21': 'https://leetcode.com/problems/maximum-product-subarray/',
   'F22': 'https://leetcode.com/problems/reorder-list/',
+  // Deck 1: Arrays & Hashing
+  '1-Q2': 'https://leetcode.com/problems/two-sum/',
+  '1-Q3': 'https://leetcode.com/problems/contains-duplicate/',
+  '1-Q4': 'https://leetcode.com/problems/group-anagrams/',
+  '1-Q5': 'https://leetcode.com/problems/longest-consecutive-sequence/',
+  '1-Q6': 'https://leetcode.com/problems/product-of-array-except-self/',
+  '1-Q7': 'https://leetcode.com/problems/encode-and-decode-strings/',
+  '1-Q9': 'https://leetcode.com/problems/top-k-frequent-elements/',
+  '1-Q10': 'https://leetcode.com/problems/subarray-sum-equals-k/',
+  // Deck 2: Two Pointers
+  '2-Q2': 'https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/',
+  '2-Q3': 'https://leetcode.com/problems/3sum/',
+  '2-Q4': 'https://leetcode.com/problems/container-with-most-water/',
+  '2-Q5': 'https://leetcode.com/problems/trapping-rain-water/',
+  '2-Q6': 'https://leetcode.com/problems/remove-duplicates-from-sorted-array/',
+  '2-Q7': 'https://leetcode.com/problems/valid-palindrome/',
+  '2-Q8': 'https://leetcode.com/problems/valid-palindrome-ii/',
+  // Deck 3: Stack
+  '3-Q2': 'https://leetcode.com/problems/daily-temperatures/',
+  '3-Q3': 'https://leetcode.com/problems/largest-rectangle-in-histogram/',
+  '3-Q4': 'https://leetcode.com/problems/evaluate-reverse-polish-notation/',
+  '3-Q5': 'https://leetcode.com/problems/min-stack/',
+  '3-Q7': 'https://leetcode.com/problems/decode-string/',
+  // Deck 4: Binary Search
+  '4-Q4': 'https://leetcode.com/problems/search-in-rotated-sorted-array/',
+  '4-Q5': 'https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/',
+  '4-Q6': 'https://leetcode.com/problems/koko-eating-bananas/',
+  '4-Q7': 'https://leetcode.com/problems/median-of-two-sorted-arrays/',
+  // Deck 5: Sliding Window
+  '5-Q2': 'https://leetcode.com/problems/longest-substring-without-repeating-characters/',
+  '5-Q3': 'https://leetcode.com/problems/minimum-window-substring/',
+  '5-Q4': 'https://leetcode.com/problems/sliding-window-maximum/',
+  '5-Q5': 'https://leetcode.com/problems/best-time-to-buy-and-sell-stock/',
+  '5-Q6': 'https://leetcode.com/problems/longest-repeating-character-replacement/',
+  // Deck 6: Trees
+  '6-Q3': 'https://leetcode.com/problems/balanced-binary-tree/',
+  '6-Q4': 'https://leetcode.com/problems/diameter-of-binary-tree/',
+  '6-Q5': 'https://leetcode.com/problems/validate-binary-search-tree/',
+  '6-Q6': 'https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/',
+  '6-Q7': 'https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/',
+  '6-Q8': 'https://leetcode.com/problems/serialize-and-deserialize-binary-tree/',
+  '6-Q9': 'https://leetcode.com/problems/binary-tree-level-order-traversal/',
+  '6-Q10': 'https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/',
+  '6-Q11': 'https://leetcode.com/problems/kth-smallest-element-in-a-bst/',
+  '6-Q12': 'https://leetcode.com/problems/binary-tree-maximum-path-sum/',
+  '6-Q13': 'https://leetcode.com/problems/invert-binary-tree/',
+  '6-Q14': 'https://leetcode.com/problems/binary-tree-right-side-view/',
+  // Deck 7: Tries
+  '7-Q4': 'https://leetcode.com/problems/word-search-ii/',
+  '7-Q5': 'https://leetcode.com/problems/design-add-and-search-words-data-structure/',
+  // Deck 8: Backtracking
+  '8-Q2': 'https://leetcode.com/problems/subsets/',
+  '8-Q3': 'https://leetcode.com/problems/subsets-ii/',
+  '8-Q4': 'https://leetcode.com/problems/combination-sum/',
+  '8-Q5': 'https://leetcode.com/problems/n-queens/',
+  '8-Q7': 'https://leetcode.com/problems/word-search/',
+  '8-Q8': 'https://leetcode.com/problems/word-break/',
+  // Deck 13: Linked List
+  '13-Q3': 'https://leetcode.com/problems/linked-list-cycle-ii/',
+  '13-Q4': 'https://leetcode.com/problems/merge-two-sorted-lists/',
+  '13-Q6': 'https://leetcode.com/problems/remove-nth-node-from-end-of-list/',
+  '13-Q7': 'https://leetcode.com/problems/reorder-list/',
+  // Deck 14: Heap / Priority Queue
+  '14-Q3': 'https://leetcode.com/problems/find-median-from-data-stream/',
+  '14-Q4': 'https://leetcode.com/problems/merge-k-sorted-lists/',
+  '14-Q5': 'https://leetcode.com/problems/task-scheduler/',
+  // Deck 15: Graphs
+  '15-Q3': 'https://leetcode.com/problems/course-schedule/',
+  '15-Q7': 'https://leetcode.com/problems/graph-valid-tree/',
+  '15-Q8': 'https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/',
+  '15-Q9': 'https://leetcode.com/problems/word-ladder/',
+  '15-Q11': 'https://leetcode.com/problems/number-of-islands/',
+  '15-Q12': 'https://leetcode.com/problems/clone-graph/',
+  // Deck 16: 1-D DP
+  '16-Q5': 'https://leetcode.com/problems/house-robber/',
+  '16-Q6': 'https://leetcode.com/problems/coin-change/',
+  '16-Q7': 'https://leetcode.com/problems/maximum-product-subarray/',
+  '16-Q8': 'https://leetcode.com/problems/word-break/',
+  '16-Q9': 'https://leetcode.com/problems/longest-increasing-subsequence/',
+  '16-Q10': 'https://leetcode.com/problems/palindromic-substrings/',
+  '16-Q11': 'https://leetcode.com/problems/longest-common-subsequence/',
+  '16-Q12': 'https://leetcode.com/problems/edit-distance/',
+  // Deck 17: Intervals
+  '17-Q2': 'https://leetcode.com/problems/merge-intervals/',
+  '17-Q3': 'https://leetcode.com/problems/insert-interval/',
+  '17-Q4': 'https://leetcode.com/problems/meeting-rooms-ii/',
+  '17-Q5': 'https://leetcode.com/problems/non-overlapping-intervals/',
+  '17-Q6': 'https://leetcode.com/problems/interval-list-intersections/',
+  // Deck 18: Greedy
+  '18-Q2': 'https://leetcode.com/problems/jump-game/',
+  '18-Q3': 'https://leetcode.com/problems/jump-game-ii/',
+  '18-Q4': 'https://leetcode.com/problems/gas-station/',
+  '18-Q5': 'https://leetcode.com/problems/partition-labels/',
 };
 
 // Init
