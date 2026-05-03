@@ -140,7 +140,7 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 
 ### Tue Apr 14 — 1.5 h
 - 15 min: Flashcards — Deck 0 (flagged) + Arrays & Hashing (first pass of each)
-- 75 min: LC — Re-implement **Reorder List** from scratch (find midpoint → reverse second half → merge). Then re-implement **Remove Nth Node from End** — pay attention to the n+1 gap.
+- 75 min: LC — Re-implement **Reorder List** (F22) and **Remove Nth Node from End** (F12) from scratch. Review your flashcard *after* each attempt, not before.
 
 > ⚠️ *Flagged re-solves:* Reorder List (F22), Remove Nth Node from End (F12)
 
@@ -150,7 +150,7 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 
 ### Thu Apr 16 — 1.5 h
 - 15 min: Flashcards — Stack deck (Deck 0 cards F6+F7 specifically)
-- 75 min: LC — **Merge K Sorted Lists**: implement both the heap solution AND the divide-and-conquer solution. After each, write one sentence on when you'd use each in a real system. Then re-implement **Daily Temperatures** from scratch using the monotonic stack (not the bucket-sort variant — that one is already internalized).
+- 75 min: LC — **Merge K Sorted Lists** (F14): implement both approaches from memory. After each, write one sentence on when you'd use each in a real system. Then re-implement **Daily Temperatures** (F6) from scratch. Check flashcards only after attempting.
 
 > ⚠️ *Flagged re-solves:* Merge K Sorted Lists, Daily Temperatures
 
@@ -165,13 +165,13 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 ### Sat Apr 18 — 3 h *(adjusted warm-up)*
 - 30 min: Flashcards — Binary Search deck (Deck 0 cards F8+F9) *(moved from Fri)* + Sliding Window deck (F10+F11) + System Design (DDIA Ch 1) deck
 - 90 min: **SD Mock #1** — Design a URL shortener (solo, timed, record yourself or write it all up). Score yourself against the Hello Interview rubric after.
-- 60 min: LC — Re-implement **Task Scheduler** both ways: heap simulation AND the math formula (F15). Then re-implement **Sliding Window Maximum** with a deque from scratch — no peeking.
+- 60 min: LC — Re-implement **Task Scheduler** (F15) both ways from memory. Then re-implement **Sliding Window Maximum** (F11) from scratch. Check flashcards only after attempting.
 
 > ⚠️ *Flagged re-solves:* Task Scheduler (both approaches), Sliding Window Maximum
 
 ### Sun Apr 19 — 3 h
 - 30 min: Flashcards — Trees deck (Deck 0 cards F16+F17) + Tries deck
-- 90 min: Timed session — re-implement **Serialize/Deserialize Binary Tree** (BFS version, then DFS version) + **Kth Smallest in BST** iterative. Both are flagged.
+- 90 min: Timed session — re-implement **Serialize/Deserialize Binary Tree** (F17) + **Kth Smallest in BST** (F16). Both are flagged — attempt from scratch before checking cards.
 - 60 min: DDIA Ch 2 (Data Models) start — read + note-take, no more than 40 pages.
 
 > ⚠️ *Flagged re-solves:* Serialize/Deserialize Binary Tree, Kth Smallest in BST
@@ -187,7 +187,7 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 
 ### Mon Apr 20 — 1.5 h
 - 15 min: Flashcards — Backtracking deck (Deck 0 card F18) + Arrays & Hashing (+7d review — Deck 0 cards F1+F2+F3)
-- 75 min: LC — Intervals kickoff: Insert Interval + Merge Intervals. Then re-solve **N-Queens** — without peeking, write the three tracking sets from memory.
+- 75 min: LC — Intervals kickoff: Insert Interval + Merge Intervals. Then re-solve **N-Queens** (F18) from scratch. Check flashcard after.
 
 > ⚠️ *Flagged re-solve:* N-Queens
 
@@ -197,7 +197,7 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 
 ### Wed Apr 22 — 1.5 h
 - 15 min: Flashcards — Two Pointers (+7d review — Deck 0 cards F4+F5)
-- 75 min: LC — Non-overlapping Intervals + **Course Schedule** re-solve (both Kahn's and DFS 3-color — write both). You know these patterns; the goal is to state the termination condition for each without hesitation.
+- 75 min: LC — Non-overlapping Intervals + **Course Schedule** (F19) re-solve — implement both approaches from memory. State the termination condition for each without hesitation. Check flashcard after.
 
 > ⚠️ *Flagged re-solve:* Course Schedule (both approaches)
 
@@ -208,7 +208,7 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 
 ### Fri Apr 24 — 1.5 h
 - 15 min: Flashcards — Stack (+7d review — Deck 0 cards F6+F7) + Heap (new deck, first pass)
-- 75 min: LC review — re-solve **Graph Valid Tree** (prescreen first, then connectivity check) + re-solve **Find the Duplicate Number** using Floyd's cycle detection. Both flagged.
+- 75 min: LC review — re-solve **Graph Valid Tree** (F20) + **Find the Duplicate Number** (F13). Both flagged — attempt from scratch before checking cards.
 
 > ⚠️ *Flagged re-solves:* Graph Valid Tree, Find the Duplicate Number
 
@@ -250,7 +250,7 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 
 ### Fri May 1 — 1.5 h
 - 15 min: Flashcards — Arrays & Hashing (+14d — Deck 0 cards F1+F2+F3)
-- 75 min: LC — 1-D DP push: Climbing Stairs, House Robber I & II, **Maximum Product Subarray** (flagged — implement tracking both curMax and curMin, update simultaneously). Then Longest Palindromic Substring (see 1-D DP Q10 for expand-from-center pattern).
+- 75 min: LC — 1-D DP push: Climbing Stairs, House Robber I & II, **Maximum Product Subarray** (F21 — flagged). Then Longest Palindromic Substring. Check flashcards only after attempting each.
 
 > ⚠️ *Flagged re-solve:* Maximum Product Subarray
 
@@ -258,7 +258,7 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 - 30 min: Flashcards — Deck 12 Q17–Q21 first pass (WhatsApp mock learnings: WebSocket contracts, offline delivery offsets, pre-signed uploads, PubSub fan-out, multi-device) + Intervals (+7d) + Heap (+7d)
 - 10 min: **Pre-mock review** — read `Mock-Practice-Notes.md` themes index. Focus areas for this mock: define API response shapes (not just requests), articulate fault tolerance concretely (what happens when X fails).
 - 80 min: **SD Mock #3** — Design a rate limiter (prefer a real peer mock this week if possible). Post-mock: add entry to `Mock-Practice-Notes.md`.
-- 60 min: LC — Longest Common Subsequence (see 1-D DP Q11 for the 2-D DP state/transition) + Word Break.
+- 60 min: LC — Longest Common Subsequence + Word Break.
 
 ### Sun May 3 — 3 h
 - 30 min: Flashcards — review everything ≥14d old
@@ -299,7 +299,7 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 - 30 min: Flashcards — Deck 12 Q17–Q21 (+7d) + Trees (+21d) + Tries (+21d) + Backtracking (+21d)
 - 10 min: **Pre-mock review** — read `Mock-Practice-Notes.md` themes index. Check which gaps from mocks 1–3 are recurring.
 - 80 min: **SD Mock #4** — Design a distributed job scheduler. Peer mock if possible. Post-mock: add entry to `Mock-Practice-Notes.md`.
-- 60 min: LC — Edit Distance (see 1-D DP Q12 for the three-operation transition) + Interleaving String (2-D DP).
+- 60 min: LC — Edit Distance + Interleaving String (2-D DP).
 
 ### Sun May 10 — 3 h
 - 30 min: Flashcards — review everything ≥14d old
