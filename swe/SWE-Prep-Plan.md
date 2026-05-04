@@ -31,7 +31,7 @@
 
 ## How to use the flashcards
 
-**Flashcard system:** The flashcard file contains 19 decks (190 cards total). Deck 0 is the personal "flagged problems" deck (22 cards, F1–F22) — problems that caused trouble and need extra repetition. Decks 1–8 are core DSA pattern decks (Arrays & Hashing, Two Pointers, Stack, Binary Search, Sliding Window, Trees, Tries, Backtracking). Decks 9–12 are System Design / DDIA decks (Deck 12 includes Q17–Q21 from WhatsApp mock learnings: WebSocket contracts, offline delivery, pre-signed uploads, PubSub fan-out, multi-device). Decks 13–18 are additional DSA decks (Linked List, Heap / Priority Queue, Graphs, 1-D DP, Intervals, Greedy). The 1-D DP deck also includes 2-D DP cards (LCS, Edit Distance) since there's no separate 2-D DP deck yet.
+**Flashcard system:** The flashcard file contains 19 decks (190 cards total). Deck 0 is the personal "flagged problems" deck (22 cards, F1–F22) — problems that caused trouble and need extra repetition. Decks 1–8 are core DSA pattern decks (Arrays & Hashing, Two Pointers, Stack, Binary Search, Sliding Window, Trees, Tries, Backtracking). Decks 9–12 are System Design / DDIA decks (Deck 12 includes Q17–Q24 from mock learnings: WebSocket contracts, offline delivery, pre-signed uploads, PubSub fan-out, multi-device, token bucket mechanics, atomic hot-path ops, rule propagation). Decks 13–18 are additional DSA decks (Linked List, Heap / Priority Queue, Graphs, 1-D DP, Intervals, Greedy). The 1-D DP deck also includes 2-D DP cards (LCS, Edit Distance) since there's no separate 2-D DP deck yet.
 
 **Daily warm-up routine (15–30 min):**
 1. Open the specified deck(s) for that day
@@ -255,7 +255,7 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 > ⚠️ *Flagged re-solve:* Maximum Product Subarray
 
 ### Sat May 2 — 3 h
-- 30 min: Flashcards — Deck 12 Q17–Q21 first pass (WhatsApp mock learnings: WebSocket contracts, offline delivery offsets, pre-signed uploads, PubSub fan-out, multi-device) + Intervals (+7d) + Heap (+7d)
+- 30 min: Flashcards — Deck 12 Q17–Q24 first pass (WhatsApp mock: WebSocket contracts, offline delivery, pre-signed uploads, PubSub fan-out, multi-device; Rate limiter mock: token bucket mechanics, atomic hot-path ops, rule propagation) + Intervals (+7d) + Heap (+7d)
 - 10 min: **Pre-mock review** — read `Mock-Practice-Notes.md` themes index. Focus areas for this mock: define API response shapes (not just requests), articulate fault tolerance concretely (what happens when X fails).
 - 80 min: **SD Mock #3** — Design a rate limiter (prefer a real peer mock this week if possible). Post-mock: add entry to `Mock-Practice-Notes.md`.
 - 60 min: LC — Longest Common Subsequence + Word Break.
@@ -296,7 +296,7 @@ The flashcard file has decks for all 14 DSA topics (8 core + Linked List, Heap, 
 - 75 min: LC review — re-solve this week's 2-D DPs from scratch. Explain the state + transition out loud.
 
 ### Sat May 9 — 3 h
-- 30 min: Flashcards — Deck 12 Q17–Q21 (+7d) + Trees (+21d) + Tries (+21d) + Backtracking (+21d)
+- 30 min: Flashcards — Deck 12 Q17–Q24 (+7d) + Trees (+21d) + Tries (+21d) + Backtracking (+21d)
 - 10 min: **Pre-mock review** — read `Mock-Practice-Notes.md` themes index. Check which gaps from mocks 1–3 are recurring.
 - 80 min: **SD Mock #4** — Design a distributed job scheduler. Peer mock if possible. Post-mock: add entry to `Mock-Practice-Notes.md`.
 - 60 min: LC — Edit Distance + Interleaving String (2-D DP).
@@ -330,7 +330,7 @@ This week shifts toward synthesis. Fewer new concepts, more end-to-end practice.
 - 75 min: LC — Rotate Image + Spiral Matrix + Happy Number (math & geometry).
 
 ### Thu May 14 — 1.5 h
-- 15 min: Flashcards — all SD decks fast pass (including Deck 12 Q17–Q21 at +14d)
+- 15 min: Flashcards — all SD decks fast pass (including Deck 12 Q17–Q24 at +14d)
 - 75 min: SD problem — Design a search autocomplete / typeahead (timed 45 min). Apply: WebSocket event contract for streaming suggestions, API response shapes, cursor-based pagination for history.
 
 ### Fri May 15 — 1.5 h
@@ -338,7 +338,7 @@ This week shifts toward synthesis. Fewer new concepts, more end-to-end practice.
 - 75 min: LC — Advanced Graphs sampler: Network Delay Time (Dijkstra) + Reconstruct Itinerary (Hierholzer). Know Dijkstra cold.
 
 ### Sat May 16 — 3 h
-- 30 min: Flashcards — Deck 12 Q17–Q21 (+14d) + Heap (+21d) + Intervals (+21d) + Graphs (+21d)
+- 30 min: Flashcards — Deck 12 Q17–Q24 (+14d) + Heap (+21d) + Intervals (+21d) + Graphs (+21d)
 - 10 min: **Pre-mock review** — read `Mock-Practice-Notes.md` themes index. By now you have 4 mocks logged — check which themes keep appearing. These are your real weak spots vs. one-off mistakes.
 - 110 min: **SD Mock #5** — full 60-min peer mock (book this by Tue May 12). 50 min of self-review afterward. Post-mock: add entry to `Mock-Practice-Notes.md`.
 - 30 min: LC — 1 hard problem from a topic you're confident in (confidence build).
@@ -364,7 +364,7 @@ This week shifts toward synthesis. Fewer new concepts, more end-to-end practice.
 - 75 min: **Full LC interview sim** — 1 medium in 20 min + 1 hard in 40 min. Strict timing. No hints.
 
 ### Tue May 19 — 1.5 h
-- 15 min: Flashcards — all SD decks fast pass (Deck 12 Q17–Q21 at +21d — should feel automatic by now)
+- 15 min: Flashcards — all SD decks fast pass (Deck 12 Q17–Q24 at +21d — should feel automatic by now)
 - 75 min: SD problem — Design YouTube/video streaming (timed 45 min). Apply: pre-signed uploads for video, blob storage references, API response shapes.
 
 ### Wed May 20 — 1.5 h
@@ -386,7 +386,7 @@ This week shifts toward synthesis. Fewer new concepts, more end-to-end practice.
 - 60 min: LC — 1 medium + 1 hard, timed.
 
 ### Sun May 24 — 3 h
-- 30 min: Flashcards — final sweep (Deck 12 Q17–Q21 at +30d — mark mature if instant)
+- 30 min: Flashcards — final sweep (Deck 12 Q17–Q24 at +30d — mark mature if instant)
 - 90 min: **SD Mock #7** — solo timed, pick a design you haven't done yet (e.g., Dropbox, Uber). Post-mock: final `Mock-Practice-Notes.md` entry.
 - 60 min: Final behavioral rehearsal + resume/LinkedIn polish.
 

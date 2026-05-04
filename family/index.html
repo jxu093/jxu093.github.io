@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xu · Parago Family</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #faf8f4; --primary: #2e1f12; --accent: #a0723a;
+      --accent-light: #c4956a; --card: #fff; --border: #e2d5c4;
+      --text: #2e1f12; --muted: #7a6555; --line: #d4bfa0;
+    }
+    body { font-family: Georgia, serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    header { background: var(--primary); color: #fff; text-align: center; padding: 3.5rem 2rem 2.5rem; }
+    header h1 { font-size: 2.6rem; letter-spacing: .08em; }
+    header .sub { color: var(--accent-light); font-size: .82rem; letter-spacing: .2em; margin-top: .5rem; text-transform: uppercase; }
+
+    nav { display: flex; justify-content: center; background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; box-shadow: 0 1px 6px rgba(0,0,0,.06); }
+    nav button { padding: .9rem 2rem; background: none; border: none; border-bottom: 3px solid transparent; font-family: Georgia, serif; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; color: var(--muted); transition: all .2s; }
+    nav button.active { color: var(--primary); border-bottom-color: var(--accent); }
+    nav button:hover { color: var(--primary); }
+
+    .section { display: none; }
+    .section.active { display: block; }
+    .sec-title { text-align: center; font-size: 1.5rem; padding: 2.5rem 1rem .4rem; color: var(--primary); }
+    .sec-sub { text-align: center; font-size: .8rem; color: var(--muted); letter-spacing: .08em; padding-bottom: 1.8rem; }
+
+    /* ── INTERACTIVE TREE ── */
+    #itree { position: relative; }
+    #tree-viewport {
+      width: 100%; height: calc(100vh - 140px); min-height: 520px;
+      overflow: hidden; cursor: grab; background: var(--bg);
+      position: relative; border-top: 1px solid var(--border);
+    }
+    #tree-viewport.dragging { cursor: grabbing; }
+    #tree-svg { display: block; width: 100%; }
+    .node-card { cursor: pointer; }
+    .node-card rect { transition: filter .15s; }
+    .node-card:hover rect { filter: brightness(.97); }
+
+    .zoom-controls {
+      position: absolute; bottom: 1.5rem; right: 1.5rem;
+      display: flex; flex-direction: column; gap: .4rem; z-index: 10;
+    }
+    .zoom-controls button {
+      width: 36px; height: 36px; border-radius: 8px;
+      border: 1px solid var(--border); background: #fff;
+      font-size: 1.2rem; cursor: pointer; color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0,0,0,.1); line-height: 1;
+    }
+    .zoom-controls button:hover { background: var(--bg); }
+    #zoom-hint {
+      position: absolute; bottom: 1.5rem; left: 1.5rem;
+      font-size: .72rem; color: var(--muted); letter-spacing: .05em;
+      font-family: system-ui, sans-serif;
+    }
+
+    /* Tooltip bubble */
+    #tooltip {
+      position: absolute; background: #fff; border: 1px solid var(--border);
+      border-left: 4px solid var(--accent); border-radius: 10px;
+      padding: 1rem 1.1rem; max-width: 260px; z-index: 300;
+      box-shadow: 0 8px 24px rgba(0,0,0,.13);
+      display: none; pointer-events: auto;
+    }
+    #tooltip.visible { display: block; }
+    #tooltip h3 { font-size: .95rem; color: var(--primary); margin-bottom: .25rem; line-height: 1.3; }
+    #tooltip .chin { font-size: .8rem; color: var(--accent); margin-bottom: .35rem; }
+    #tooltip p { font-size: .78rem; color: var(--muted); line-height: 1.55; margin-bottom: .6rem; }
+    #tooltip a { font-size: .78rem; color: var(--accent); text-decoration: none; font-family: system-ui, sans-serif; }
+    #tooltip a:hover { text-decoration: underline; }
+    #tooltip-close {
+      position: absolute; top: .4rem; right: .6rem; background: none;
+      border: none; font-size: 1rem; cursor: pointer; color: var(--muted); line-height: 1;
+    }
+
+    /* ── TIMELINE ── */
+    #timeline-section { padding: 0 1.5rem 5rem; }
+    .tl { max-width: 680px; margin: 0 auto; position: relative; }
+    .tl::before { content: ''; position: absolute; left: 88px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+    .titem { display: flex; margin-bottom: 1.8rem; position: relative; }
+    .tyear { width: 78px; text-align: right; padding-top: .25rem; font-size: .8rem; color: var(--accent); font-weight: bold; flex-shrink: 0; }
+    .tdot { position: absolute; left: 82px; top: .35rem; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); box-shadow: 0 0 0 2px var(--accent); z-index: 1; }
+    .tcontent { margin-left: 50px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: .7rem 1rem; flex: 1; }
+    .tcontent h3 { font-size: .9rem; line-height: 1.4; margin-bottom: .25rem; }
+    .tcontent p { font-size: .8rem; color: var(--muted); line-height: 1.55; }
+    .ttag { display: inline-block; font-size: .62rem; padding: .1rem .5rem; border-radius: 10px; margin-bottom: .35rem; text-transform: uppercase; letter-spacing: .06em; font-family: system-ui, sans-serif; }
+    .pat { background: #f5ede0; color: #7a4a1a; }
+    .mat { background: #e8f0e0; color: #3a6a1a; }
+    .marr { background: #f0e0ec; color: #7a2a5a; }
+    .emi { background: #e0ecf5; color: #1a4a7a; }
+    .bth { background: #e0f5ec; color: #1a7a4a; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Xu &middot; Parago</h1>
+  <div class="sub">A Family History &nbsp;&middot;&nbsp; China &nbsp;&middot;&nbsp; Philippines &nbsp;&middot;&nbsp; Canada</div>
+</header>
+
+<nav>
+  <button class="active" onclick="show('itree',this)">Family Tree</button>
+  <button onclick="show('timeline-section',this)">Timeline</button>
+</nav>
+
+<!-- ═══════ INTERACTIVE TREE ═══════ -->
+<div id="itree" class="section active">
+  <h2 class="sec-title">Family Tree</h2>
+  <p class="sec-sub">Scroll to zoom · Drag to pan · Click any person for details</p>
+  <div id="tree-viewport">
+    <svg id="tree-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="zoom-controls">
+      <button onclick="zoom(1.2)" title="Zoom in">+</button>
+      <button onclick="zoom(0.8)" title="Zoom out">−</button>
+      <button onclick="resetView()" title="Reset" style="font-size:.7rem;letter-spacing:0">fit</button>
+    </div>
+    <div id="zoom-hint">scroll to zoom · drag to pan</div>
+  </div>
+  <div id="tooltip">
+    <button id="tooltip-close" onclick="closeTooltip()">×</button>
+    <h3 id="tt-name"></h3>
+    <div class="chin" id="tt-chin"></div>
+    <p id="tt-brief"></p>
+    <a id="tt-link" href="#" target="_blank">View full profile →</a>
+  </div>
+</div>
+
+<!-- ═══════ TIMELINE ═══════ -->
+<div id="timeline-section" class="section">
+  <h2 class="sec-title">Family Timeline</h2>
+  <p class="sec-sub">From Shandong to Canada · 1920s to present</p>
+  <div id="timeline-section" style="display:block">
+  <div class="tl">
+    <div class="titem"><div class="tyear">Pre-1940s</div><div class="tdot"></div><div class="tcontent"><div class="ttag pat">Paternal</div><h3>Shandong to Dalian Migration</h3><p>The paternal family migrates from Shandong to Dalian seeking work. Great-grandfather finds employment as a manual laborer loading and unloading ships at the Dalian port docks.</p></div></div>
+    <div class="titem"><div class="tyear">~1928</div><div class="tdot"></div><div class="tcontent"><div class="ttag bth">Birth</div><h3>Xu Shidong Born</h3><p>Born in Dalian on the 29th day of the 12th lunar month, 1927 (~January 22, 1928).</p></div></div>
+    <div class="titem"><div class="tyear">1940s</div><div class="tdot"></div><div class="tcontent"><div class="ttag pat">Paternal</div><h3>Japanese Occupation — Family Moves to Jilin</h3><p>After great-grandfather's death, the family relocates to Jilin to live with relatives, renting land to grow food for survival. Despite the occupation, kind Japanese neighbors help the family avoid starvation.</p></div></div>
+    <div class="titem"><div class="tyear">~1936</div><div class="tdot"></div><div class="tcontent"><div class="ttag bth">Birth</div><h3>Wang Guilan Born</h3><p>Born on the 15th day of the 7th lunar month (~August 4, 1936) — the same day as the Ghost Festival (中元节).</p></div></div>
+    <div class="titem"><div class="tyear">Late 1940s</div><div class="tdot"></div><div class="tcontent"><div class="ttag pat">Paternal</div><h3>Xu Shidong Serves the Communist Party</h3><p>Serves as a young officer fighting the KMT and mountain raiders. During one engagement, he spends three days lying in frozen trenches — his leg is permanently injured from the cold.</p></div></div>
+    <div class="titem"><div class="tyear">~1950s</div><div class="tdot"></div><div class="tcontent"><div class="ttag pat">Paternal</div><h3>Xu Shidong Assigned to Yingkou</h3><p>The Party sends him to condensed schooling at age 25–26. He is later assigned a government role in Yingkou as a union leader, where he meets Wang Guilan through her uncle.</p></div></div>
+    <div class="titem"><div class="tyear">1963</div><div class="tdot"></div><div class="tcontent"><div class="ttag bth">Birth</div><h3>Xu Qiang (James) Born</h3><p>Born March 7, 1963 in Yingkou to Xu Shidong and Wang Guilan.</p></div></div>
+    <div class="titem"><div class="tyear">1966</div><div class="tdot"></div><div class="tcontent"><div class="ttag bth">Birth</div><h3>Li Ying Born</h3><p>Born May 16, 1966 in Lanzhou, Gansu Province. Will later build a career as a senior Mary Kay sales leader.</p></div></div>
+    <div class="titem"><div class="tyear">1980s</div><div class="tdot"></div><div class="tcontent"><div class="ttag pat">Paternal</div><h3>James Attends University in Shanghai</h3><p>Graduates with a degree in refrigeration and cooling. Assigned to teach at a technical college in Dalian — a role he dislikes.</p></div></div>
+    <div class="titem"><div class="tyear">1990s</div><div class="tdot"></div><div class="tcontent"><div class="ttag pat">Paternal</div><h3>The Australia Trip — A Decision to Emigrate</h3><p>Through his friend Mr. Feng, James joins an international seafood company and is sent to Australia. Meeting a man his age who owns a house, a car, and plays golf convinces him to emigrate.</p></div></div>
+    <div class="titem"><div class="tyear">1996</div><div class="tdot"></div><div class="tcontent"><div class="ttag bth">Birth</div><h3>Emmylou Grace Parago Born</h3><p>Born October 2, 1996 in Mississauga, Ontario to Angelo and Emmeline Parago.</p></div></div>
+    <div class="titem"><div class="tyear">Late 1990s</div><div class="tdot"></div><div class="tcontent"><div class="ttag bth">Birth</div><h3>Jerry Xu Born</h3><p>Born in Dalian in the family's company-provided apartment (Yi Mao Gou) to James and Li Zhi Xia, who met at an English language school in Dalian.</p></div></div>
+    <div class="titem"><div class="tyear">1999</div><div class="tdot"></div><div class="tcontent"><div class="ttag pat">Paternal</div><h3>Car Accident Delays Emigration</h3><p>Planned emigration to Canada is postponed after a car accident.</p></div></div>
+    <div class="titem"><div class="tyear">Jun 2000</div><div class="tdot"></div><div class="tcontent"><div class="ttag emi">Emigration</div><h3>Family Arrives in Canada</h3><p>James, Li Zhi Xia, and Jerry emigrate to Canada — just as James's visa is about to expire.</p></div></div>
+    <div class="titem"><div class="tyear">2003</div><div class="tdot"></div><div class="tcontent"><div class="ttag pat">Paternal</div><h3>Wang Guilan Passes Away</h3><p>Wang Guilan passes away (~November 24, 2003) in Yingkou. She was 67.</p></div></div>
+    <div class="titem"><div class="tyear">Apr 2008</div><div class="tdot"></div><div class="tcontent"><div class="ttag bth">Birth</div><h3>Eric Xu Born</h3><p>Jerry's half-brother Eric Xu is born in April 2008, from James's second marriage. His parents divorce in 2009. Eric grows up in Richmond Hill.</p></div></div>
+    <div class="titem"><div class="tyear">2018</div><div class="tdot"></div><div class="tcontent"><div class="ttag marr">Marriage</div><h3>James Meets Li Ying</h3><p>Meets Li Ying through a mutual friend. She is based in Lanzhou and has never been to Canada. They marry approximately 2019–2020.</p></div></div>
+    <div class="titem"><div class="tyear">Sep 2022</div><div class="tdot"></div><div class="tcontent"><div class="ttag pat">Paternal</div><h3>Xu Shidong Passes Away</h3><p>Xu Shidong passes away (~September 3, 2022). He was 95 years old — a life spanning the Japanese occupation, the Communist revolution, and four generations of family.</p></div></div>
+    <div class="titem"><div class="tyear">Sep 2024</div><div class="tdot"></div><div class="tcontent"><div class="ttag marr">Marriage</div><h3>Jerry &amp; Emmylou — Legally Married</h3><p>Jerry Xu and Emmylou Grace Parago are legally married on September 18, 2024 in Renton, WA.</p></div></div>
+    <div class="titem"><div class="tyear">Sep 2025</div><div class="tdot"></div><div class="tcontent"><div class="ttag marr">Marriage</div><h3>Wedding Ceremony — Kualoa Ranch, Hawaii</h3><p>Wedding ceremony on September 18, 2025 at Kualoa Ranch, Hawaii — the same date as their legal marriage, one year apart.</p></div></div>
+    <div class="titem"><div class="tyear">Feb 2026</div><div class="tdot"></div><div class="tcontent"><div class="ttag pat">Paternal</div><h3>Jerry &amp; Emmylou Visit Beijing</h3><p>Travel to China and visit step-sister Xiao Xiao and her husband in Beijing. Hosted at their four-story home; meet the brother-in-law's parents who cook for them.</p></div></div>
+    <div class="titem"><div class="tyear">Oct 2026</div><div class="tdot" style="background:#c4956a;box-shadow:0 0 0 2px #c4956a"></div><div class="tcontent" style="border-style:dashed"><div class="ttag bth">Birth</div><h3>Elijia AJ Xu — Expected</h3><p>First child of Jerry and Emmylou. His middle name AJ honors both grandfathers: <strong>A</strong>ngelo Parago and <strong>J</strong>ames (Xu Qiang).</p></div></div>
+  </div>
+  </div>
+</div>
+
+<script>
+// ── NAV ──────────────────────────────────────────────────────────────
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── TREE DATA ─────────────────────────────────────────────────────────
+const NW = 132, NH = 52, R = 9;
+
+const PEOPLE = [
+  { id:'ggf',     cx:230, cy:75,  name:'Great-Grandfather', sub:'Shandong → Dalian · Paternal', brief:'The earliest known branch of the family. Migrated from Shandong to Dalian seeking work, finding employment as a port laborer. His early death set off a chain of events that shaped the family.', page:'people/great-grandfather.html' },
+  { id:'ggm',     cx:390, cy:75,  name:'Great-Grandmother', sub:'Paternal', brief:'Paternal great-grandmother. After her husband\'s early death, she relocated the family from Dalian to Jilin to live with relatives.', page:'people/great-grandmother.html' },
+
+  { id:'shidong', cx:230, cy:215, name:'Xu Shidong', chinese:'许世东', sub:'~Jan 22, 1928 – ~Sep 3, 2022', brief:'Communist Party officer who spent three days in frozen trenches, permanently injuring his leg. Lived to 95. Assigned to Yingkou, where he met and married Wang Guilan.', page:'people/xu-shidong.html' },
+  { id:'guilan',  cx:390, cy:215, name:'Wang Guilan', chinese:'王桂兰', sub:'~Aug 4, 1936 – ~Nov 24, 2003', brief:'Worked at a clothing factory in Yingkou. Known for her strict integrity — she reprimanded coworkers for theft at a time when it was common. Died in 2003.', page:'people/wang-guilan.html' },
+
+  { id:'angelo',  cx:840, cy:365, name:'Angelo Parago', sub:'Family from Manila, Philippines', brief:'Emmylou\'s father. Filipino-Canadian, with family roots in Manila. His initial "A" is honoured in Elijia\'s middle name AJ.', page:'people/angelo-parago.html' },
+  { id:'emmeline',cx:980, cy:365, name:'Emmeline Parago', sub:'Family from Cebu, Philippines', brief:'Emmylou\'s mother. Filipino-Canadian, with family roots in Cebu.', page:'people/emmeline-parago.html' },
+
+  { id:'james',   cx:230, cy:365, name:'Xu Qiang · James', chinese:'许强', sub:'b. Mar 7, 1963 · Yingkou', brief:'Graduated from Shanghai University in refrigeration. A trip to Australia in the 1990s — seeing a peer who owned a house and played golf — convinced him to emigrate. Arrived in Canada June 2000.', page:'people/xu-qiang-james.html' },
+  { id:'lizx',    cx:390, cy:365, name:'Li Zhi Xia', chinese:'李志霞', sub:"Jerry's mother · Dalian", brief:'Met James at an English language school in Dalian while both were preparing to emigrate. Emigrated to Canada together in June 2000.', page:'people/li-zhi-xia.html' },
+  { id:'liying',  cx:560, cy:365, name:'Li Ying', chinese:'李瑛', sub:'b. May 16, 1966 · Lanzhou', brief:'James\'s current wife. Former senior Mary Kay sales leader in Lanzhou whose annual company trips took her to Hawaii and Europe. Obtained Canadian PR through marriage and now lives in Canada.', page:'people/li-ying.html' },
+
+  { id:'angeline', cx:700, cy:495, name:'Angeline Parago', sub:'AJ · b. 1994', brief:'Emmylou\'s eldest sister, nickname AJ.', page:'people/angeline-parago.html' },
+  { id:'emmylou',  cx:840, cy:495, name:'Emmylou Grace Parago', sub:'Emmy · b. Oct 2, 1996', brief:'Filipino-Canadian, born in Mississauga to Angelo and Emmeline Parago. Married Jerry on September 18, 2024. Wedding ceremony at Kualoa Ranch, Hawaii in 2025.', page:'people/emmylou-parago.html', highlight:true },
+  { id:'angelou',  cx:980, cy:495, name:'Angelou Parago', sub:'Loulou · b. 2000', brief:'Emmylou\'s younger sister, nickname Loulou.', page:'people/angelou-parago.html' },
+  { id:'emmalee',  cx:1120, cy:495, name:'Emmalee Parago', sub:'Emma · b. 2002', brief:'Emmylou\'s youngest sister, nickname Emma.', page:'people/emmalee-parago.html' },
+
+  { id:'jerry',   cx:230, cy:495, name:'Jerry Xu', chinese:'許佳亮', sub:'b. Dalian · emigrated Jun 2000', brief:'Born in Dalian and emigrated to Canada in June 2000 (delayed one year by a car accident). Married Emmylou Parago in 2024. The Xu and Parago lines meet here.', page:'people/jerry-xu.html', highlight:true },
+  { id:'eric',    cx:400, cy:495, name:'Eric Xu', sub:'b. April 2008 · Richmond Hill', brief:'Jerry\'s half-brother on his father\'s side. Grew up in Richmond Hill with his mother, step-father, and step-brother. Jerry has contact with him.', page:'people/eric-xu.html' },
+  { id:'xiaoxiao',cx:570, cy:495, name:'Pei Xiao Yu', chinese:'裴霄雨', sub:'Xiao Xiao · Beijing', brief:'Li Ying\'s daughter, Jerry\'s step-sister. Lives in Beijing with her husband Ye Xiao. Runs a successful accessories business with a Douyin following, and a four-floor home with an elevator.', page:'people/xiao-xiao.html' },
+
+  { id:'elijia',  cx:550, cy:650, name:'Elijia AJ Xu', chinese:'许一来', sub:'Expected · October 2026', brief:'First child of Jerry and Emmylou. Chinese name 许一来 (Yī Lái) — "the first to come," and a phonetic echo of Eli. Middle name AJ honours both grandfathers: Angelo (A) and James (J).', page:'people/elijia-xu.html', isLeaf:true },
+];
+
+// Marriage bars [p1, p2, dashed?]
+const MARRIAGES = [
+  ['ggf','ggm'], ['shidong','guilan'], ['james','lizx'],
+  ['james','liying',true], ['angelo','emmeline'],
+];
+
+// Parent → child paths. 'mid:a+b' means use midpoint of marriage bar a+b
+const EDGES = [
+  { from:'mid:ggf+ggm',      to:'shidong' },
+  { from:'mid:shidong+guilan',to:'james'   },
+  { from:'mid:james+lizx',   to:'jerry'   },
+  { from:'james',            to:'eric',    dashed:true, note:'mother not documented' },
+  { from:'liying',           to:'xiaoxiao',note:'Li Ying\'s daughter' },
+  { from:'mid:angelo+emmeline', to:'angeline' },
+  { from:'mid:angelo+emmeline', to:'emmylou'  },
+  { from:'mid:angelo+emmeline', to:'angelou'  },
+  { from:'mid:angelo+emmeline', to:'emmalee'  },
+  // jerry→elijia and emmylou→elijia handled by the bracket below
+];
+
+// ── RENDER ────────────────────────────────────────────────────────────
+const C = {
+  card:'#fff', border:'#e2d5c4', accent:'#a0723a', accentLight:'#c4956a',
+  text:'#2e1f12', muted:'#7a6555', line:'#d4bfa0', leaf:'#fffcf7',
+  highlight:'#a0723a', marriageBar:'#c9aa82',
+};
+
+let vp, svgEl, gRoot;
+let tx=0, ty=0, sc=1;
+const SVG_W = 1380, SVG_H = 750;
+
+function byId(id) { return PEOPLE.find(p => p.id === id); }
+
+function nodeCenter(id) {
+  const p = byId(id);
+  return p ? { x: p.cx, y: p.cy } : null;
+}
+
+function marriageMid(a, b) {
+  const pa = byId(a), pb = byId(b);
+  return { x: (pa.cx + pb.cx) / 2, y: pa.cy };
+}
+
+function resolveFrom(from) {
+  if (from.startsWith('mid:')) {
+    const [a, b] = from.slice(4).split('+');
+    return marriageMid(a, b);
+  }
+  const p = byId(from);
+  return { x: p.cx, y: p.cy };
+}
+
+function mkSvg(tag, attrs) {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  Object.entries(attrs || {}).forEach(([k,v]) => el.setAttribute(k, v));
+  return el;
+}
+
+function bezierPath(x1,y1, x2,y2) {
+  const my = (y1+y2)/2;
+  return `M${x1} ${y1} C${x1} ${my} ${x2} ${my} ${x2} ${y2}`;
+}
+
+function buildTree() {
+  vp = document.getElementById('tree-viewport');
+  svgEl = document.getElementById('tree-svg');
+  svgEl.setAttribute('viewBox', `0 0 ${SVG_W} ${SVG_H}`);
+  svgEl.setAttribute('width', SVG_W);
+  svgEl.setAttribute('height', SVG_H);
+  svgEl.style.width = SVG_W + 'px';
+  svgEl.style.height = SVG_H + 'px';
+
+  // Defs
+  const defs = mkSvg('defs');
+  const addShadow = (id, dy, std, col) => {
+    const f = mkSvg('filter',{id,x:'-20%',y:'-20%',width:'140%',height:'150%'});
+    f.appendChild(mkSvg('feDropShadow',{dx:'0',dy,stdDeviation:std,'flood-color':col}));
+    defs.appendChild(f);
+  };
+  addShadow('sh','2','3','rgba(0,0,0,0.08)');
+  addShadow('shh','3','6','rgba(160,114,58,0.22)');
+  svgEl.appendChild(defs);
+
+  gRoot = mkSvg('g',{id:'tree-root'});
+  svgEl.appendChild(gRoot);
+
+  // Generation labels
+  const genY = [75,215,365,495,650];
+  const genLabels = ['Generation I — Great-Grandparents','Generation II — Grandparents','Generation III — Parents & Spouses','Generation IV — Your Generation','Generation V — Next Generation'];
+  genY.forEach((y,i) => {
+    const l = mkSvg('text',{x:SVG_W-12, y:y-NH/2+12,'text-anchor':'end',fill:C.muted,'font-family':'system-ui','font-size':'9','letter-spacing':'0.5'});
+    l.textContent = genLabels[i];
+    gRoot.appendChild(l);
+    const rule = mkSvg('line',{x1:0,y1:y-NH/2-6,x2:SVG_W,y2:y-NH/2-6,stroke:C.border,'stroke-width':'1','stroke-dasharray':'3,7'});
+    gRoot.appendChild(rule);
+  });
+
+  // Marriage bars
+  MARRIAGES.forEach(([a,b,dashed]) => {
+    const pa = byId(a), pb = byId(b);
+    const x1 = pa.cx + NW/2, x2 = pb.cx - NW/2, y = pa.cy;
+    const bar = mkSvg('line',{x1,y1:y,x2,y2:y,stroke:C.marriageBar,'stroke-width':'2','stroke-dasharray':dashed?'5,4':'none'});
+    gRoot.appendChild(bar);
+    // Small ring at midpoint
+    const mx = (x1+x2)/2;
+    const ring = mkSvg('circle',{cx:mx,cy:y,r:'4',fill:'#fff',stroke:C.marriageBar,'stroke-width':'2'});
+    gRoot.appendChild(ring);
+  });
+
+  // Parent-child edges
+  EDGES.forEach(e => {
+    const from = resolveFrom(e.from);
+    const to = byId(e.to);
+    const x1 = from.x, y1 = from.y + (e.from.startsWith('mid:') ? 0 : NH/2);
+    const x2 = to.cx, y2 = to.cy - NH/2;
+    // Adjust y1: if it's a midpoint of a marriage bar, use the bar y + a small offset
+    const fy = e.from.startsWith('mid:') ? from.y + 5 : from.y + NH/2;
+    const path = mkSvg('path',{
+      d: bezierPath(x1, fy, x2, y2),
+      fill:'none', stroke: e.dashed ? C.accentLight : C.line,
+      'stroke-width': e.dashed ? '1.5' : '2',
+      'stroke-dasharray': e.dashed ? '5,4' : 'none',
+      'stroke-linecap':'round'
+    });
+    gRoot.appendChild(path);
+  });
+
+  // Jerry-Emmylou marriage bracket → Elijia
+  // Horizontal bracket below Gen IV at y=570, drop to Elijia
+  const jerryP = byId('jerry'), emmiP = byId('emmylou'), elijiaP = byId('elijia');
+  const bracketY = 577;
+  const jx = jerryP.cx, ex = emmiP.cx, midX = elijiaP.cx;
+
+  // Lines down from Jerry and Emmylou to bracket
+  gRoot.appendChild(mkSvg('line',{x1:jx,y1:jerryP.cy+NH/2,x2:jx,y2:bracketY,stroke:C.line,'stroke-width':'2'}));
+  gRoot.appendChild(mkSvg('line',{x1:ex,y1:emmiP.cy+NH/2,x2:ex,y2:bracketY,stroke:C.line,'stroke-width':'2'}));
+  // Horizontal bracket
+  gRoot.appendChild(mkSvg('line',{x1:jx,y1:bracketY,x2:ex,y2:bracketY,stroke:C.line,'stroke-width':'2'}));
+  // Drop to Elijia
+  gRoot.appendChild(mkSvg('line',{x1:midX,y1:bracketY,x2:midX,y2:elijiaP.cy-NH/2,stroke:C.line,'stroke-width':'2'}));
+  // Marriage ring on bracket
+  gRoot.appendChild(mkSvg('circle',{cx:midX,cy:bracketY,r:'5',fill:'#fff',stroke:C.marriageBar,'stroke-width':'2'}));
+  // Small label
+  const ml = mkSvg('text',{x:midX+8,y:bracketY-6,fill:C.muted,'font-family':'system-ui','font-size':'9'});
+  ml.textContent = 'Married Sep 18, 2024';
+  gRoot.appendChild(ml);
+
+  // Remove the individual bezier edges for jerry→elijia and emmylou→elijia
+  // (they're handled by the bracket above — already excluded since we only draw EDGES that go through gRoot)
+
+  // Person nodes
+  PEOPLE.forEach(person => {
+    const g = mkSvg('g',{class:'node-card','data-id':person.id,transform:`translate(${person.cx-NW/2},${person.cy-NH/2})`});
+
+    const rect = mkSvg('rect',{
+      width:NW, height:NH, rx:R, ry:R,
+      fill: person.isLeaf ? C.leaf : C.card,
+      stroke: person.highlight ? C.highlight : person.isLeaf ? C.accentLight : C.border,
+      'stroke-width': person.highlight ? '2.5' : person.isLeaf ? '1.5' : '1',
+      'stroke-dasharray': person.isLeaf ? '5,3' : 'none',
+      filter:`url(#${person.highlight?'shh':'sh'})`
+    });
+    g.appendChild(rect);
+
+    const hasLine2 = person.chinese;
+    const nameY = hasLine2 ? 18 : (person.sub ? 20 : 30);
+    const name = mkSvg('text',{x:NW/2,y:nameY,'text-anchor':'middle',fill:C.text,'font-family':'Georgia, serif','font-size':'12','font-weight':'bold'});
+    name.textContent = person.name;
+    g.appendChild(name);
+
+    if (person.chinese) {
+      const cn = mkSvg('text',{x:NW/2,y:30,'text-anchor':'middle',fill:C.accent,'font-family':'Georgia, serif','font-size':'10.5'});
+      cn.textContent = person.chinese;
+      g.appendChild(cn);
+    }
+
+    if (person.sub) {
+      const sub = mkSvg('text',{x:NW/2,y:hasLine2?42:33,'text-anchor':'middle',fill:C.muted,'font-family':'system-ui','font-size':'9.5'});
+      sub.textContent = person.sub;
+      g.appendChild(sub);
+    }
+
+    g.addEventListener('click', (e) => { e.stopPropagation(); showTooltip(person, e); });
+    gRoot.appendChild(g);
+  });
+
+  resetView();
+}
+
+// ── TOOLTIP ───────────────────────────────────────────────────────────
+function showTooltip(person, evt) {
+  const tip = document.getElementById('tooltip');
+  document.getElementById('tt-name').textContent = person.name;
+  const chin = document.getElementById('tt-chin');
+  chin.textContent = person.chinese || '';
+  chin.style.display = person.chinese ? 'block' : 'none';
+  document.getElementById('tt-brief').textContent = person.brief;
+  const link = document.getElementById('tt-link');
+  link.href = person.page;
+  link.style.display = person.page ? 'inline' : 'none';
+  tip.classList.add('visible');
+
+  // Position near click but keep in viewport
+  const vpRect = document.getElementById('tree-viewport').getBoundingClientRect();
+  let left = evt.clientX - vpRect.left + 16;
+  let top = evt.clientY - vpRect.top - 10;
+  if (left + 270 > vpRect.width) left = evt.clientX - vpRect.left - 280;
+  if (top + tip.offsetHeight > vpRect.height) top = Math.max(0, vpRect.height - tip.offsetHeight - 10);
+  tip.style.left = left + 'px';
+  tip.style.top = top + 'px';
+}
+function closeTooltip() { document.getElementById('tooltip').classList.remove('visible'); }
+
+// ── ZOOM / PAN ────────────────────────────────────────────────────────
+function applyTransform() {
+  gRoot.setAttribute('transform', `translate(${tx},${ty}) scale(${sc})`);
+}
+function zoom(factor, cx, cy) {
+  const vpRect = vp.getBoundingClientRect();
+  const ox = cx !== undefined ? cx : vpRect.width/2;
+  const oy = cy !== undefined ? cy : vpRect.height/2;
+  const newSc = Math.min(3, Math.max(0.3, sc * factor));
+  tx = ox - (ox - tx) * (newSc/sc);
+  ty = oy - (oy - ty) * (newSc/sc);
+  sc = newSc;
+  applyTransform();
+}
+function resetView() {
+  const vpRect = vp ? vp.getBoundingClientRect() : {width:900,height:600};
+  const scX = vpRect.width / SVG_W, scY = vpRect.height / SVG_H;
+  sc = Math.min(scX, scY) * 0.92;
+  tx = (vpRect.width - SVG_W * sc) / 2;
+  ty = (vpRect.height - SVG_H * sc) / 2;
+  applyTransform();
+}
+
+// Mouse wheel zoom
+document.getElementById('tree-viewport').addEventListener('wheel', e => {
+  e.preventDefault();
+  const vpRect = vp.getBoundingClientRect();
+  const cx = e.clientX - vpRect.left;
+  const cy = e.clientY - vpRect.top;
+  zoom(e.deltaY < 0 ? 1.12 : 0.9, cx, cy);
+}, { passive: false });
+
+// Drag to pan
+let dragging = false, dragX = 0, dragY = 0;
+const tvp = document.getElementById('tree-viewport');
+tvp.addEventListener('mousedown', e => { dragging = true; dragX = e.clientX; dragY = e.clientY; tvp.classList.add('dragging'); });
+window.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  tx += e.clientX - dragX; ty += e.clientY - dragY;
+  dragX = e.clientX; dragY = e.clientY;
+  applyTransform();
+});
+window.addEventListener('mouseup', () => { dragging = false; tvp.classList.remove('dragging'); });
+tvp.addEventListener('click', closeTooltip);
+
+// Touch pan
+let touchStartX=0, touchStartY=0;
+tvp.addEventListener('touchstart', e => { touchStartX=e.touches[0].clientX; touchStartY=e.touches[0].clientY; });
+tvp.addEventListener('touchmove', e => {
+  e.preventDefault();
+  tx += e.touches[0].clientX-touchStartX; ty += e.touches[0].clientY-touchStartY;
+  touchStartX=e.touches[0].clientX; touchStartY=e.touches[0].clientY;
+  applyTransform();
+},{passive:false});
+
+// Build on load
+window.addEventListener('DOMContentLoaded', buildTree);
+window.addEventListener('resize', resetView);
+</script>
+</body>
+</html>

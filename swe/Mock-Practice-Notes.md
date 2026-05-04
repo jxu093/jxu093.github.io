@@ -12,12 +12,15 @@ Quick reference for recurring gap areas. Updated as new mocks surface patterns.
 
 | Theme | Description | Mocks where it appeared |
 |---|---|---|
-| **NFR precision** | Be concrete on latency targets, availability numbers; separate NFRs from functional reqs cleanly | WhatsApp (Apr 30) |
-| **API completeness** | Define response shapes, not just request bodies; add pagination; specify WebSocket event contracts | WhatsApp (Apr 30) |
+| **NFR precision** | Be concrete on latency targets, availability numbers; separate NFRs from functional reqs cleanly | WhatsApp (Apr 30), Rate Limiter (May 2) ⚠️ |
+| **API completeness** | Define response shapes, status codes, headers; know the exact standard names and units | WhatsApp (Apr 30), Rate Limiter (May 2) ⚠️ |
 | **Offline/reconnect** | Per-user offsets, durable storage before notification, catchup on reconnect | WhatsApp (Apr 30) |
 | **Media handling** | Pre-signed URLs, blob storage, keep DB lean with references only | WhatsApp (Apr 30) |
 | **Fan-out & PubSub** | Show delivery path to recipients, not just inbound; PubSub for cross-server routing at scale | WhatsApp (Apr 30) |
 | **Multi-device** | Per-device sessions and delivery tracking, not just per-user | WhatsApp (Apr 30) |
+| **Algorithm precision** | Know the exact mechanism of the algorithm you name; don't conflate it with adjacent concepts | Rate Limiter (May 2) |
+| **Speak early phases aloud** | No answer recorded for Requirements, Core Entities, and System Interface — even if you know it, say it | Rate Limiter (May 2) |
+| **Atomic hot-path ops** | On latency-critical paths, combine read+write into one atomic operation (INCR, Lua script) to avoid round trips and races | Rate Limiter (May 2) |
 
 ---
 
@@ -65,6 +68,54 @@ Quick reference for recurring gap areas. Updated as new mocks surface patterns.
 - [ ] In next SD mock, always draw the fan-out / delivery path back to recipients
 - [ ] Practice articulating fault tolerance concretely (what happens on failure) rather than vaguely ("high availability")
 - [ ] Review: notification vs. delivery distinction — make this part of the standard messaging system template
+
+---
+
+## Mock #2: Design a Rate Limiter
+
+**Date:** Sat May 2, 2026 (Week 3)
+**Format:** Virtual mock
+**Prep reading:** Deck 12 Q5 (rate limiter basics)
+
+### What went well
+
+- **API gateway placement** — correctly identified placing the rate limiter in the API gateway to avoid an extra hop, articulated the tradeoff (complexity in gateway vs. simplicity of dedicated service), and noted the statefulness concern.
+- **Consistent hashing for counter sharding** — correctly identified sharding Redis counters by client key using consistent hashing.
+- **Fail-open strategy** — good answer on letting traffic through when rate limiter fails, with Redis redundancy, automatic failover, and metrics/heartbeats for detection. Correctly noted that API gateway failure is a different (worse) problem than cache failure.
+- **Rules architecture** — solid on rules service + DB + cache layering, with cache-miss fallback to rule service.
+
+### Requirements Phase
+
+- ⚠️ **No answer recorded.** You need to say NFRs out loud even if you think them. The key one here: **< 5ms per check**, not the general 200ms web latency. The rate limiter is in the critical path of every request — even 50ms overhead is unacceptable at scale.
+- **Eventual consistency is acceptable.** During a partition, briefly allowing a few extra requests through is fine. Strict consistency would add latency for negligible benefit. This is a good NFR to state proactively.
+
+### Core Entities
+
+- ⚠️ **No answer recorded.** Three entities: **Rules** (define limits), **Clients** (identified by IP/user ID/token), **Requests** (the individual calls being counted). Articulating these early frames the rest of the design.
+
+### System Interface
+
+- ⚠️ **No answer recorded.** Key point from feedback: rate limiting rules are **not passed as inputs per request**. They're stored internally (DB/config store) and looked up by API name or endpoint. The interface is: client ID in → allow/deny + remaining quota out.
+
+### High-Level Design
+
+- **Token bucket confusion.** You said "accept requests from the queue at a fixed interval" — that's traffic shaping (queuing/delaying), not token bucket. Token bucket is simpler: bucket has capacity, tokens refill at steady rate, each request consumes one token, empty bucket = deny. It handles **bursts** naturally (up to bucket capacity) while enforcing a sustained rate. Don't conflate these in an interview.
+- **HTTP 429 details wrong.** You didn't name the status code (429 Too Many Requests). You said Retry-After value is in **milliseconds** — it's **seconds**. And it's `Retry-After` (standard), not `x-retry-after`. Also worth mentioning: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` — these help clients self-throttle and reduce retry noise.
+
+### Deep Dives
+
+- **Missed: atomic operations on the hot path.** The single biggest latency optimization is combining the counter read + increment into **one atomic Redis operation** (INCR or a Lua script). This avoids two round trips and prevents race conditions. You talked about caching rejected users instead, which is creative but not the standard answer.
+- **Missed: co-locate gateways and Redis.** Keep them in the same region/AZ to minimize network latency on every check.
+- **Missed: rule propagation strategies.** Two approaches: polling with short TTL (simple, some delay) vs. push notifications (faster, needed for emergency throttling). Know the tradeoff — you only covered the caching layer, not how updates propagate to gateway instances.
+- **Good: two separate storage concerns.** The feedback emphasizes rules (cacheable, slow refresh) vs. counters (distributed, low-latency, sharded) as distinct problems. Your answer covered both but could have been more explicit about the separation.
+
+### Action Items from This Mock
+
+- [ ] **Fix the silent early phases.** Practice saying Requirements, Core Entities, and Interface out loud even in solo mocks — record yourself. If the interviewer hears nothing, it's a zero.
+- [ ] Memorize: HTTP **429**, `Retry-After` in **seconds**, plus the three `X-RateLimit-*` headers
+- [ ] Memorize: token bucket = tokens + refill + deny when empty. It is NOT a queue. Traffic shaping (leaky bucket with queue) is a different concept.
+- [x] Add flashcards for: token bucket (Q22), atomic Redis ops on hot path (Q23), rule propagation polling vs. push (Q24)
+- [ ] In next mock, when discussing latency optimization, lead with "reduce round trips on the hot path" before anything else
 
 ---
 

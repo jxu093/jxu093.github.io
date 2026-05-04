@@ -860,6 +860,21 @@ const DECKS = [
         "id": "Q21",
         "question": "How does supporting multiple devices per user change a messaging system's design? What needs to be per-device instead of per-user?",
         "answer": "Each device is a separate client session. The User Activity Service stores all active device sessions per user. Fan-out pushes to every connected device. Delivery tracking (offsets) must be per-device, not per-user — one device may be online while another is offline, and each needs independent catchup state on reconnect."
+      },
+      {
+        "id": "Q22",
+        "question": "Explain exactly how token bucket rate limiting works. What are the moving parts, and what makes it good for API rate limiting? What is it NOT?",
+        "answer": "Each client gets a bucket with a fixed token capacity. Tokens refill at a steady rate. Each request consumes one token; if the bucket is empty, the request is denied (HTTP 429). Good for APIs because it allows short bursts (up to bucket capacity) while enforcing a sustained rate. It is NOT traffic shaping — token bucket makes allow/deny decisions. Traffic shaping (leaky bucket with a queue) delays and buffers requests instead of rejecting them. Don't conflate these."
+      },
+      {
+        "id": "Q23",
+        "question": "On a latency-critical hot path like a rate limiter check, what's the single most important optimization for the counter store? Why?",
+        "answer": "Combine the counter read and increment into a single atomic operation — Redis INCR or a Lua script. This avoids two separate round trips (read then write) and prevents race conditions under concurrent requests. Also co-locate gateways and Redis in the same region/AZ to minimize network latency on every check. Target under 5ms per rate limit check."
+      },
+      {
+        "id": "Q24",
+        "question": "When rate limit rules change, how do all gateway instances learn about the update? What are the two strategies and when do you pick each?",
+        "answer": "Polling with short TTL: each gateway periodically fetches rules from the config store. Simple to operate, but introduces propagation delay (up to TTL). Push notifications: a config service pushes updates to all gateways immediately. More complex but needed for emergency throttling where delay is unacceptable. Most systems use polling as the baseline and add a push channel for urgent overrides."
       }
     ]
   },

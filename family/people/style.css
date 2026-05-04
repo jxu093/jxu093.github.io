@@ -1,0 +1,54 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #faf8f4; --primary: #2e1f12; --accent: #a0723a;
+  --accent-light: #c4956a; --card: #fff; --border: #e2d5c4;
+  --text: #2e1f12; --muted: #7a6555;
+}
+body { font-family: Georgia, serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+header { background: var(--primary); color: #fff; padding: 2rem 2rem 1.8rem; }
+.back { color: var(--accent-light); font-size: .8rem; letter-spacing: .1em; text-decoration: none; text-transform: uppercase; display: inline-block; margin-bottom: 1rem; }
+.back:hover { color: #fff; }
+header h1 { font-size: 2rem; line-height: 1.2; }
+header .chin { color: var(--accent-light); font-size: 1.1rem; margin-top: .3rem; }
+header .role { color: #c4a882; font-size: .8rem; letter-spacing: .15em; text-transform: uppercase; margin-top: .4rem; }
+
+main { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+.vitals {
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1.2rem 1.5rem; margin-bottom: 2rem;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .8rem 1.5rem;
+}
+.vital { display: flex; flex-direction: column; }
+.vital label { font-size: .65rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); font-family: system-ui, sans-serif; margin-bottom: .2rem; }
+.vital span { font-size: .9rem; color: var(--text); }
+
+section { margin-bottom: 2rem; }
+section h2 { font-size: 1.1rem; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: .4rem; margin-bottom: .9rem; }
+section p { font-size: .9rem; line-height: 1.75; color: var(--text); margin-bottom: .8rem; }
+section p:last-child { margin-bottom: 0; }
+
+.family-links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .6rem; }
+.family-link {
+  display: inline-block; padding: .3rem .8rem; border-radius: 20px;
+  background: var(--card); border: 1px solid var(--border);
+  font-size: .8rem; color: var(--accent); text-decoration: none;
+  font-family: system-ui, sans-serif;
+}
+.family-link:hover { background: var(--border); }
+
+.note-box {
+  background: #fff8ee; border: 1px solid #e8d5b0; border-left: 3px solid var(--accent-light);
+  border-radius: 6px; padding: .7rem 1rem; font-size: .83rem;
+  color: var(--muted); line-height: 1.6; margin-bottom: 1rem; font-style: italic;
+}
+
+.todo-box {
+  background: #f5f5f5; border: 1px dashed var(--border); border-radius: 6px;
+  padding: .7rem 1rem; font-size: .82rem; color: var(--muted);
+  line-height: 1.6; margin-top: .8rem;
+}
+
+.sources { font-size: .78rem; color: var(--muted); font-family: system-ui, sans-serif; }
+.sources li { margin-bottom: .2rem; }
