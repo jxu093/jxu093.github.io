@@ -1514,6 +1514,30 @@ How does "Word Search II" use a trie?
 
 ---
 
+**Q22.** Explain exactly how token bucket rate limiting works. What are the moving parts, and what makes it good for API rate limiting? What is it NOT?
+
+.
+.
+↳ **A:** Each client gets a bucket with a fixed token capacity. Tokens refill at a steady rate. Each request consumes one token; if the bucket is empty, the request is denied (HTTP 429). Good for APIs because it allows short bursts (up to bucket capacity) while enforcing a sustained rate. It is NOT traffic shaping — token bucket makes allow/deny decisions. Traffic shaping (leaky bucket with a queue) delays and buffers requests instead of rejecting them. Don't conflate these.
+
+---
+
+**Q23.** On a latency-critical hot path like a rate limiter check, what's the single most important optimization for the counter store? Why?
+
+.
+.
+↳ **A:** Combine the counter read and increment into a single atomic operation — Redis INCR or a Lua script. This avoids two separate round trips (read then write) and prevents race conditions under concurrent requests. Also co-locate gateways and Redis in the same region/AZ to minimize network latency on every check. Target under 5ms per rate limit check.
+
+---
+
+**Q24.** When rate limit rules change, how do all gateway instances learn about the update? What are the two strategies and when do you pick each?
+
+.
+.
+↳ **A:** Polling with short TTL: each gateway periodically fetches rules from the config store. Simple to operate, but introduces propagation delay (up to TTL). Push notifications: a config service pushes updates to all gateways immediately. More complex but needed for emergency throttling where delay is unacceptable. Most systems use polling as the baseline and add a push channel for urgent overrides.
+
+---
+
 ## 13. Linked List
 
 **Q1.** Slow/fast pointer — what 3 problem classes does it solve?
