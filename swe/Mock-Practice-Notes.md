@@ -12,15 +12,18 @@ Quick reference for recurring gap areas. Updated as new mocks surface patterns.
 
 | Theme | Description | Mocks where it appeared |
 |---|---|---|
-| **NFR precision** | Be concrete on latency targets, availability numbers; separate NFRs from functional reqs cleanly | WhatsApp (Apr 30), Rate Limiter (May 2) ⚠️ |
-| **API completeness** | Define response shapes, status codes, headers; know the exact standard names and units | WhatsApp (Apr 30), Rate Limiter (May 2) ⚠️ |
+| **NFR precision** | Be concrete on latency targets, availability numbers; separate NFRs from functional reqs cleanly | WhatsApp (Apr 30), Rate Limiter (May 2), Payment System (May 5) ⚠️⚠️ |
+| **API completeness** | Define response shapes, status codes, headers; know the exact standard names and units | WhatsApp (Apr 30), Rate Limiter (May 2), Payment System (May 5) ⚠️⚠️ |
+| **Speak early phases aloud** | No answer recorded for Requirements, Core Entities, and System Interface — even if you know it, say it | Rate Limiter (May 2) |
 | **Offline/reconnect** | Per-user offsets, durable storage before notification, catchup on reconnect | WhatsApp (Apr 30) |
 | **Media handling** | Pre-signed URLs, blob storage, keep DB lean with references only | WhatsApp (Apr 30) |
 | **Fan-out & PubSub** | Show delivery path to recipients, not just inbound; PubSub for cross-server routing at scale | WhatsApp (Apr 30) |
 | **Multi-device** | Per-device sessions and delivery tracking, not just per-user | WhatsApp (Apr 30) |
 | **Algorithm precision** | Know the exact mechanism of the algorithm you name; don't conflate it with adjacent concepts | Rate Limiter (May 2) |
-| **Speak early phases aloud** | No answer recorded for Requirements, Core Entities, and System Interface — even if you know it, say it | Rate Limiter (May 2) |
 | **Atomic hot-path ops** | On latency-critical paths, combine read+write into one atomic operation (INCR, Lua script) to avoid round trips and races | Rate Limiter (May 2) |
+| **Payment lifecycle** | Separate PaymentIntent from PaymentAttempt; model multi-stage statuses (created→authorized→pending→settled→failed) | Payment System (May 5) |
+| **Security & auditability** | HSM for private keys, CDC for tamper-proof audit trails, encryption beyond just SSL | Payment System (May 5) |
+| **Partition key design** | Choose keys that guarantee event ordering per entity; don't mix unrelated IDs into composite keys | Payment System (May 5) |
 
 ---
 
@@ -116,6 +119,59 @@ Quick reference for recurring gap areas. Updated as new mocks surface patterns.
 - [ ] Memorize: token bucket = tokens + refill + deny when empty. It is NOT a queue. Traffic shaping (leaky bucket with queue) is a different concept.
 - [x] Add flashcards for: token bucket (Q22), atomic Redis ops on hot path (Q23), rule propagation polling vs. push (Q24)
 - [ ] In next mock, when discussing latency optimization, lead with "reduce round trips on the hot path" before anything else
+
+---
+
+## Mock #3: Design a Payment System (Stripe)
+
+**Date:** Mon May 5, 2026 (Week 4)
+**Format:** Guided practice
+**Prep reading:** None noted
+
+### What went well
+
+- **High-level payment flow** — correctly described the merchant→transaction service→card processor→update flow with appropriate separation of concerns.
+- **Security fundamentals** — identified auth service with token-based access, SSL for transit encryption, and isolated card processor with private key decryption.
+- **Scaling approach** — good instincts on stateless services, partitioned databases, async processing via message queues with worker pools, and rate limiting.
+- **Idempotency awareness** — mentioned idempotency keys and timestamps for transaction safety, plus saga pattern for cross-service coordination.
+
+### Requirements Phase
+
+- **Missed domain-specific NFRs.** The critical NFRs for payment systems: **security** (PCI-DSS compliance, encryption, strong auth) and **auditability** (tamper-proof trail for every financial event). These aren't optional — they're regulatory requirements. Also: eventual consistency is NOT acceptable for payments — you need strong consistency for financial integrity.
+
+### Core Entities
+
+- **System boundary thinking.** Three entities: **Merchant** (who receives money), **Payment** (the method/instrument), **Transaction** (the record of money movement — charges, refunds, payouts). NOT Product — that belongs to an e-commerce system. Articulating what your system does and doesn't own shows strong design thinking.
+
+### API Design
+
+- Key gaps from feedback:
+  - **POST not PUT** for payment actions. PUT = replace entire resource. POST = perform action / create. Submitting a payment is an action.
+  - **Card details required in request body** — card number, expiry, CVC. Without these, the system can't charge.
+  - **Response body required** — at minimum: transaction status (pending/success/failed) + confirmation ID.
+  - **Don't duplicate amount** across transaction creation and payment endpoints. Amount is set at creation; payment just references the transactionId.
+
+### High-Level Design
+
+- **PaymentIntent pattern missed.** A PaymentIntent is a record of what a customer *intends* to pay — created when merchant initiates, holds amount/currency/description, status = "created". No card processor call happens yet (no card details provided). This is fundamental to how Stripe works.
+- **Multi-stage status model incomplete.** Your answer had "pending, completed, failed" but the real lifecycle is: **created → authorized → pending → settled → failed**. "Authorized" = funds reserved but not moved. "Settled" = bank completed transfer. This granularity matters for payment UX and reconciliation.
+- **Missed: PaymentIntent vs. PaymentAttempt separation.** The intent persists across retries. Each attempt is a separate card charge with its own processor result, status, and timestamp. This lets you retry without losing context.
+
+### Deep Dives
+
+- **HSM for private keys.** You said "encrypted using a private key" but didn't mention WHERE the private key lives. Answer: Hardware Security Module (HSM) — tamper-resistant hardware where the key never exists in plaintext outside of it. Without this, server compromise = all card data exposed.
+- **Audit trail approach was weak.** You described replication + blob storage, which is data durability, not auditability. The correct pattern: **Change Data Capture (CDC)** — database-level capture emitting every change to an immutable event stream. App-managed audit logs can go out of sync; CDC can't be skipped by application code.
+- **Partition key wrong.** You said "merchant and transaction ID" composite. Correct answer: **transaction ID alone**. All events for a single payment must land on the same partition for ordering guarantees. Merchant ID for load spreading belongs at a higher routing level, not in the partition key.
+- **Timeout handling incomplete.** You mentioned idempotency and saga, but missed the key insight: treat timeouts as **pending/uncertain**, not failed. The processor may still complete the charge. Use idempotency keys + optimistic locking to prevent conflicting updates when retries and callbacks race.
+
+### Action Items from This Mock
+
+- [ ] **Memorize domain-specific NFRs for payment systems.** Security (PCI-DSS, HSM, encryption) + auditability (CDC, immutable event stream) + strong consistency. These are non-negotiable for financial systems.
+- [ ] Memorize: PaymentIntent lifecycle (created → authorized → pending → settled → failed) and why intent vs. attempt separation matters
+- [ ] Memorize: POST for actions, PUT for full resource replacement. Payment submission = POST.
+- [ ] Memorize: HSM = where private keys live. CDC = how you get tamper-proof audit trails. These are the standard answers.
+- [ ] Memorize: partition key = transaction ID alone for event ordering. Don't mix in merchant ID.
+- [x] Add flashcards for: payment lifecycle (Q25), HSM + CDC (Q26), partition key design (Q27), timeout + idempotency (Q28)
 
 ---
 

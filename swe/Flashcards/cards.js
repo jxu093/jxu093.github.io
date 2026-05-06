@@ -372,8 +372,8 @@ const DECKS = [
     "cards": [
       {
         "id": "Q1",
-        "question": "What four things must you nail in every binary search?",
-        "answer": "(1) Loop condition (`l < r` vs `l <= r`). (2) Mid computation (`l + (r - l) // 2` to avoid overflow). (3) Which half to keep. (4) What `l` (or `r`) points to when the loop exits."
+        "question": "There are two binary search templates — `while l <= r` and `while l < r`. When do you use each one, and what changes between them (loop condition, bound updates, return value)?",
+        "answer": "**`while l <= r` — \"find exact target\":** `l` and `r` define a closed interval `[l, r]`. You return `mid` immediately when found; if the loop ends, the target doesn't exist (`return -1`). Bounds always exclude mid: `l = mid + 1` or `r = mid - 1`.\n\n**`while l < r` — \"find a boundary\":** `l` and `r` converge to the answer. No early return — let the loop end and return `l` (which equals `r`). One side keeps mid (`r = mid` or `l = mid`), the other excludes it (`l = mid + 1` or `r = mid - 1`).\n\n**Decision rule:** If you're looking for a specific value, use `l <= r`. If you're looking for the first/last position satisfying a condition (leftmost true, min feasible answer, etc.), use `l < r`."
       },
       {
         "id": "Q2",
@@ -406,6 +406,21 @@ const DECKS = [
         "id": "Q7",
         "question": "Median of two sorted arrays in O(log(min(m, n))) — what's being searched? (See also F9)",
         "answer": "The partition index `i` in the shorter array. `j = (m+n+1)//2 - i`. Valid when `maxLeft1 <= minRight2` AND `maxLeft2 <= minRight1`. Guard with ±∞."
+      },
+      {
+        "id": "Q8",
+        "question": "In `while l < r` binary search, you set `r = mid` when you want to keep mid as a candidate (\"search left including mid\"). Why does pairing `r = mid` with `while l <= r` cause an infinite loop?",
+        "answer": "With `while l <= r`, the loop runs while `l == r`. If `r = mid` and `l == r`, then `mid = l = r`, and setting `r = mid` doesn't change anything — the loop never exits.\n\n**The pairing rules:**\n- `while l <= r` → both sides must exclude mid: `l = mid + 1`, `r = mid - 1`. This shrinks the interval every iteration.\n- `while l < r` → one side keeps mid (`r = mid` or `l = mid`), the other excludes it. The loop exits when `l == r`, which is your answer.\n\nIf you use `r = mid - 1` with `while l < r`, you might skip the answer. If you use `r = mid` with `while l <= r`, you infinite-loop. The templates are paired for a reason."
+      },
+      {
+        "id": "Q9",
+        "question": "When using `while l < r` with `l = mid` (searching right, keeping mid as candidate), why do you need `mid = (l + r + 1) // 2` (ceiling division) instead of the usual `mid = (l + r) // 2`?",
+        "answer": "With floor division and two elements left (`l, l+1`), `mid = l`. Setting `l = mid` doesn't advance — infinite loop.\n\n**Ceiling division** (`(l + r + 1) // 2`) rounds up, so `mid = l + 1 = r`, and `l = mid` actually moves `l` forward.\n\n**Rule of thumb:** if you write `l = mid`, use ceiling. If you write `r = mid`, use floor (the default). This is the only place you need to think about rounding — it only matters when the keeping side is `l = mid`."
+      },
+      {
+        "id": "Q10",
+        "question": "For each problem below, which template — `while l <= r` (exact match) or `while l < r` (boundary) — and what are the bound updates?\n\n1. Classic search for target in sorted array\n2. Find leftmost index where `arr[i] >= target` (lower_bound)\n3. Koko eating bananas — minimum speed to finish in h hours\n4. Find peak element (any local max in an unsorted array)",
+        "answer": "1. **`while l <= r`** — looking for exact value. `l = mid+1`, `r = mid-1`, return `mid` on match.\n\n2. **`while l < r`** — finding a boundary. `if arr[mid] >= target: r = mid` (mid could be the answer), else `l = mid+1`. Return `l`.\n\n3. **`while l < r`** — minimizing over answer space. `if feasible(mid): r = mid`, else `l = mid+1`. Return `l`.\n\n4. **`while l < r`** — converging to a peak. `if arr[mid] < arr[mid+1]: l = mid+1` (peak is right), else `r = mid` (peak is at mid or left). Return `l`.\n\nNotice: problems 2–4 all use `r = mid` with floor division. You'd only use `l = mid` (with ceiling) if finding a *rightmost* boundary (e.g., last position where condition holds)."
       }
     ]
   },
@@ -875,6 +890,26 @@ const DECKS = [
         "id": "Q24",
         "question": "When rate limit rules change, how do all gateway instances learn about the update? What are the two strategies and when do you pick each?",
         "answer": "Polling with short TTL: each gateway periodically fetches rules from the config store. Simple to operate, but introduces propagation delay (up to TTL). Push notifications: a config service pushes updates to all gateways immediately. More complex but needed for emergency throttling where delay is unacceptable. Most systems use polling as the baseline and add a push channel for urgent overrides."
+      },
+      {
+        "id": "Q25",
+        "question": "In a payment system like Stripe, what is a PaymentIntent and how does it differ from a PaymentAttempt? Walk through the full status lifecycle.",
+        "answer": "A PaymentIntent records what the customer intends to pay — created when the merchant initiates, holds amount/currency/description, status = 'created'. No card processor call yet. A PaymentAttempt is the actual card charge against that intent — has its own processor result, status, and timestamp. Separation lets you retry failed charges without losing context. Status lifecycle: created → authorized (funds reserved, not moved) → pending (processing) → settled (bank completed transfer) OR failed at any stage."
+      },
+      {
+        "id": "Q26",
+        "question": "In a payment system, where must private keys be stored and why? How do you achieve tamper-proof auditability — what's wrong with application-level audit logs?",
+        "answer": "Private keys: stored in a Hardware Security Module (HSM) — tamper-resistant hardware where the key never exists in plaintext outside it. Without HSM, server compromise exposes all encrypted card data. Auditability: application-managed audit logs can go out of sync with the main DB if a bug or partial failure skips the log write. Correct pattern: Change Data Capture (CDC) at the database level — automatically emits every change to an immutable event stream. The audit trail is derived directly from the DB and cannot be bypassed by application code."
+      },
+      {
+        "id": "Q27",
+        "question": "For a payment event stream, what should the partition key be? Why NOT a composite of merchant ID + transaction ID?",
+        "answer": "Partition key = transaction ID alone. All events for a single payment must land on the same partition to guarantee ordering (created → authorized → settled). If you mix merchant ID into the partition key, events for the same transaction could split across partitions, breaking ordering guarantees. Merchant ID can be used for load spreading at a higher routing level (e.g., which cluster handles the merchant), but not in the event partition key."
+      },
+      {
+        "id": "Q28",
+        "question": "When a payment call to an external processor times out, how should you handle it? Why is treating it as 'failed' dangerous?",
+        "answer": "Treat timeouts as pending/uncertain — NOT failed. The processor may still complete the charge after a network timeout. If you mark it failed and retry, the customer gets double-charged. Correct approach: (1) assign an idempotency key to every payment attempt so retries are safe, (2) use optimistic locking on the payment record to prevent conflicting updates when retries and processor callbacks race to update the same record simultaneously."
       }
     ]
   },
