@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Personal site — Senior Software Engineer, Seattle. Explore via terminal." />
+<title>j@seattle:~$</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23111'/%3E%3Ctext x='10' y='44' font-family='monospace' font-size='34' fill='%2300ff88'%3E%3E_%3C/text%3E%3C/svg%3E" />
+<style>
+  :root {
+    --bg: #0b0f12;
+    --bg-soft: #0f1419;
+    --fg: #d6e3df;
+    --dim: #7a8a85;
+    --accent: #00ff88;
+    --accent-dim: #00b368;
+    --blue: #5ec5ff;
+    --yellow: #ffd166;
+    --red: #ff6b6b;
+    --purple: #c792ea;
+    --border: #1b2329;
+    --shadow: 0 20px 80px rgba(0, 255, 136, 0.08), 0 2px 8px rgba(0,0,0,0.5);
+  }
+
+  /* Theme: amber */
+  body[data-theme="amber"] {
+    --bg: #130d02;
+    --bg-soft: #1a1305;
+    --fg: #ffd79a;
+    --dim: #9a7f4a;
+    --accent: #ffb347;
+    --accent-dim: #cc8a2c;
+    --blue: #ffcd70;
+    --yellow: #fff2b0;
+    --red: #ff7a4a;
+    --purple: #ffb347;
+    --border: #2a1e08;
+  }
+  /* Theme: mono */
+  body[data-theme="mono"] {
+    --bg: #0d0d0d;
+    --bg-soft: #141414;
+    --fg: #e8e8e8;
+    --dim: #888;
+    --accent: #f5f5f5;
+    --accent-dim: #bdbdbd;
+    --blue: #cfcfcf;
+    --yellow: #e8e8e8;
+    --red: #ffffff;
+    --purple: #dcdcdc;
+    --border: #222;
+  }
+  /* Theme: solarized */
+  body[data-theme="solarized"] {
+    --bg: #002b36;
+    --bg-soft: #073642;
+    --fg: #eee8d5;
+    --dim: #839496;
+    --accent: #2aa198;
+    --accent-dim: #268078;
+    --blue: #268bd2;
+    --yellow: #b58900;
+    --red: #dc322f;
+    --purple: #6c71c4;
+    --border: #0a3b47;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(ellipse at top, var(--bg-soft), var(--bg) 60%);
+    color: var(--fg);
+    font-family: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.55;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* subtle scanlines */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.012) 0px,
+      rgba(255,255,255,0.012) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .wrap {
+    max-width: 960px;
+    margin: 32px auto;
+    padding: 0 16px;
+  }
+
+  .window {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+  }
+
+  .titlebar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(0,0,0,0.2));
+    border-bottom: 1px solid var(--border);
+    user-select: none;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: #444; }
+  .dot.r { background: #ff5f56; }
+  .dot.y { background: #ffbd2e; }
+  .dot.g { background: #27c93f; }
+  .title {
+    flex: 1;
+    text-align: center;
+    color: var(--dim);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  .title b { color: var(--fg); font-weight: 500; }
+
+  .screen {
+    padding: 20px 22px 22px;
+    min-height: 70vh;
+    max-height: 82vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .screen::-webkit-scrollbar { width: 8px; }
+  .screen::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .line { white-space: pre-wrap; word-break: break-word; }
+  .muted { color: var(--dim); }
+  .accent { color: var(--accent); }
+  .blue { color: var(--blue); }
+  .yellow { color: var(--yellow); }
+  .red { color: var(--red); }
+  .purple { color: var(--purple); }
+  .bold { font-weight: 600; color: #fff; }
+
+  .banner {
+    color: var(--accent);
+    font-size: 11px;
+    line-height: 1.15;
+    margin: 0 0 10px;
+    text-shadow: 0 0 18px rgba(0,255,136,0.2);
+  }
+  @media (max-width: 600px) {
+    .banner { font-size: 8px; }
+  }
+
+  .prompt-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: baseline;
+  }
+  .prompt {
+    color: var(--accent);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .prompt .user { color: var(--accent); }
+  .prompt .at { color: var(--dim); }
+  .prompt .host { color: var(--blue); }
+  .prompt .path { color: var(--purple); }
+  .prompt .sep { color: var(--dim); }
+
+  .input-wrap {
+    display: flex;
+    flex: 1;
+    min-width: 200px;
+    align-items: center;
+    position: relative;
+  }
+  #cmd {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--fg);
+    font: inherit;
+    caret-color: transparent;
+    padding: 0;
+  }
+  .fake-caret {
+    display: inline-block;
+    width: 8px;
+    height: 1em;
+    background: var(--accent);
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  a { color: var(--blue); text-decoration: none; border-bottom: 1px dotted var(--dim); }
+  a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .output { margin: 4px 0 14px; }
+  .kv { display: grid; grid-template-columns: 140px 1fr; gap: 4px 14px; }
+  .kv .k { color: var(--dim); }
+  .kv .v { color: var(--fg); }
+  @media (max-width: 520px) {
+    .kv { grid-template-columns: 100px 1fr; }
+  }
+
+  .card {
+    border-left: 2px solid var(--border);
+    padding: 2px 0 2px 12px;
+    margin: 8px 0 14px;
+  }
+  .card .role { color: var(--accent); font-weight: 600; }
+  .card .where { color: var(--blue); }
+  .card .when { color: var(--dim); font-size: 12px; }
+  .card ul { margin: 6px 0 0; padding-left: 18px; }
+  .card li { margin: 2px 0; }
+  .card li::marker { color: var(--accent-dim); }
+
+  .tag {
+    display: inline-block;
+    padding: 1px 8px;
+    margin: 2px 4px 2px 0;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 12px;
+    color: var(--fg);
+    background: rgba(255,255,255,0.02);
+  }
+  .tag.hot { border-color: var(--accent-dim); color: var(--accent); }
+
+  .cmds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2px 20px;
+  }
+  .cmds-grid .c { color: var(--accent); }
+  .cmds-grid .d { color: var(--dim); }
+
+  .ghost {
+    color: var(--dim);
+    font-style: italic;
+  }
+
+  .coming-soon {
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 22px;
+    text-align: center;
+    color: var(--dim);
+    margin: 10px 0;
+  }
+  .coming-soon .big { color: var(--accent); font-size: 16px; letter-spacing: 1px; }
+
+  .hint-bar {
+    margin-top: 14px;
+    color: var(--dim);
+    font-size: 12px;
+    text-align: center;
+  }
+  .hint-bar kbd {
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-family: inherit;
+    font-size: 11px;
+    color: var(--fg);
+    background: rgba(255,255,255,0.03);
+  }
+
+  /* boot blink */
+  .boot-cursor::after {
+    content: "▮";
+    color: var(--accent);
+    animation: blink 1s steps(1) infinite;
+    margin-left: 2px;
+  }
+
+  /* matrix easter egg */
+  #matrix-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: #000;
+    display: none;
+  }
+  #matrix-canvas.on { display: block; }
+  .matrix-esc {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 1000;
+    color: #0f8;
+    background: rgba(0,0,0,0.6);
+    padding: 6px 10px;
+    border: 1px solid #0f8;
+    border-radius: 4px;
+    font-family: monospace;
+    cursor: pointer;
+    display: none;
+  }
+  .matrix-esc.on { display: block; }
+
+  ::selection { background: var(--accent-dim); color: #000; }
+</style>
+</head>
+<body data-theme="matrix">
+
+<div class="wrap">
+  <div class="window" id="term" role="application" aria-label="Interactive terminal resume">
+    <div class="titlebar">
+      <span class="dot r"></span>
+      <span class="dot y"></span>
+      <span class="dot g"></span>
+      <div class="title"><b>j</b>@seattle: <span class="muted">~ (zsh)</span></div>
+      <div style="width: 38px;"></div>
+    </div>
+    <div class="screen" id="screen" tabindex="0"></div>
+  </div>
+  <div class="hint-bar">
+    Type <kbd>help</kbd> to get started • <kbd>Tab</kbd> completes • <kbd>↑ ↓</kbd> navigates history • <kbd>Ctrl</kbd>+<kbd>L</kbd> clears
+  </div>
+</div>
+
+<canvas id="matrix-canvas"></canvas>
+<button class="matrix-esc" id="matrix-esc">[ esc ]</button>
+
+<script>
+(() => {
+  "use strict";
+
+  // ---------- Config (scaffold — fill in real content later) ----------
+  const USER = {
+    name: "J",
+    handle: "j",
+    host: "seattle",
+    location: "Seattle, WA",
+    title: "Senior Software Engineer",
+    years: 9,
+    summary: "Backend / distributed systems engineer with 9 years of experience. " +
+             "The last 7 at Microsoft on the Azure Software Defined Networking control plane — " +
+             "large-scale state machines, eventual consistency, and keeping a planet's worth of VMs talking.",
+    email: "you@example.com",        // TODO replace
+    github: "https://github.com/",    // TODO replace
+    linkedin: "https://linkedin.com/in/", // TODO replace
+  };
+
+  const EXPERIENCE = [
+    {
+      role: "Senior Software Engineer",
+      where: "Microsoft — Azure Networking (SDN Control Plane)",
+      when: "2019 — Present  ·  Redmond, WA",
+      bullets: [
+        "TODO: flagship system/service you own (scale, tech, impact — one line).",
+        "TODO: a cross-team initiative you led end-to-end (outcome in numbers).",
+        "TODO: a thorny distributed-systems bug story or reliability win.",
+        "TODO: mentorship / design review / leadership beat.",
+      ],
+    },
+    {
+      role: "Software Engineer II → Senior",
+      where: "Microsoft — Azure Networking",
+      when: "2019 — 2023",
+      bullets: [
+        "TODO: component you shipped (what it did + who it served).",
+        "TODO: perf / reliability / cost improvement with numbers.",
+        "TODO: migration, rewrite, or framework you built.",
+      ],
+    },
+    {
+      role: "Software Engineer",
+      where: "TODO: First company",
+      when: "2017 — 2019",
+      bullets: [
+        "TODO: first industry role — what you learned and shipped.",
+      ],
+    },
+  ];
+
+  const SKILLS = {
+    "Languages":      ["C#", "C++", "Python", "Go", "TypeScript", "SQL"],
+    "Distributed":    ["Service Fabric", "Kubernetes", "gRPC", "Kafka", "Consensus / Paxos-ish"],
+    "Networking":     ["SDN", "BGP", "VXLAN", "L4/L7 LBs", "Network telemetry"],
+    "Cloud / Infra":  ["Azure", "ARM / Bicep", "Terraform", "CI/CD pipelines"],
+    "Data":           ["Cosmos DB", "Kusto", "Redis", "PostgreSQL"],
+    "Ways of working":["Design docs", "Oncall / IC leadership", "Mentoring", "Cross-team driving"],
+  };
+
+  const EDUCATION = [
+    {
+      where: "TODO: University",
+      what:  "B.S. Computer Science",
+      when:  "20XX — 20XX",
+      extra: "TODO: honors / relevant coursework / thesis / activities",
+    },
+  ];
+
+  // ---------- DOM ----------
+  const screen = document.getElementById("screen");
+  const term = document.getElementById("term");
+
+  // ---------- Helpers ----------
+  const esc = (s) => String(s).replace(/[&<>"]/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"
+  }[c]));
+
+  function write(html, cls = "") {
+    const d = document.createElement("div");
+    d.className = "line " + cls;
+    d.innerHTML = html;
+    screen.appendChild(d);
+    return d;
+  }
+  function scrollBottom() {
+    screen.scrollTop = screen.scrollHeight;
+  }
+  async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  async function typeLine(text, cls = "", speed = 14) {
+    const d = write("", cls);
+    d.classList.add("boot-cursor");
+    for (const ch of text) {
+      d.innerHTML = d.innerHTML.replace(/▮?$/, "");
+      d.textContent += ch;
+      scrollBottom();
+      await sleep(speed + Math.random() * speed);
+    }
+    d.classList.remove("boot-cursor");
+    return d;
+  }
+
+  // ---------- Banner ----------
+  const BANNER = String.raw`
+     ░▒▓█  j@seattle:~$  █▓▒░
+       _             _        _   _
+      (_)           | |      | | | |
+       _  ___   _ __| |_ ___ | | |_|
+      | |/ _ \ | '__| __/ _ \| | | |
+      | | (_) || |  | || (_) | | |_|
+     _/ |\___/ |_|   \__\___/|_| (_)
+    |__/
+  `;
+
+  // ---------- Commands ----------
+  const COMMANDS = {
+    help: {
+      desc: "List available commands",
+      run: () => {
+        const entries = Object.entries(COMMANDS)
+          .filter(([k]) => !COMMANDS[k].hidden)
+          .map(([k, v]) => `<div><span class="c">${k.padEnd(12, " ")}</span><span class="d">${esc(v.desc)}</span></div>`)
+          .join("");
+        write(`<div class="output">
+          <div class="muted">Available commands:</div>
+          <div class="cmds-grid" style="margin-top:6px;">${entries}</div>
+          <div class="muted" style="margin-top:10px;">Try <span class="accent">whoami</span>, <span class="accent">experience</span>, or <span class="accent">projects</span>.</div>
+        </div>`);
+      }
+    },
+
+    whoami: {
+      desc: "A quick introduction",
+      run: () => {
+        write(`<div class="output">
+          <div><span class="accent bold">${esc(USER.name)}</span> <span class="muted">·</span> <span>${esc(USER.title)}</span></div>
+          <div class="muted">${esc(USER.location)} · ${USER.years} yrs experience</div>
+          <div style="margin-top:8px; max-width: 70ch;">${esc(USER.summary)}</div>
+        </div>`);
+      }
+    },
+
+    about: { desc: "Same as whoami", run: () => COMMANDS.whoami.run() },
+
+    experience: {
+      desc: "Work history",
+      run: () => {
+        const html = EXPERIENCE.map(e => `
+          <div class="card">
+            <div><span class="role">${esc(e.role)}</span> <span class="muted">@</span> <span class="where">${esc(e.where)}</span></div>
+            <div class="when">${esc(e.when)}</div>
+            <ul>${e.bullets.map(b => `<li>${esc(b)}</li>`).join("")}</ul>
+          </div>`).join("");
+        write(`<div class="output">${html}</div>`);
+      }
+    },
+
+    skills: {
+      desc: "Languages, systems, and ways of working",
+      run: () => {
+        const html = Object.entries(SKILLS).map(([k, arr]) => `
+          <div style="margin:6px 0;">
+            <div class="muted" style="margin-bottom:2px;">${esc(k)}</div>
+            <div>${arr.map(s => `<span class="tag">${esc(s)}</span>`).join("")}</div>
+          </div>`).join("");
+        write(`<div class="output">${html}</div>`);
+      }
+    },
+
+    education: {
+      desc: "Degrees & training",
+      run: () => {
+        const html = EDUCATION.map(e => `
+          <div class="card">
+            <div><span class="role">${esc(e.what)}</span> <span class="muted">·</span> <span class="where">${esc(e.where)}</span></div>
+            <div class="when">${esc(e.when)}</div>
+            <div style="margin-top:4px;">${esc(e.extra)}</div>
+          </div>`).join("");
+        write(`<div class="output">${html}</div>`);
+      }
+    },
+
+    projects: {
+      desc: "Side projects & things I've built",
+      run: () => {
+        write(`<div class="output">
+          <div class="coming-soon">
+            <div class="big">~/ projects /</div>
+            <div style="margin-top:8px;">Directory exists — it's just quiet in here for now.</div>
+            <div class="ghost" style="margin-top:4px;">Check back soon, or run <span class="accent">contact</span> to ping me about what I'm cooking.</div>
+          </div>
+        </div>`);
+      }
+    },
+
+    contact: {
+      desc: "How to get in touch",
+      run: () => {
+        write(`<div class="output">
+          <div class="kv">
+            <div class="k">email</div>     <div class="v"><a href="mailto:${esc(USER.email)}">${esc(USER.email)}</a></div>
+            <div class="k">github</div>    <div class="v"><a href="${esc(USER.github)}" target="_blank" rel="noopener">${esc(USER.github)}</a></div>
+            <div class="k">linkedin</div>  <div class="v"><a href="${esc(USER.linkedin)}" target="_blank" rel="noopener">${esc(USER.linkedin)}</a></div>
+            <div class="k">location</div>  <div class="v">${esc(USER.location)}</div>
+          </div>
+        </div>`);
+      }
+    },
+
+    social: { desc: "Same as contact", run: () => COMMANDS.contact.run() },
+
+    resume: {
+      desc: "Full resume (whoami + experience + skills + education)",
+      run: () => {
+        COMMANDS.whoami.run();
+        COMMANDS.experience.run();
+        COMMANDS.skills.run();
+        COMMANDS.education.run();
+      }
+    },
+
+    ls: {
+      desc: "List sections",
+      run: () => {
+        write(`<div class="output">
+          <span class="blue">about/</span>       <span class="blue">experience/</span>   <span class="blue">skills/</span>
+          <span class="blue">education/</span>   <span class="blue">projects/</span>     <span class="blue">contact/</span>
+        </div>`);
+      }
+    },
+
+    cat: {
+      desc: "cat &lt;section&gt; — print a section",
+      run: (args) => {
+        const name = (args[0] || "").replace(/\/$/,"").toLowerCase();
+        if (!name) { write(`<div class="red">cat: missing operand</div>`); return; }
+        if (COMMANDS[name]) return COMMANDS[name].run();
+        write(`<div class="red">cat: ${esc(name)}: No such file or directory</div>`);
+      }
+    },
+
+    theme: {
+      desc: "theme &lt;matrix|amber|mono|solarized&gt;",
+      run: (args) => {
+        const t = (args[0] || "").toLowerCase();
+        const valid = ["matrix","amber","mono","solarized"];
+        if (!t) {
+          write(`<div class="output muted">Current theme: <span class="accent">${document.body.dataset.theme || "matrix"}</span>. Options: ${valid.join(", ")}</div>`);
+          return;
+        }
+        if (!valid.includes(t)) {
+          write(`<div class="red">theme: unknown theme '${esc(t)}'</div>`);
+          return;
+        }
+        document.body.dataset.theme = t;
+        try { localStorage.setItem("theme", t); } catch(_) {}
+        write(`<div class="muted">theme → <span class="accent">${t}</span></div>`);
+      }
+    },
+
+    clear: { desc: "Clear the screen", run: () => { screen.innerHTML = ""; renderPrompt(); } },
+
+    echo: {
+      desc: "echo &lt;text&gt;",
+      run: (args) => write(`<div class="output">${esc(args.join(" "))}</div>`)
+    },
+
+    date: {
+      desc: "Current date",
+      run: () => write(`<div class="output">${new Date().toString()}</div>`)
+    },
+
+    history: {
+      desc: "Command history",
+      run: () => {
+        const html = history.map((c,i) => `<div><span class="muted">${String(i+1).padStart(3)}</span>  ${esc(c)}</div>`).join("");
+        write(`<div class="output">${html || '<span class="muted">(empty)</span>'}</div>`);
+      }
+    },
+
+    sudo: {
+      desc: "try it",
+      run: (args) => {
+        const rest = args.join(" ").toLowerCase();
+        if (rest === "hire me" || rest === "hire-me") {
+          write(`<div class="output"><span class="accent">[sudo] access granted.</span> Run <span class="accent">contact</span> — the gate is open.</div>`);
+          return;
+        }
+        write(`<div class="red">Sorry, j is not in the sudoers file.  This incident will be reported.</div>`);
+      }
+    },
+
+    matrix: {
+      desc: "down the rabbit hole",
+      run: () => startMatrix()
+    },
+
+    coffee: {
+      hidden: true, desc: "",
+      run: () => write(`<div class="output">${esc("☕ brewing… (done)")}</div>`)
+    },
+
+    exit: {
+      hidden: true, desc: "",
+      run: () => write(`<div class="output muted">Nice try. This is the terminal resume — there's no exit.</div>`)
+    },
+
+    man: {
+      hidden: true, desc: "",
+      run: (args) => {
+        const t = args[0];
+        if (t && COMMANDS[t]) {
+          write(`<div class="output"><span class="accent">${esc(t)}</span> — ${esc(COMMANDS[t].desc)}</div>`);
+        } else {
+          write(`<div class="red">No manual entry for ${esc(t||"")}.</div>`);
+        }
+      }
+    },
+
+    rm: {
+      hidden: true, desc: "",
+      run: (args) => {
+        if (args.includes("-rf") && (args.includes("/") || args.includes("--no-preserve-root"))) {
+          write(`<div class="red">rm: you really thought that would work?</div>`);
+        } else {
+          write(`<div class="red">rm: permission denied</div>`);
+        }
+      }
+    },
+  };
+
+  // ---------- Prompt / Input ----------
+  const history = [];
+  let historyIdx = -1;
+
+  function renderPrompt() {
+    const row = document.createElement("div");
+    row.className = "line prompt-line";
+    row.innerHTML = `
+      <span class="prompt"><span class="user">${esc(USER.handle)}</span><span class="at">@</span><span class="host">${esc(USER.host)}</span><span class="sep">:</span><span class="path">~</span><span class="sep">$</span></span>
+      <span class="input-wrap">
+        <input id="cmd" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="terminal input" />
+        <span class="fake-caret" id="caret"></span>
+      </span>`;
+    screen.appendChild(row);
+    const input = row.querySelector("#cmd");
+    const caret = row.querySelector("#caret");
+    bindInput(input, caret, row);
+    input.focus();
+    scrollBottom();
+    return row;
+  }
+
+  function freezePrompt(promptRow, value) {
+    // Replace the live input with a static echo so history looks right.
+    const input = promptRow.querySelector("#cmd");
+    const caret = promptRow.querySelector("#caret");
+    if (caret) caret.remove();
+    if (input) {
+      const span = document.createElement("span");
+      span.textContent = value;
+      input.replaceWith(span);
+    }
+  }
+
+  function bindInput(input, caret, row) {
+    const updateCaret = () => {
+      // Position caret at end of text (simple model — always at end).
+      caret.style.marginLeft = "1px";
+    };
+    input.addEventListener("input", updateCaret);
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const value = input.value;
+        freezePrompt(row, value);
+        const trimmed = value.trim();
+        if (trimmed.length) {
+          history.push(trimmed);
+          historyIdx = history.length;
+          runCommand(trimmed);
+        }
+        renderPrompt();
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (history.length === 0) return;
+        historyIdx = Math.max(0, historyIdx - 1);
+        input.value = history[historyIdx] || "";
+        setTimeout(() => input.setSelectionRange(input.value.length, input.value.length), 0);
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (history.length === 0) return;
+        historyIdx = Math.min(history.length, historyIdx + 1);
+        input.value = history[historyIdx] || "";
+      } else if (e.key === "Tab") {
+        e.preventDefault();
+        const partial = input.value.trim();
+        const all = Object.keys(COMMANDS).filter(k => !COMMANDS[k].hidden);
+        const matches = all.filter(k => k.startsWith(partial));
+        if (matches.length === 1) input.value = matches[0];
+        else if (matches.length > 1) {
+          write(`<div class="muted">${matches.join("  ")}</div>`);
+        }
+      } else if (e.key === "l" && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        COMMANDS.clear.run();
+      } else if (e.key === "c" && e.ctrlKey) {
+        e.preventDefault();
+        freezePrompt(row, input.value + "^C");
+        renderPrompt();
+      }
+    });
+  }
+
+  function runCommand(raw) {
+    const [cmd, ...args] = raw.split(/\s+/);
+    const key = cmd.toLowerCase();
+    if (COMMANDS[key]) {
+      try { COMMANDS[key].run(args); }
+      catch (err) { write(`<div class="red">error: ${esc(err.message || err)}</div>`); }
+    } else {
+      write(`<div class="red">zsh: command not found: ${esc(cmd)}</div>
+             <div class="muted">type <span class="accent">help</span> to see what I can do.</div>`);
+    }
+    scrollBottom();
+  }
+
+  // Global focus: clicking anywhere in the window focuses the current input.
+  term.addEventListener("click", () => {
+    const input = document.getElementById("cmd");
+    if (input) input.focus();
+  });
+
+  // ---------- Boot ----------
+  async function boot() {
+    // Restore theme
+    try {
+      const saved = localStorage.getItem("theme");
+      if (saved) document.body.dataset.theme = saved;
+    } catch(_) {}
+
+    const bootLines = [
+      { t: "booting j-os v1.0.0 …", c: "muted", d: 6 },
+      { t: "loading profile: senior-swe (seattle)", c: "muted", d: 4 },
+      { t: "mounting /experience … ok", c: "muted", d: 3 },
+      { t: "mounting /skills … ok", c: "muted", d: 3 },
+      { t: "starting resume daemon … ok", c: "muted", d: 3 },
+    ];
+    for (const l of bootLines) {
+      await typeLine(l.t, l.c, l.d);
+    }
+    await sleep(150);
+
+    const banner = document.createElement("pre");
+    banner.className = "banner";
+    banner.textContent = BANNER;
+    screen.appendChild(banner);
+
+    write(`<div class="output">
+      <div>Welcome. This is an interactive terminal — not a stylized PDF.</div>
+      <div class="muted">Type <span class="accent">help</span> for commands, or jump straight to <span class="accent">whoami</span>.</div>
+    </div>`);
+
+    renderPrompt();
+  }
+
+  // ---------- Matrix easter egg ----------
+  const canvas = document.getElementById("matrix-canvas");
+  const escBtn = document.getElementById("matrix-esc");
+  let matrixAnim = null;
+
+  function startMatrix() {
+    canvas.classList.add("on");
+    escBtn.classList.add("on");
+    const ctx = canvas.getContext("2d");
+    const resize = () => { canvas.width = innerWidth; canvas.height = innerHeight; };
+    resize();
+    window.addEventListener("resize", resize);
+    const chars = "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎ0123456789";
+    const fontSize = 16;
+    const cols = Math.floor(canvas.width / fontSize);
+    const drops = Array(cols).fill(1).map(() => Math.random() * -50);
+
+    const tick = () => {
+      ctx.fillStyle = "rgba(0,0,0,0.06)";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle = "#0f8";
+      ctx.font = fontSize + "px monospace";
+      for (let i = 0; i < cols; i++) {
+        const t = chars[Math.floor(Math.random()*chars.length)];
+        ctx.fillText(t, i*fontSize, drops[i]*fontSize);
+        if (drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+      matrixAnim = requestAnimationFrame(tick);
+    };
+    tick();
+  }
+  function stopMatrix() {
+    cancelAnimationFrame(matrixAnim);
+    canvas.classList.remove("on");
+    escBtn.classList.remove("on");
+    const input = document.getElementById("cmd");
+    if (input) input.focus();
+  }
+  escBtn.addEventListener("click", stopMatrix);
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && canvas.classList.contains("on")) stopMatrix();
+  });
+
+  // go
+  boot();
+})();
+</script>
+</body>
+</html>
