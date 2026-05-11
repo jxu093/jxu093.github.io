@@ -1,6 +1,6 @@
 # Jerry Xu
 
-Redmond, WA | jxu000@gmail.com | 425-588-1166 | [jxu093.github.io](https://jxu093.github.io)
+Redmond, WA | jxu000@gmail.com | [jxu093.github.io](https://jxu093.github.io)
 
 ---
 
@@ -10,8 +10,8 @@ Senior Software Engineer specializing in large-scale distributed systems and con
 
 ## Professional Experience
 
-### Microsoft | Azure SDN Control Plane — Jan 2019 – Present
-Software Engineer → Software Engineer II (Mar 2020) → Senior Software Engineer (Jun 2022)
+### Microsoft | Azure SDN Control Plane — 2019 – Present
+Software Engineer → Software Engineer II (2020) → Senior Software Engineer (2022)
 
 - Drove the integration of regional network management into Azure's new SDN control plane, implementing pub/sub-based goal-state publishing for VM, NIC, and network policy resources. Part of a multi-org effort that reduced VM lifecycle latency by 90%.
 - Led cross-organizational design with Azure Compute to redesign the VM deletion API, eliminating resource-conflict incidents caused by premature SDN release and enabling migration of the VM lifecycle to a modern IaaS architecture.
@@ -19,7 +19,7 @@ Software Engineer → Software Engineer II (Mar 2020) → Senior Software Engine
 - Built a proactive error-triage workflow to surface low-frequency failures below alerting thresholds, evolving it from manual review to AI-driven classification and uncovering previously undetected production issues.
 - Onboarded a new 6-person engineering team in India through structured weekly sessions and hands-on support, enabling independent contributions within two months. The team has since grown to 15+ engineers.
 
-### Capital One Canada | Software Developer — Aug 2018 – Dec 2018
+### Capital One Canada | Software Developer — 2018
 
 - Designed and prototyped real-time event-driven data streams using Apache Kafka for financial ledger updates, architected for zero data loss across ~2M Canadian cardholders.
 
