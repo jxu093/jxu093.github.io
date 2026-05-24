@@ -3,8 +3,67 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Jerry Xu — Senior Software Engineer</title>
-<meta name="description" content="Interactive career timeline — Jerry Xu, Senior Software Engineer, Azure SDN." />
+<title>Jerry Xu — Senior Software Engineer · Microsoft Azure</title>
+<meta name="description" content="Jerry Xu — Senior Software Engineer at Microsoft Azure SDN. 9+ years building distributed systems and control plane architecture at planet-scale." />
+<meta name="author" content="Jerry Xu" />
+<link rel="canonical" href="https://jxu093.github.io/" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="profile" />
+<meta property="og:title" content="Jerry Xu — Senior Software Engineer" />
+<meta property="og:description" content="9+ years building distributed systems at planet-scale. Currently on Azure SDN control plane at Microsoft. Open to Senior / Staff IC roles." />
+<meta property="og:url" content="https://jxu093.github.io/" />
+<meta property="og:site_name" content="Jerry Xu" />
+<meta property="profile:first_name" content="Jerry" />
+<meta property="profile:last_name" content="Xu" />
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Jerry Xu — Senior Software Engineer" />
+<meta name="twitter:description" content="9+ years building distributed systems at planet-scale. Currently on Azure SDN control plane at Microsoft." />
+
+<!-- JSON-LD Person schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Jerry Xu",
+  "givenName": "Jerry",
+  "familyName": "Xu",
+  "jobTitle": "Senior Software Engineer",
+  "url": "https://jxu093.github.io/",
+  "email": "mailto:jxu000@gmail.com",
+  "telephone": "+1-425-588-1166",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Redmond",
+    "addressRegion": "WA",
+    "addressCountry": "US"
+  },
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Microsoft",
+    "department": "Azure SDN Control Plane"
+  },
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "McMaster University"
+  },
+  "sameAs": [
+    "https://www.linkedin.com/in/jerry-xu-717a3a55/",
+    "https://github.com/jxu093"
+  ],
+  "knowsAbout": [
+    "Distributed Systems",
+    "Software Defined Networking",
+    "Control Plane Architecture",
+    "Azure",
+    "Microservices",
+    "Apache Kafka"
+  ]
+}
+</script>
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23111827'/%3E%3Ccircle cx='32' cy='32' r='10' fill='%2338bdf8'/%3E%3C/svg%3E" />
 <style>
   :root {
@@ -87,6 +146,86 @@
     margin-top: 22px; max-width: 68ch; color: var(--dim);
     font-size: 17px; line-height: 1.6;
   }
+  .looking-for {
+    margin-top: 20px;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(52, 211, 153, 0.08);
+    border: 1px solid rgba(52, 211, 153, 0.25);
+    color: var(--ok);
+    font-size: 13px;
+  }
+  .looking-for .pulse {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ok);
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6); }
+    70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+  }
+  .looking-for b { color: #d8fbe9; font-weight: 600; }
+
+  .stats {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    max-width: 760px;
+  }
+  .stat {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .stat .num {
+    font-size: 22px; font-weight: 700; color: var(--fg);
+    letter-spacing: -0.01em;
+    background: linear-gradient(180deg, var(--accent) 0%, var(--accent-2) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .stat .lbl {
+    font-size: 12px; color: var(--dim);
+    margin-top: 2px; letter-spacing: 0.3px;
+  }
+
+  .logos {
+    margin-top: 36px;
+    display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
+  }
+  .logos .label {
+    font-size: 11px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 2px;
+  }
+  .logos .logo {
+    display: inline-flex; align-items: center; gap: 9px;
+    color: var(--dim);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    opacity: 0.85;
+    transition: opacity .2s, color .2s, transform .2s;
+  }
+  .logos .logo:hover { opacity: 1; color: var(--fg); transform: translateY(-1px); }
+  .logos .logo svg { display: block; height: 22px; width: auto; flex-shrink: 0; }
+
+  /* Tiny company logo for inside timeline cards */
+  .card .company-mark {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    margin-right: 4px;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+  .card .company-mark svg { display: block; width: 18px; height: 18px; }
+  .card .top { align-items: center; }
 
   /* Timeline */
   .timeline-wrap {
@@ -164,6 +303,30 @@
   .card .sub {
     margin-top: 4px; color: var(--dim); font-size: 14px;
   }
+  .card .promo {
+    margin-top: 8px;
+    display: inline-flex; align-items: center;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(251,146,60,0.08);
+    border: 1px solid rgba(251,146,60,0.22);
+    color: #fcd2a8;
+    font-size: 12px; letter-spacing: 0.3px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .card .peek {
+    margin-top: 10px; color: var(--fg);
+    font-size: 14.5px; line-height: 1.55;
+    position: relative; padding-left: 18px;
+  }
+  .card .peek::before {
+    content: "▸"; position: absolute; left: 0; top: 0;
+    color: var(--accent); font-size: 11px; line-height: 22px;
+    transition: transform .25s ease;
+  }
+  .card.open .peek::before { transform: rotate(90deg); }
+  .card.open .peek { display: none; }
 
   .card .body {
     max-height: 0; overflow: hidden;
@@ -256,24 +419,54 @@
     <a href="#timeline">Timeline</a>
     <a href="#skills">Skills</a>
     <a href="#contact">Contact</a>
+    <a href="https://www.linkedin.com/in/jerry-xu-717a3a55/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="resume.pdf" class="resume-link" target="_blank">Resume PDF</a>
   </div>
 </nav>
 
 <header class="hero">
-  <div class="eyebrow">Redmond, WA · Open to opportunities</div>
-  <h1>Senior Software Engineer<br/>Azure SDN Control Plane</h1>
+  <div class="eyebrow">Senior Software Engineer · Redmond, WA</div>
+  <h1>Building distributed systems<br/>that stay up at planet-scale.</h1>
   <div class="tag">
     <b>Jerry Xu</b>
     <span>·</span>
-    <span>Microsoft · 9+ years building distributed systems at global scale</span>
+    <span>9+ years at Microsoft, Capital One, IBM — currently Azure SDN control plane</span>
   </div>
   <p class="lede">
-    Specializing in large-scale distributed systems and control plane architecture on Azure's SDN
-    platform. Proven track record of driving cross-organizational designs and delivering
-    production-critical systems that improve reliability for millions of resources. Click any
-    card below to expand it, or filter by category.
+    I work on the quiet parts of the cloud: control planes, pub/sub fabrics, and the plumbing that
+    keeps millions of VMs talking. Specializing in cross-organizational design work and
+    production-critical systems where reliability is non-negotiable.
   </p>
+  <div class="looking-for">
+    <span class="pulse"></span>
+    <span><b>Open to</b> Senior / Staff IC roles · Seattle area or remote-friendly</span>
+  </div>
+
+  <div class="logos" aria-label="Companies">
+    <span class="label">Built at</span>
+    <span class="logo" title="Microsoft">
+      <svg viewBox="0 0 23 23" aria-hidden="true">
+        <rect width="11" height="11" fill="#F25022"/>
+        <rect x="12" width="11" height="11" fill="#7FBA00"/>
+        <rect y="12" width="11" height="11" fill="#00A4EF"/>
+        <rect x="12" y="12" width="11" height="11" fill="#FFB900"/>
+      </svg>
+      Microsoft
+    </span>
+    <span class="logo" title="Capital One">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <rect width="48" height="48" rx="8" fill="#004977"/>
+        <path d="M 6 32 Q 22 6 40 18 L 32 34" stroke="#D62128" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Capital One
+    </span>
+    <span class="logo" title="IBM">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="#1F70C1" d="M0 6.586v.704h7.029v-.704zm8.439 0v.704h6.276c-.405-.413-.94-.704-1.516-.704zm9.156 0v.704H24v-.704zM0 8v.704h7.029V8zm8.439 0v.704h8.131c-.013-.249-.072-.484-.16-.704zm9.156 0v.704H24V8zM2.806 9.396v.704h1.418v-.704zm5.633 0v.704H10.265v-.704zm2.85 0v.704h1.405v-.704zm2.815 0v.704h2.785c.092-.221.151-.456.16-.704zm4.286 0v.704h1.418v-.704zM2.806 10.789v.704h1.418v-.704zm5.633 0v.704H10.265v-.704zm2.85 0v.704h6.291c.405-.414.94-.704 1.516-.704zm9.142 0v.704h1.418v-.704zM2.806 12.183v.704h1.418v-.704zm5.633 0v.704h7.704c.405-.414.94-.704 1.516-.704zm9.156 0v.704h1.418v-.704zm4.272 0v.704h1.418v-.704zM2.806 13.578v.704h1.418v-.704zm5.633 0v.704h10.265c-.413-.413-.94-.704-1.516-.704zm10.563 0v.704h1.418v-.704zM2.806 14.971v.704h1.418v-.704zm5.633 0v.704h2.107v-.704zm4.929 0v.704h2.151v-.704zm5.61 0v.704h1.418v-.704zM2.806 16.365v.704h1.418v-.704zm5.633 0v.704h2.107v-.704zm4.929 0v.704h2.151v-.704zm5.61 0v.704h1.418v-.704zM0 17.711v.704h7.029v-.704zm8.439 0v.704h7.81c.413-.221.954-.704 1.346-.704zm9.156 0v.704H24v-.704zM0 19.111v.704h7.029v-.704zm8.439 0v.704h8.116c.088-.22.147-.456.16-.704zm9.156 0v.704H24v-.704z"/>
+      </svg>
+      IBM
+    </span>
+  </div>
 </header>
 
 <div class="filters" role="tablist" aria-label="Filter timeline">
@@ -295,6 +488,7 @@
   <div class="links">
     <a href="mailto:jxu000@gmail.com">jxu000@gmail.com</a>
     <a href="tel:4255881166">425-588-1166</a>
+    <a href="https://www.linkedin.com/in/jerry-xu-717a3a55/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="https://github.com/jxu093" target="_blank" rel="noopener">GitHub</a>
     <a href="resume.pdf" target="_blank">Resume PDF</a>
   </div>
@@ -307,53 +501,20 @@ const EVENTS = [
   {
     year: "Present",
     kind: "work",
-    role: "Senior Software Engineer",
+    role: "Software Engineer → Senior Software Engineer",
     where: "Microsoft · Azure SDN",
-    when: "Jun 2022 — Present",
+    when: "Jan 2019 — Present",
     sub: "Azure SDN Control Plane",
+    logo: "microsoft",
+    promotions: "SE  →  SE II (Mar 2020)  →  Senior SE (Jun 2022)",
     bullets: [
+      "Drove integration of regional network management into Azure's new SDN control plane, implementing pub/sub-based goal-state publishing for VM, NIC, and network policy resources — part of a multi-org effort that reduced VM lifecycle latency by 90%.",
+      "Led cross-organizational design with Azure Compute to redesign the VM deletion API, eliminating resource-conflict incidents caused by premature SDN release and enabling migration of the VM lifecycle to a modern IaaS architecture.",
       "Redesigned goal-state distribution to route publish calls to VM home availability zones, reducing cross-AZ traffic by 66–75% and improving resilience during zone-level pubsub outages.",
       "Built a proactive error-triage workflow surfacing low-frequency failures below alerting thresholds — evolved from manual review to AI-driven classification, uncovering previously undetected production issues.",
       "Onboarded a new 6-person engineering team in India through structured weekly sessions; team grew to 15+ engineers with independent contributions within two months.",
     ],
-    chips: ["C#", "Azure", "Distributed Systems", "SDN", "AI"],
-  },
-  {
-    year: "2022",
-    kind: "milestone",
-    role: "Promoted to Senior Software Engineer",
-    where: "Microsoft",
-    when: "Jun 2022",
-    sub: "Technical leadership milestone",
-    bullets: [
-      "Promoted after leading cross-organizational design with Azure Compute to redesign the VM deletion API, eliminating resource-conflict incidents caused by premature SDN release.",
-    ],
-    chips: ["Leadership", "Design", "Cross-org"],
-  },
-  {
-    year: "2020",
-    kind: "milestone",
-    role: "Promoted to Software Engineer II",
-    where: "Microsoft",
-    when: "Mar 2020",
-    sub: "",
-    bullets: [
-      "Promoted after driving integration of regional network management into Azure's new SDN control plane with pub/sub-based goal-state publishing — part of a multi-org effort that reduced VM lifecycle latency by 90%.",
-    ],
-    chips: ["SDN", "Pub/Sub", "Scale"],
-  },
-  {
-    year: "2019",
-    kind: "work",
-    role: "Software Engineer",
-    where: "Microsoft · Azure SDN",
-    when: "Jan 2019 — Mar 2020",
-    sub: "Azure SDN Control Plane",
-    bullets: [
-      "Drove integration of regional network management into Azure's new SDN control plane, implementing pub/sub-based goal-state publishing for VM, NIC, and network policy resources.",
-      "Part of a multi-org effort that reduced VM lifecycle latency by 90%.",
-    ],
-    chips: ["C#", "Service Fabric", "gRPC", "Pub/Sub"],
+    chips: ["C#", "Azure", "Service Fabric", "gRPC", "Pub/Sub", "SDN", "Distributed Systems"],
   },
   {
     year: "2018",
@@ -362,6 +523,7 @@ const EVENTS = [
     where: "Capital One Canada",
     when: "Aug 2018 — Dec 2018",
     sub: "Real-time data streams",
+    logo: "capitalone",
     bullets: [
       "Designed and prototyped real-time event-driven data streams using Apache Kafka for financial ledger updates, architected for zero data loss across ~2M Canadian cardholders.",
     ],
@@ -374,6 +536,7 @@ const EVENTS = [
     where: "IBM",
     when: "2017 — 2018",
     sub: "Enterprise backend services",
+    logo: "ibm",
     bullets: [
       "Built and maintained robust backend services in Java/C++, focusing on enterprise-scale data processing, storage reliability, and security practices including OWASP principles and GDPR compliance.",
     ],
@@ -386,6 +549,7 @@ const EVENTS = [
     where: "McMaster University",
     when: "2013 — 2017",
     sub: "Dean's Honor List",
+    logo: "mcmaster",
     bullets: [
       "Bachelor of Science in Computer Science with a Minor in Business.",
       "Graduated on the Dean's Honor List.",
@@ -394,11 +558,32 @@ const EVENTS = [
   },
 ];
 
+const LOGOS = {
+  microsoft: `<svg viewBox="0 0 23 23" aria-hidden="true">
+    <rect width="11" height="11" fill="#F25022"/>
+    <rect x="12" width="11" height="11" fill="#7FBA00"/>
+    <rect y="12" width="11" height="11" fill="#00A4EF"/>
+    <rect x="12" y="12" width="11" height="11" fill="#FFB900"/>
+  </svg>`,
+  capitalone: `<svg viewBox="0 0 48 48" aria-hidden="true">
+    <rect width="48" height="48" rx="8" fill="#004977"/>
+    <path d="M 6 32 Q 22 6 40 18 L 32 34" stroke="#D62128" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`,
+  ibm: `<svg viewBox="0 0 24 24" aria-hidden="true">
+    <path fill="#1F70C1" d="M0 6.586v.704h7.029v-.704zm8.439 0v.704h6.276c-.405-.413-.94-.704-1.516-.704zm9.156 0v.704H24v-.704zM0 8v.704h7.029V8zm8.439 0v.704h8.131c-.013-.249-.072-.484-.16-.704zm9.156 0v.704H24V8zM2.806 9.396v.704h1.418v-.704zm5.633 0v.704H10.265v-.704zm2.85 0v.704h1.405v-.704zm2.815 0v.704h2.785c.092-.221.151-.456.16-.704zm4.286 0v.704h1.418v-.704zM2.806 10.789v.704h1.418v-.704zm5.633 0v.704H10.265v-.704zm2.85 0v.704h6.291c.405-.414.94-.704 1.516-.704zm9.142 0v.704h1.418v-.704zM2.806 12.183v.704h1.418v-.704zm5.633 0v.704h7.704c.405-.414.94-.704 1.516-.704zm9.156 0v.704h1.418v-.704zm4.272 0v.704h1.418v-.704zM2.806 13.578v.704h1.418v-.704zm5.633 0v.704h10.265c-.413-.413-.94-.704-1.516-.704zm10.563 0v.704h1.418v-.704zM2.806 14.971v.704h1.418v-.704zm5.633 0v.704h2.107v-.704zm4.929 0v.704h2.151v-.704zm5.61 0v.704h1.418v-.704zM2.806 16.365v.704h1.418v-.704zm5.633 0v.704h2.107v-.704zm4.929 0v.704h2.151v-.704zm5.61 0v.704h1.418v-.704zM0 17.711v.704h7.029v-.704zm8.439 0v.704h7.81c.413-.221.954-.704 1.346-.704zm9.156 0v.704H24v-.704zM0 19.111v.704h7.029v-.704zm8.439 0v.704h8.116c.088-.22.147-.456.16-.704zm9.156 0v.704H24v-.704z"/>
+  </svg>`,
+  mcmaster: `<svg viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" fill="#7A003C"/>
+    <text x="12" y="16" font-family="Georgia, serif" font-weight="700" font-size="11" fill="#FDBF57" text-anchor="middle">M</text>
+  </svg>`,
+};
+
 const SKILLS = {
   "Languages":      ["C#", "Java", "Python", "C++"],
-  "Cloud & Infra":  ["Azure", "AWS", "SDN", "Microservices"],
-  "Distributed":    ["Apache Kafka", "Distributed Systems", "REST APIs"],
-  "Tools":          ["Git", "GitHub"],
+  "Distributed Systems": ["Service Fabric", "gRPC", "Pub/Sub", "Apache Kafka", "Protobuf", "Microservices"],
+  "Cloud & Networking":  ["Azure", "AWS", "SDN", "Availability Zones", "Control Plane"],
+  "Reliability":    ["On-call", "Incident response", "Error triage", "Telemetry"],
+  "Craft":          ["Design docs", "Cross-org leadership", "Mentoring", "Code review"],
 };
 
 // ---------- Render ----------
@@ -415,15 +600,21 @@ EVENTS.forEach((e, i) => {
   const node = document.createElement("article");
   node.className = "node " + e.kind;
   node.dataset.kind = e.kind;
+  const isFirst = i === 0;
+  const peekBullet = e.bullets && e.bullets.length ? e.bullets[0] : "";
+  const logoSvg = e.logo && LOGOS[e.logo] ? `<span class="company-mark">${LOGOS[e.logo]}</span>` : "";
   node.innerHTML = `
-    <div class="card" tabindex="0" role="button" aria-expanded="false">
+    <div class="card${isFirst ? ' open' : ''}" tabindex="0" role="button" aria-expanded="${isFirst ? 'true' : 'false'}">
       <div class="top">
+        ${logoSvg}
         <span class="role">${e.role}</span>
         <span class="at">·</span>
         <span class="where">${e.where}</span>
         <span class="when">${e.when}</span>
       </div>
       <div class="sub">${e.sub}</div>
+      ${e.promotions ? `<div class="promo">${e.promotions}</div>` : ""}
+      ${peekBullet ? `<div class="peek">${peekBullet}</div>` : ""}
       <div class="body"><div class="body-inner">
         <ul>${e.bullets.map(b => `<li>${b}</li>`).join("")}</ul>
         <div class="chips">${e.chips.map(c => `<span class="chip ${e.kind === 'edu' ? 'purple' : e.kind === 'project' ? 'purple' : e.kind === 'milestone' ? 'warm' : ''}">${c}</span>`).join("")}</div>
