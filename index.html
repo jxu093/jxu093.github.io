@@ -409,6 +409,21 @@
   }
   .filter-btn:hover { color: var(--fg); }
   .filter-btn.on { color: #04111a; background: var(--accent); border-color: var(--accent); }
+  .filter-btn.jump {
+    border-color: rgba(167,139,250,0.3);
+    color: #d6c6ff;
+    background: rgba(167,139,250,0.06);
+  }
+  .filter-btn.jump:hover {
+    border-color: var(--accent-2);
+    background: rgba(167,139,250,0.14);
+  }
+  .filter-btn.jump .arrow {
+    display: inline-block;
+    margin-left: 4px;
+    transition: transform .2s ease;
+  }
+  .filter-btn.jump:hover .arrow { transform: translateY(2px); }
 
   /* Personal Projects section */
   .projects-section {
@@ -416,6 +431,7 @@
     margin: 0 auto;
     padding: 60px 28px 20px;
     border-top: 1px dashed var(--line);
+    scroll-margin-top: 70px;
   }
   .projects-section .section-eyebrow {
     color: var(--accent-2);
@@ -625,6 +641,7 @@
   <button class="filter-btn on" data-filter="all">All</button>
   <button class="filter-btn" data-filter="work">Work</button>
   <button class="filter-btn" data-filter="edu">Education</button>
+  <button class="filter-btn jump" data-target="#projects">Projects <span class="arrow">↓</span></button>
 </div>
 
 <main class="timeline-wrap" id="timeline">
@@ -846,10 +863,15 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 document.querySelectorAll(".node").forEach(n => io.observe(n));
 
-// Filters
+// Filters (and jump-to-section for buttons with data-target)
 document.querySelectorAll(".filter-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("on"));
+    const target = btn.dataset.target;
+    if (target) {
+      document.querySelector(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    document.querySelectorAll(".filter-btn:not(.jump)").forEach(b => b.classList.remove("on"));
     btn.classList.add("on");
     const f = btn.dataset.filter;
     document.querySelectorAll(".node").forEach(n => {
