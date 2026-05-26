@@ -332,11 +332,58 @@
     max-height: 0; overflow: hidden;
     transition: max-height .4s ease;
   }
-  .card.open .body { max-height: 800px; }
+  .card.open .body { max-height: 1400px; }
   .card .body-inner { padding-top: 14px; }
   .card ul { margin: 8px 0 0; padding-left: 20px; }
   .card li { margin: 4px 0; color: var(--fg); }
   .card li::marker { color: var(--accent); }
+
+  .shots {
+    margin-top: 14px;
+    display: flex; gap: 10px; overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+  .shots::-webkit-scrollbar { height: 6px; }
+  .shots::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+  .shots a {
+    flex-shrink: 0;
+    display: block;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: #000;
+    transition: transform .2s ease, border-color .2s ease;
+  }
+  .shots a:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .shots img {
+    display: block;
+    height: 220px; width: auto;
+    object-fit: cover;
+  }
+  .shots .cap {
+    display: block;
+    padding: 6px 10px;
+    font-size: 11px;
+    color: var(--dim);
+    text-align: center;
+    border-top: 1px solid var(--line);
+    background: var(--panel);
+  }
+
+  .card .links-row {
+    margin-top: 12px;
+    display: flex; gap: 14px; flex-wrap: wrap;
+  }
+  .card .links-row a {
+    color: var(--accent);
+    font-size: 13px;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(56,189,248,0.3);
+    padding-bottom: 1px;
+  }
+  .card .links-row a:hover { border-bottom-style: solid; }
 
   .chips { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
   .chip {
@@ -362,6 +409,109 @@
   }
   .filter-btn:hover { color: var(--fg); }
   .filter-btn.on { color: #04111a; background: var(--accent); border-color: var(--accent); }
+
+  /* Personal Projects section */
+  .projects-section {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 60px 28px 20px;
+    border-top: 1px dashed var(--line);
+  }
+  .projects-section .section-eyebrow {
+    color: var(--accent-2);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .projects-section .section-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--fg);
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  .projects-section .section-sub {
+    color: var(--dim);
+    font-size: 15px;
+    margin: 0 0 28px;
+    max-width: 60ch;
+  }
+
+  .project-card {
+    background: linear-gradient(160deg, rgba(167,139,250,0.06), var(--panel) 60%);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+    position: relative;
+  }
+  .project-card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--accent-2), transparent);
+    border-radius: 16px 0 0 16px;
+  }
+
+  .project-card .info h3 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: -0.01em;
+  }
+  .project-card .info .tagline {
+    color: var(--accent-2);
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 14px;
+    letter-spacing: 0.2px;
+  }
+  .project-card .info p {
+    color: var(--dim);
+    margin: 0 0 12px;
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+  .project-card .info ul {
+    margin: 0 0 16px;
+    padding-left: 18px;
+  }
+  .project-card .info li {
+    color: var(--fg);
+    margin: 4px 0;
+    font-size: 14px;
+  }
+  .project-card .info li::marker { color: var(--accent-2); }
+  .project-card .info .chips {
+    margin-top: 14px;
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .project-card .info .chip {
+    background: rgba(167,139,250,0.10);
+    color: #d6c6ff;
+    border-color: rgba(167,139,250,0.22);
+  }
+  .project-card .shots {
+    margin-top: 0;
+    flex-shrink: 0;
+  }
+  .project-card .shots img { height: 280px; }
+
+  @media (max-width: 860px) {
+    .project-card {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+    .project-card .shots img { height: 220px; }
+  }
 
   /* Skills strip */
   .skills {
@@ -417,10 +567,12 @@
   <div class="brand"><span class="dot"></span><span>Jerry Xu</span></div>
   <div>
     <a href="#timeline">Timeline</a>
+    <a href="#projects">Projects</a>
     <a href="#skills">Skills</a>
     <a href="#contact">Contact</a>
     <a href="https://www.linkedin.com/in/jerry-xu-717a3a55/" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="resume.pdf" class="resume-link" target="_blank">Resume PDF</a>
+    <a href="https://github.com/jxu093" target="_blank" rel="noopener">GitHub</a>
+    <a href="resume/resume.pdf" class="resume-link" target="_blank">Resume PDF</a>
   </div>
 </nav>
 
@@ -472,7 +624,6 @@
 <div class="filters" role="tablist" aria-label="Filter timeline">
   <button class="filter-btn on" data-filter="all">All</button>
   <button class="filter-btn" data-filter="work">Work</button>
-  <button class="filter-btn" data-filter="project">Projects</button>
   <button class="filter-btn" data-filter="edu">Education</button>
 </div>
 
@@ -480,6 +631,41 @@
   <div class="decade-rail"></div>
   <div class="timeline" id="tl"></div>
 </main>
+
+<section class="projects-section" id="projects">
+  <div class="section-eyebrow">Personal Projects</div>
+  <h2 class="section-title">What I build outside of work</h2>
+  <p class="section-sub">Side projects where I get to play full-stack — design, AI, mobile, the whole thing.</p>
+
+  <article class="project-card">
+    <div class="info">
+      <h3>Suburban Outfitter</h3>
+      <div class="tagline">React Native + Claude API · 2025 — Present</div>
+      <p>An AI-powered digital closet and styling app. Catalog your clothing, get auto-tagged with Claude vision, generate outfits from natural-language prompts, and find new pieces that complement your wardrobe.</p>
+      <ul>
+        <li>Cross-platform mobile app (Expo / React Native, SQLite) for cataloging clothing and building outfits.</li>
+        <li>Claude vision auto-tags garments by category, color, pattern, material, formality, and weather suitability.</li>
+        <li>Inspiration matching: upload a Pinterest photo and the AI assembles the closest outfit from items you own.</li>
+        <li>Natural-language outfit chat (&ldquo;build me a date night outfit&rdquo;) with shopping fallbacks when the closet falls short.</li>
+        <li>Weather-aware random outfits using OpenWeatherMap + a style profile (body type, skin tone, preferences).</li>
+      </ul>
+      <div class="chips">
+        <span class="chip">React Native</span>
+        <span class="chip">Expo SDK 54</span>
+        <span class="chip">TypeScript</span>
+        <span class="chip">SQLite</span>
+        <span class="chip">Claude API</span>
+        <span class="chip">Jest</span>
+      </div>
+    </div>
+    <div class="shots">
+      <a href="img/projects/closet-closet.png" target="_blank" rel="noopener" title="Closet"><img src="img/projects/closet-closet.png" alt="Closet" loading="lazy"/><span class="cap">Closet</span></a>
+      <a href="img/projects/closet-item-detail.png" target="_blank" rel="noopener" title="Item detail"><img src="img/projects/closet-item-detail.png" alt="Item detail" loading="lazy"/><span class="cap">Item detail</span></a>
+      <a href="img/projects/closet-outfit-builder.png" target="_blank" rel="noopener" title="Outfit builder"><img src="img/projects/closet-outfit-builder.png" alt="Outfit builder" loading="lazy"/><span class="cap">Outfit builder</span></a>
+      <a href="img/projects/closet-ai-stylist.png" target="_blank" rel="noopener" title="AI stylist"><img src="img/projects/closet-ai-stylist.png" alt="AI stylist" loading="lazy"/><span class="cap">AI stylist</span></a>
+    </div>
+  </article>
+</section>
 
 <section class="skills" id="skills"></section>
 
@@ -490,7 +676,7 @@
     <a href="tel:4255881166">425-588-1166</a>
     <a href="https://www.linkedin.com/in/jerry-xu-717a3a55/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="https://github.com/jxu093" target="_blank" rel="noopener">GitHub</a>
-    <a href="resume.pdf" target="_blank">Resume PDF</a>
+    <a href="resume/resume.pdf" target="_blank">Resume PDF</a>
   </div>
 </section>
 
@@ -603,6 +789,12 @@ EVENTS.forEach((e, i) => {
   const isFirst = i === 0;
   const peekBullet = e.bullets && e.bullets.length ? e.bullets[0] : "";
   const logoSvg = e.logo && LOGOS[e.logo] ? `<span class="company-mark">${LOGOS[e.logo]}</span>` : "";
+  const shotsHtml = e.screenshots && e.screenshots.length
+    ? `<div class="shots">${e.screenshots.map(s => `<a href="${s.src}" target="_blank" rel="noopener" title="${s.cap}"><img src="${s.src}" alt="${s.cap}" loading="lazy"/><span class="cap">${s.cap}</span></a>`).join("")}</div>`
+    : "";
+  const linksHtml = e.links && e.links.length
+    ? `<div class="links-row">${e.links.map(l => `<a href="${l.href}" target="_blank" rel="noopener">${l.label} →</a>`).join("")}</div>`
+    : "";
   node.innerHTML = `
     <div class="card${isFirst ? ' open' : ''}" tabindex="0" role="button" aria-expanded="${isFirst ? 'true' : 'false'}">
       <div class="top">
@@ -617,6 +809,8 @@ EVENTS.forEach((e, i) => {
       ${peekBullet ? `<div class="peek">${peekBullet}</div>` : ""}
       <div class="body"><div class="body-inner">
         <ul>${e.bullets.map(b => `<li>${b}</li>`).join("")}</ul>
+        ${shotsHtml}
+        ${linksHtml}
         <div class="chips">${e.chips.map(c => `<span class="chip ${e.kind === 'edu' ? 'purple' : e.kind === 'project' ? 'purple' : e.kind === 'milestone' ? 'warm' : ''}">${c}</span>`).join("")}</div>
       </div></div>
     </div>`;

@@ -48,11 +48,11 @@ Senior Software Engineer specializing in large-scale distributed systems and con
 
 #set list(indent: 0.3em, body-indent: 0.5em, spacing: 4pt)
 
-- Drove the integration of regional network management into Azure's new SDN control plane, implementing pub/sub-based goal-state publishing for VM, NIC, and network policy resources. Part of a multi-org effort that reduced VM lifecycle latency by 90%.
+- Drove the integration of regional network management into Azure's new SDN control plane, implementing pub/sub-based goal-state publishing for VM, NIC, and network policy resources via Protobuf contracts. Part of a multi-org effort that reduced VM lifecycle latency by 90%.
 - Led cross-organizational design with Azure Compute to redesign the VM deletion API, eliminating resource-conflict incidents caused by premature SDN release and enabling migration of the VM lifecycle to a modern IaaS architecture.
 - Redesigned goal-state distribution to route publish calls to VM home availability zones, reducing cross-AZ traffic by 66–75% and improving resilience during zone-level pubsub outages.
 - Built a proactive error-triage workflow to surface low-frequency failures below alerting thresholds, evolving it from manual review to AI-driven classification and uncovering previously undetected production issues.
-- Onboarded a new 6-person engineering team in India through structured weekly sessions and hands-on support, enabling independent contributions within two months. The team has since grown to 15+ engineers.
+- Onboarded a new 6-person engineering team in India through structured weekly sessions, code review, and mentoring, enabling independent contributions within two months. The team has since grown to 15+ engineers.
 
 #job("Capital One Canada", "Software Developer", "2018")
 #v(3pt)
@@ -76,4 +76,9 @@ Senior Software Engineer specializing in large-scale distributed systems and con
 #section("Technical Skills")
 
 #v(2pt)
-C\#, Java, Python, Azure, AWS, Apache Kafka, Git, GitHub, SDN, distributed systems, microservices, REST APIs
+*Languages:* C\#, Java, Python \
+*Backend & Distributed Systems:* API design, system design, scalability, microservices, REST APIs, gRPC, Pub/Sub, Protobuf, Apache Kafka, event-driven architecture, concurrent programming, multithreading \
+*Cloud & Infrastructure:* Azure, AWS, Service Fabric, SDN \
+*Testing & Quality:* unit testing, integration testing, TDD, code review \
+*Engineering Practices:* CI/CD, design documents, on-call, incident response, mentoring, technical leadership, cross-functional collaboration \
+*Tools:* Git, GitHub
