@@ -35,9 +35,9 @@
   )
 }
 
-#section("Professional Summary")
+#section("Summary")
 
-Senior Software Engineer specializing in large-scale distributed systems and control plane architecture. Leads high-impact infrastructure initiatives on Azure's SDN platform, improving reliability, scalability, and performance across millions of resources. Proven ability to drive cross-organizational designs and deliver production-critical systems at global scale.
+Senior Software Engineer with 9+ years building distributed systems and backend services at scale. Currently on Azure's SDN control plane, leading multi-team redesigns that improve provisioning performance and reliability.
 
 #section("Professional Experience")
 
@@ -48,11 +48,11 @@ Senior Software Engineer specializing in large-scale distributed systems and con
 
 #set list(indent: 0.3em, body-indent: 0.5em, spacing: 4pt)
 
-- Drove the integration of regional network management into Azure's new SDN control plane, implementing pub/sub-based goal-state publishing for VM, NIC, and network policy resources via Protobuf contracts. Part of a multi-org effort that reduced VM lifecycle latency by 90%.
-- Led cross-organizational design with Azure Compute to redesign the VM deletion API, eliminating resource-conflict incidents caused by premature SDN release and enabling migration of the VM lifecycle to a modern IaaS architecture.
+- Led several SDN control-plane workstreams in a multi-year, multi-team rebuild of Azure's VM provisioning, deprecating the legacy regional network management service and moving goal-state delivery to PubSub. Reduced provisioning tail latency by \~90%.
+- Drove cross-org design of a new VM delete API with Azure Compute, eliminating recurring resource-conflict incidents and modernizing the contract from the legacy PaaS model to IaaS. Compute's new VM deployment stack adopted it about a year later.
 - Redesigned goal-state distribution to route publish calls to VM home availability zones, reducing cross-AZ traffic by 66–75% and improving resilience during zone-level pubsub outages.
 - Built a proactive error-triage workflow to surface low-frequency failures below alerting thresholds, evolving it from manual review to AI-driven classification and uncovering previously undetected production issues.
-- Onboarded a new 6-person engineering team in India through structured weekly sessions, code review, and mentoring, enabling independent contributions within two months. The team has since grown to 15+ engineers.
+- Onboarded a new 6-person engineering team in India through structured weekly sessions, code review, and mentoring, enabling independent contributions within two months. The team has since grown to take on overnight on-call coverage.
 
 #job("Capital One Canada", "Software Developer", "2018")
 #v(3pt)
