@@ -31,4 +31,9 @@ build/
 Thumbs.db
 npm-debug.log*
 
+# Private interview / resume prep notes (keep local, never publish)
+resume/resume_notes.md
+resume/interview_stories.md
+resume/interview_questions.md
+
 # If you want to ignore other OS files or language-specific folders, tell me and I'll add them.
