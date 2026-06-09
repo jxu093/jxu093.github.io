@@ -598,7 +598,7 @@
   <div class="tag">
     <b>Jerry Xu</b>
     <span>·</span>
-    <span>9+ years at Microsoft, Capital One, IBM — currently Azure SDN control plane</span>
+    <span>9+ years at Microsoft, Capital One, and IBM · currently on Azure's SDN control plane</span>
   </div>
   <p class="lede">
     I work on the quiet parts of the cloud: control planes, pub/sub fabrics, and the plumbing that
@@ -711,11 +711,11 @@ const EVENTS = [
     logo: "microsoft",
     promotions: "SE  →  SE II (Mar 2020)  →  Senior SE (Jun 2022)",
     bullets: [
-      "Drove integration of regional network management into Azure's new SDN control plane, implementing pub/sub-based goal-state publishing for VM, NIC, and network policy resources — part of a multi-org effort that reduced VM lifecycle latency by 90%.",
-      "Led cross-organizational design with Azure Compute to redesign the VM deletion API, eliminating resource-conflict incidents caused by premature SDN release and enabling migration of the VM lifecycle to a modern IaaS architecture.",
+      "Led several SDN control-plane workstreams in a multi-year, multi-team rebuild of Azure's VM provisioning, deprecating the legacy regional network management service and moving goal-state delivery to PubSub. Reduced provisioning tail latency by ~90%.",
+      "Drove cross-org design of a new VM delete API with Azure Compute, eliminating recurring resource-conflict incidents and modernizing the contract from the legacy PaaS model to IaaS. Compute's new VM deployment stack adopted it about a year later.",
       "Redesigned goal-state distribution to route publish calls to VM home availability zones, reducing cross-AZ traffic by 66–75% and improving resilience during zone-level pubsub outages.",
-      "Built a proactive error-triage workflow surfacing low-frequency failures below alerting thresholds — evolved from manual review to AI-driven classification, uncovering previously undetected production issues.",
-      "Onboarded a new 6-person engineering team in India through structured weekly sessions; team grew to 15+ engineers with independent contributions within two months.",
+      "Built a proactive error-triage workflow to surface low-frequency failures below alerting thresholds, evolving it from manual review to AI-driven classification and uncovering previously undetected production issues.",
+      "Onboarded a new 6-person engineering team in India through structured weekly sessions, code review, and mentoring, enabling independent contributions within two months. The team has since grown to take on overnight on-call coverage.",
     ],
     chips: ["C#", "Azure", "Service Fabric", "gRPC", "Pub/Sub", "SDN", "Distributed Systems"],
   },
