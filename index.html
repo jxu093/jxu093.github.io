@@ -285,12 +285,10 @@
     background: linear-gradient(180deg, var(--panel), #0d1220);
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 18px 20px;
-    cursor: pointer;
-    transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+    padding: 16px 20px;
+    transition: border-color .2s ease;
   }
-  .card:hover { border-color: #2a3552; transform: translateY(-1px); }
-  .card.open { border-color: var(--accent); box-shadow: 0 8px 30px rgba(56,189,248,0.08); }
+  .card:hover { border-color: #2a3552; }
 
   .card .top {
     display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
@@ -314,6 +312,25 @@
     font-size: 12px; letter-spacing: 0.3px;
     font-variant-numeric: tabular-nums;
   }
+  .card .summary-line {
+    margin-top: 10px;
+    color: var(--dim);
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .timeline-cta {
+    text-align: center;
+    margin: 24px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .timeline-cta a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(56,189,248,0.35);
+    padding-bottom: 1px;
+  }
+  .timeline-cta a:hover { border-bottom-style: solid; }
 
   .card .peek {
     margin-top: 10px; color: var(--fg);
@@ -647,6 +664,7 @@
 <main class="timeline-wrap" id="timeline">
   <div class="decade-rail"></div>
   <div class="timeline" id="tl"></div>
+  <p class="timeline-cta">Want the full story? <a href="resume/jerryxuresume.pdf" target="_blank">Read the résumé →</a></p>
 </main>
 
 <section class="projects-section" id="projects">
@@ -704,33 +722,21 @@ const EVENTS = [
   {
     year: "Present",
     kind: "work",
-    role: "Software Engineer → Senior Software Engineer",
+    role: "Senior Software Engineer",
     where: "Microsoft · Azure SDN",
-    when: "Jan 2019 — Present",
-    sub: "Azure SDN Control Plane",
+    when: "2019 — Present",
     logo: "microsoft",
-    promotions: "SE  →  SE II (Mar 2020)  →  Senior SE (Jun 2022)",
-    bullets: [
-      "Led several SDN control-plane workstreams in a multi-year, multi-team rebuild of Azure's VM provisioning, deprecating the legacy regional network management service and moving goal-state delivery to PubSub. Reduced provisioning tail latency by ~90%.",
-      "Drove cross-org design of a new VM delete API with Azure Compute, eliminating recurring resource-conflict incidents and modernizing the contract from the legacy PaaS model to IaaS. Compute's new VM deployment stack adopted it about a year later.",
-      "Redesigned goal-state distribution to route publish calls to VM home availability zones, reducing cross-AZ traffic by 66–75% and improving resilience during zone-level pubsub outages.",
-      "Built a proactive error-triage workflow to surface low-frequency failures below alerting thresholds, evolving it from manual review to AI-driven classification and uncovering previously undetected production issues.",
-      "Onboarded a new 6-person engineering team in India through structured weekly sessions, code review, and mentoring, enabling independent contributions within two months. The team has since grown to take on overnight on-call coverage.",
-    ],
-    chips: ["C#", "Azure", "Service Fabric", "gRPC", "Pub/Sub", "SDN", "Distributed Systems"],
+    promotions: "SE  →  SE II (2020)  →  Senior SE (2022)",
+    summary: "Senior engineer on Azure's SDN control plane, rebuilding core VM provisioning (~90% lower tail latency) and driving cross-org platform designs at scale.",
   },
   {
     year: "2018",
     kind: "work",
     role: "Software Developer",
     where: "Capital One Canada",
-    when: "Aug 2018 — Dec 2018",
-    sub: "Real-time data streams",
+    when: "2018",
     logo: "capitalone",
-    bullets: [
-      "Designed and prototyped real-time event-driven data streams using Apache Kafka for financial ledger updates, architected for zero data loss across ~2M Canadian cardholders.",
-    ],
-    chips: ["Apache Kafka", "Java", "Event-driven"],
+    summary: "Prototyped real-time, event-driven Kafka data streams for financial ledger updates.",
   },
   {
     year: "2017",
@@ -738,12 +744,8 @@ const EVENTS = [
     role: "Software Developer",
     where: "IBM",
     when: "2017 — 2018",
-    sub: "Enterprise backend services",
     logo: "ibm",
-    bullets: [
-      "Built and maintained robust backend services in Java/C++, focusing on enterprise-scale data processing, storage reliability, and security practices including OWASP principles and GDPR compliance.",
-    ],
-    chips: ["Java", "C++", "OWASP", "GDPR"],
+    summary: "Built enterprise backend services in Java and C++ for large-scale data processing.",
   },
   {
     year: "2017",
@@ -751,13 +753,8 @@ const EVENTS = [
     role: "B.Sc. Computer Science, Minor in Business",
     where: "McMaster University",
     when: "2013 — 2017",
-    sub: "Dean's Honor List",
     logo: "mcmaster",
-    bullets: [
-      "Bachelor of Science in Computer Science with a Minor in Business.",
-      "Graduated on the Dean's Honor List.",
-    ],
-    chips: ["Computer Science", "Business", "Dean's Honor List"],
+    summary: "Graduated on the Dean's Honor List.",
   },
 ];
 
@@ -803,17 +800,9 @@ EVENTS.forEach((e, i) => {
   const node = document.createElement("article");
   node.className = "node " + e.kind;
   node.dataset.kind = e.kind;
-  const isFirst = i === 0;
-  const peekBullet = e.bullets && e.bullets.length ? e.bullets[0] : "";
   const logoSvg = e.logo && LOGOS[e.logo] ? `<span class="company-mark">${LOGOS[e.logo]}</span>` : "";
-  const shotsHtml = e.screenshots && e.screenshots.length
-    ? `<div class="shots">${e.screenshots.map(s => `<a href="${s.src}" target="_blank" rel="noopener" title="${s.cap}"><img src="${s.src}" alt="${s.cap}" loading="lazy"/><span class="cap">${s.cap}</span></a>`).join("")}</div>`
-    : "";
-  const linksHtml = e.links && e.links.length
-    ? `<div class="links-row">${e.links.map(l => `<a href="${l.href}" target="_blank" rel="noopener">${l.label} →</a>`).join("")}</div>`
-    : "";
   node.innerHTML = `
-    <div class="card${isFirst ? ' open' : ''}" tabindex="0" role="button" aria-expanded="${isFirst ? 'true' : 'false'}">
+    <div class="card">
       <div class="top">
         ${logoSvg}
         <span class="role">${e.role}</span>
@@ -821,15 +810,8 @@ EVENTS.forEach((e, i) => {
         <span class="where">${e.where}</span>
         <span class="when">${e.when}</span>
       </div>
-      <div class="sub">${e.sub}</div>
       ${e.promotions ? `<div class="promo">${e.promotions}</div>` : ""}
-      ${peekBullet ? `<div class="peek">${peekBullet}</div>` : ""}
-      <div class="body"><div class="body-inner">
-        <ul>${e.bullets.map(b => `<li>${b}</li>`).join("")}</ul>
-        ${shotsHtml}
-        ${linksHtml}
-        <div class="chips">${e.chips.map(c => `<span class="chip ${e.kind === 'edu' ? 'purple' : e.kind === 'project' ? 'purple' : e.kind === 'milestone' ? 'warm' : ''}">${c}</span>`).join("")}</div>
-      </div></div>
+      ${e.summary ? `<div class="summary-line">${e.summary}</div>` : ""}
     </div>`;
   tl.appendChild(node);
 });
@@ -841,18 +823,6 @@ Object.entries(SKILLS).forEach(([k, arr]) => {
   block.className = "skill-block";
   block.innerHTML = `<h4>${k}</h4><div class="list">${arr.map(s => `<span class="chip">${s}</span>`).join("")}</div>`;
   skillsEl.appendChild(block);
-});
-
-// Interactions
-document.querySelectorAll(".card").forEach(card => {
-  const toggle = () => {
-    const open = card.classList.toggle("open");
-    card.setAttribute("aria-expanded", open ? "true" : "false");
-  };
-  card.addEventListener("click", toggle);
-  card.addEventListener("keydown", (ev) => {
-    if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); toggle(); }
-  });
 });
 
 // Reveal on scroll
