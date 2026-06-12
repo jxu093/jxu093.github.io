@@ -10,7 +10,7 @@
   #text(size: 22pt, weight: "bold", fill: accent)[Jerry Xu]
   #v(2pt)
   #text(size: 9pt, fill: rgb("555555"))[
-    Redmond, WA #h(6pt) | #h(6pt) jxu000\@gmail.com #h(6pt) | #h(6pt) #link("https://jxu093.github.io")[jxu093.github.io]
+    Bellevue, WA #h(6pt) | #h(6pt) jxu000\@gmail.com #h(6pt) | #h(6pt) #link("https://jxu093.github.io")[jxu093.github.io]
   ]
 ]
 
