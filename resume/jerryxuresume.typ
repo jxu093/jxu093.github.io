@@ -37,7 +37,7 @@
 
 #section("Summary")
 
-Senior Software Engineer with 9+ years building distributed systems and backend services at scale. Currently on Azure's SDN control plane, leading multi-team redesigns that improve provisioning performance and reliability.
+Senior Software Engineer with 9+ years building distributed systems and backend services at scale. Currently on Azure's networking control plane, leading multi-team redesigns that improve provisioning performance and reliability.
 
 #section("Professional Experience")
 
@@ -52,6 +52,7 @@ Senior Software Engineer with 9+ years building distributed systems and backend 
 - Drove cross-organizational design of a new VM deletion API with Azure Compute, eliminating recurring resource-conflict incidents and modernizing the contract from legacy PaaS to IaaS.
 - Redesigned goal-state distribution to route publish calls to each VM's home availability zone, reducing cross-AZ traffic by 66–75% and improving resilience during zone-level pub/sub outages.
 - Built a proactive error-triage workflow to surface low-frequency failures below alerting thresholds, evolving it from manual review to AI-driven classification and uncovering previously undetected production issues.
+- Led response to major production incidents, diagnosing and mitigating in real time, authoring root-cause analyses, presenting findings to senior leadership, and driving cross-team code and process fixes.
 - Onboarded a new 6-person engineering team in India through structured weekly sessions, code reviews, and mentoring, enabling independent contributions within two months. The team has since grown and taken on overnight on-call coverage.
 
 #job("Capital One Canada", "Software Developer", "2018")
