@@ -1,6 +1,6 @@
 #set page(margin: (top: 0.4in, bottom: 0.4in, left: 0.5in, right: 0.5in), numbering: none)
-#set text(font: "Helvetica Neue", size: 9.5pt, fill: rgb("333333"))
-#set par(leading: 0.55em, justify: true)
+#set text(font: "Helvetica Neue", size: 10.5pt, fill: rgb("333333"))
+#set par(leading: 0.56em, justify: true)
 #show heading: set text(font: "Helvetica Neue")
 
 #let accent = rgb("1B2A4A")
@@ -9,7 +9,7 @@
 #align(center)[
   #text(size: 22pt, weight: "bold", fill: accent)[Jerry Xu]
   #v(2pt)
-  #text(size: 9pt, fill: rgb("555555"))[
+  #text(size: 10pt, fill: rgb("555555"))[
     Bellevue, WA #h(6pt) | #h(6pt) jxu000\@gmail.com #h(6pt) | #h(6pt) #link("https://jxu093.github.io")[jxu093.github.io]
   ]
 ]
@@ -18,20 +18,20 @@
 
 // Section heading helper
 #let section(title) = {
-  v(6pt)
-  text(size: 9pt, weight: "bold", fill: accent, tracking: 0.08em)[#upper(title)]
+  v(7pt)
+  text(size: 10pt, weight: "bold", fill: accent, tracking: 0.08em)[#upper(title)]
   v(-4pt)
   line(length: 100%, stroke: 0.5pt + rgb("cccccc"))
-  v(2pt)
+  v(3pt)
 }
 
 // Job entry helper
 #let job(company, detail, dates) = {
-  v(2pt)
+  v(4pt)
   grid(
     columns: (1fr, auto),
-    text(weight: "bold", size: 10pt)[#company #text(weight: "regular", size: 9.5pt)[ | #detail]],
-    text(size: 9.5pt, fill: rgb("555555"))[#dates],
+    text(weight: "bold", size: 11pt)[#company #text(weight: "regular", size: 10.5pt)[ | #detail]],
+    text(size: 10.5pt, fill: rgb("555555"))[#dates],
   )
 }
 
@@ -43,10 +43,10 @@ Senior Software Engineer with 9+ years building distributed systems and backend 
 
 #job("Microsoft", "Azure SDN Control Plane", "2019 – Present")
 #v(1pt)
-#text(size: 9pt, fill: rgb("555555"))[Software Engineer → Software Engineer II (2020) → Senior Software Engineer (2022)]
+#text(size: 10pt, fill: rgb("555555"))[Software Engineer → Software Engineer II (2020) → Senior Software Engineer (2022)]
 #v(3pt)
 
-#set list(indent: 0.3em, body-indent: 0.5em, spacing: 4pt)
+#set list(indent: 0.3em, body-indent: 0.5em, spacing: 5pt)
 
 - Led several SDN control-plane workstreams in a multi-year, multi-team rebuild of Azure's VM provisioning, deprecating the legacy regional network management service and moving goal-state delivery to a pub/sub model. Reduced provisioning tail latency by \~90%.
 - Drove cross-organizational design of a new VM deletion API with Azure Compute, eliminating recurring resource-conflict incidents and modernizing the contract from legacy PaaS to IaaS.
@@ -72,7 +72,7 @@ Senior Software Engineer with 9+ years building distributed systems and backend 
   text(fill: rgb("555555"))[2017],
 )
 #v(1pt)
-#text(size: 9pt, fill: rgb("555555"))[Dean's Honor List]
+#text(size: 10pt, fill: rgb("555555"))[Dean's Honor List]
 
 #section("Technical Skills")
 
