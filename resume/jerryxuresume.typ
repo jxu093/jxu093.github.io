@@ -48,19 +48,19 @@ Senior Software Engineer with 9+ years building distributed systems and backend 
 
 #set list(indent: 0.3em, body-indent: 0.5em, spacing: 4pt)
 
-- Led several SDN control-plane workstreams in a multi-year, multi-team rebuild of Azure's VM provisioning, deprecating the legacy regional network management service and moving goal-state delivery to PubSub. Reduced provisioning tail latency by \~90%.
-- Drove cross-org design of a new VM delete API with Azure Compute, eliminating recurring resource-conflict incidents and modernizing the contract from the legacy PaaS model to IaaS. Compute's new VM deployment stack adopted it about a year later.
-- Redesigned goal-state distribution to route publish calls to VM home availability zones, reducing cross-AZ traffic by 66–75% and improving resilience during zone-level pubsub outages.
+- Led several SDN control-plane workstreams in a multi-year, multi-team rebuild of Azure's VM provisioning, deprecating the legacy regional network management service and moving goal-state delivery to a pub/sub model. Reduced provisioning tail latency by \~90%.
+- Drove cross-organizational design of a new VM deletion API with Azure Compute, eliminating recurring resource-conflict incidents and modernizing the contract from legacy PaaS to IaaS.
+- Redesigned goal-state distribution to route publish calls to each VM's home availability zone, reducing cross-AZ traffic by 66–75% and improving resilience during zone-level pub/sub outages.
 - Built a proactive error-triage workflow to surface low-frequency failures below alerting thresholds, evolving it from manual review to AI-driven classification and uncovering previously undetected production issues.
-- Onboarded a new 6-person engineering team in India through structured weekly sessions, code review, and mentoring, enabling independent contributions within two months. The team has since grown to take on overnight on-call coverage.
+- Onboarded a new 6-person engineering team in India through structured weekly sessions, code reviews, and mentoring, enabling independent contributions within two months. The team has since grown and taken on overnight on-call coverage.
 
 #job("Capital One Canada", "Software Developer", "2018")
 #v(3pt)
-- Designed and prototyped real-time event-driven data streams using Apache Kafka for financial ledger updates, architected for zero data loss across \~2M Canadian cardholders.
+- Designed and prototyped real-time, event-driven Apache Kafka data streams for financial ledger updates, architected for zero data loss across \~2M Canadian cardholders.
 
 #job("IBM", "Software Developer", "2017 – 2018")
 #v(3pt)
-- Built and maintained robust backend services in Java/C++, focusing on enterprise-scale data processing, storage reliability, and security practices including OWASP principles and GDPR compliance.
+- Built and maintained backend services in Java/C++, focusing on enterprise-scale data processing, storage reliability, and security practices, including OWASP principles and GDPR compliance.
 
 #section("Education")
 
@@ -77,7 +77,7 @@ Senior Software Engineer with 9+ years building distributed systems and backend 
 
 #v(2pt)
 *Languages:* C\#, Java, Python \
-*Backend & Distributed Systems:* API design, system design, scalability, microservices, REST APIs, gRPC, Pub/Sub, Protobuf, Apache Kafka, event-driven architecture, concurrent programming, multithreading \
+*Backend & Distributed Systems:* API design, system design, scalability, microservices, REST APIs, gRPC, pub/sub, Protobuf, Apache Kafka, event-driven architecture, concurrent programming, multithreading \
 *Cloud & Infrastructure:* Azure, AWS, Service Fabric, SDN \
 *Testing & Quality:* unit testing, integration testing, TDD, code review \
 *Engineering Practices:* CI/CD, design documents, on-call, incident response, mentoring, technical leadership, cross-functional collaboration \
