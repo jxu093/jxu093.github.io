@@ -41,7 +41,7 @@ Senior Software Engineer with 9+ years building distributed systems and backend 
 
 #section("Professional Experience")
 
-#job("Microsoft", "Azure SDN Control Plane", "2019 – Present")
+#job("Microsoft", "Azure SDN Control Plane", "Redmond, WA · 2019 – Present")
 #v(1pt)
 #text(size: 10pt, fill: rgb("555555"))[Software Engineer → Software Engineer II (2020) → Senior Software Engineer (2022)]
 #v(3pt)
@@ -55,11 +55,11 @@ Senior Software Engineer with 9+ years building distributed systems and backend 
 - Led response to major production incidents, diagnosing and mitigating in real time, authoring root-cause analyses, presenting findings to senior leadership, and driving cross-team code and process fixes.
 - Onboarded a new 6-person engineering team in India through structured weekly sessions, code reviews, and mentoring, enabling independent contributions within two months. The team has since grown and taken on overnight on-call coverage.
 
-#job("Capital One Canada", "Software Developer", "2018")
+#job("Capital One Canada", "Software Developer", "Toronto, ON · 2018")
 #v(3pt)
 - Designed and prototyped real-time, event-driven Apache Kafka data streams for financial ledger updates, architected for zero data loss across \~2M Canadian cardholders.
 
-#job("IBM", "Software Developer", "2017 – 2018")
+#job("IBM", "Software Developer", "Toronto, ON · 2017 – 2018")
 #v(3pt)
 - Built and maintained Java backend services, with additional work on an Angular frontend, focusing on enterprise-scale data processing, storage reliability, and security practices, including OWASP principles and GDPR compliance.
 
